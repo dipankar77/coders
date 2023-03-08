@@ -4,7 +4,7 @@
  * Plugin Name: Copy & Delete Posts
  * Plugin URI: https://copy-delete-posts.com
  * Description: The best solution to easily make duplicates of your posts & pages, and delete them in one go.
- * Version: 1.3.7
+ * Version: 1.3.9
  * Author: Copy Delete Posts
  * Author URI: https://copy-delete-posts.com/
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -30,7 +30,7 @@ analyst_init(array(
  * @since 1.0.0
  */
 // Plugin constants
-define('CDP_VERSION', '1.3.7');
+define('CDP_VERSION', '1.3.9');
 define('CDP_WP_VERSION', get_bloginfo('version'));
 define('CDP_SCRIPT_DEBUG', false);
 define('CDP_ROOT_DIR', __DIR__);
@@ -148,22 +148,6 @@ add_action('upgrader_process_complete', function () {
 			$review_banner = new \Inisev\Subs\Inisev_Review(CDP_ROOT_FILE, CDP_ROOT_DIR, 'copy-delete-posts', 'Copy & Delete Posts', 'https://bit.ly/2VeAf2E', 'copy-delete-posts');
 		}
 
-    if (!(class_exists('\Inisev\Subs\InisevBlackFriday') || class_exists('Inisev\Subs\InisevBlackFriday') || class_exists('InisevBlackFriday'))) {
-      require_once CDP_ROOT_DIR . DIRECTORY_SEPARATOR . 'modules' . DIRECTORY_SEPARATOR . 'blackfriday2022' . DIRECTORY_SEPARATOR . 'bf.php';
-    }
-    $blackfriday_banner = new \Inisev\Subs\InisevBlackFriday('copy-delete-posts', 'Copy Delete Posts', 'https://bit.ly/3OqjsDM', ['admin.php?page=copy-delete-posts', 'tools.php?page=copy-delete-posts']);
-
-    // Deactivation module
-    // $cdp_plugin_path = trailingslashit(basename(CDP_ROOT_DIR)) . basename(CDP_ROOT_FILE);
-    // if (isset($GLOBALS['IIEV_PLUGINS_DEACTIVATION'])) {
-    //   if (is_array($GLOBALS['IIEV_PLUGINS_DEACTIVATION'])) $GLOBALS['IIEV_PLUGINS_DEACTIVATION'][] = $cdp_plugin_path;
-    // } else {
-    //   if (!(class_exists('\Inisev\Subs\Inisev_Deactivation') || class_exists('Inisev\Subs\Inisev_Deactivation') || class_exists('Inisev_Deactivation'))) {
-    //     require_once CDP_MODULES_DIR . 'deactivation' . DIRECTORY_SEPARATOR . 'deactivation.php';
-    //   }
-    //   $deactivation_module = new \Inisev\Subs\Inisev_Deactivation($cdp_plugin_path, CDP_ROOT_DIR, CDP_ROOT_FILE);
-    // }
-
 	});
 /** –– **/
 
@@ -223,10 +207,11 @@ add_action('admin_enqueue_scripts', function () {
     $at = ($screen->id != 'attachment');
 
     $g = get_option('_cdp_globals', array());
-    if (array_key_exists('others', $g))
-        $g = $g['others'];
-    else
-        $g = cdp_default_global_options();
+    if (isset($g['others'])) {
+      $g = $g['others'];
+    } else {
+      $g = cdp_default_global_options();
+    }
 
     if (is_object($post))
         $type = $post->post_type;
@@ -252,7 +237,7 @@ add_action('admin_enqueue_scripts', function () {
     wp_enqueue_script('cdp-tooltips', "{$cdp_plug_url}/assets/js/cdp.tooltip{$min}.js", '', $ver, true);
     if (method_exists($screen, 'is_block_editor')) {
         if (!$screen->is_block_editor() && $pagenow == 'post.php' && $at) {
-            if (isset($g['cdp-display-edit']) && $g['cdp-display-edit'] == 'true') {
+            if (isset($g['cdp-display-edit']) && isset($g['cdp-content-posts']) && isset($g['cdp-content-pages']) && isset($g['cdp-content-custom']) && $g['cdp-display-edit'] == 'true') {
                 $a = ($type == 'post' && $g['cdp-content-posts'] == 'true');
                 $b = ($type == 'page' && $g['cdp-content-pages'] == 'true');
                 $c = ($type != 'post' && $type != 'page' && $g['cdp-content-custom'] == 'true');
@@ -271,13 +256,13 @@ add_action('admin_enqueue_scripts', function () {
     wp_enqueue_script('cdp', "{$cdp_plug_url}/assets/js/cdp{$min}.js", '', $ver, true);
 
     wp_enqueue_script('cdp-modal', "{$cdp_plug_url}/assets/js/cdp-modal{$min}.js", '', $ver, true);
-    if ($g['cdp-content-custom'] == 'true') {
+    if (isset($g['cdp-content-custom']) && $g['cdp-content-custom'] == 'true') {
       wp_enqueue_script('cdp-bulk', "{$cdp_plug_url}/assets/js/cdp-bulk{$min}.js", '', $ver, true);
       $cdpBulkJSArgs = ['strOptCopy' => __('Copy', 'copy-delete-posts')];
       wp_localize_script('cdp-bulk', 'cdpBulkJS', $cdpBulkJSArgs);
     }
     cdp_load_localize_end_js();
-});
+}, 1000);
 /** –– * */
 /** –– **\
  * Setup assets (not admin).
@@ -323,19 +308,22 @@ add_action('enqueue_block_editor_assets', function () {
     $min = defined('CDP_SCRIPT_DEBUG') && CDP_SCRIPT_DEBUG ? '' : '.min';
 
     $g = get_option('_cdp_globals', array());
-    if (array_key_exists('others', $g))
-        $g = $g['others'];
-    else
-        $g = cdp_default_global_options();
+    if (isset($g['others'])) {
+      $g = $g['others'];
+    } else {
+      $g = cdp_default_global_options();
+    }
 
     $ver = preg_replace('#[^\pL\pN/-]+#', '', CDP_VERSION);
-    if (is_object($post))
-        $type = $post->post_type;
-    else
-        $type = false;
-    $a = ($type == 'post' && $g['cdp-content-posts'] == 'true');
-    $b = ($type == 'page' && $g['cdp-content-pages'] == 'true');
-    $c = ($type != 'post' && $type != 'page' && $g['cdp-content-custom'] == 'true');
+    if (is_object($post)) {
+      $type = $post->post_type;
+    } else {
+      $type = false;
+    }
+
+    $a = ($type == 'post' && (isset($g['cdp-content-posts']) && $g['cdp-content-posts'] == 'true'));
+    $b = ($type == 'page' && (isset($g['cdp-content-pages']) && $g['cdp-content-pages'] == 'true'));
+    $c = ($type != 'post' && $type != 'page' && (isset($g['cdp-content-custom']) && $g['cdp-content-custom'] == 'true'));
     if ((isset($g['cdp-display-gutenberg']) && $g['cdp-display-gutenberg'] == 'true') && ($a || $b || $c)) {
         wp_enqueue_style('cdp-gutenberg', "{$cdp_plug_url}/assets/css/cdp-gutenberg{$min}.css", '', $ver);
         wp_enqueue_script('cdp-js-gutenberg', "{$cdp_plug_url}/assets/js/cdp-gutenberg{$min}.js", ['jquery'], $ver, true);
@@ -360,10 +348,11 @@ add_action('admin_menu', function () {
 
     // Globals
     $g = get_option('_cdp_globals', array());
-    if (array_key_exists('others', $g))
-        $g = $g['others'];
-    else
-        $g = cdp_default_global_options();
+    if (isset($g['others'])) {
+      $g = $g['others'];
+    } else {
+      $g = cdp_default_global_options();
+    }
 
     // Main menu hook
     add_menu_page(__('Copy & Delete Posts', 'copy-delete-posts'), __('<span id="cdp-menu">Copy & Delete Posts</span>', 'copy-delete-posts'), 'read', $parentSlug, 'cdp_configuration', $icon_url, $position = 98);
@@ -385,15 +374,17 @@ add_filter('post_row_actions', function ($actions, $post) {
 
     // Get global options and post type
     $g = get_option('_cdp_globals', array());
-    if (array_key_exists('others', $g))
-        $g = $g['others'];
-    else
-        $g = cdp_default_global_options();
+    if (isset($g['others'])) {
+      $g = $g['others'];
+    } else {
+      $g = cdp_default_global_options();
+    }
+
     $type = $post->post_type;
 
     // If user want to see the copy buton here pass
     if (isset($g['cdp-display-posts']) && $g['cdp-display-posts'] == 'true') {
-      if (($type == 'post' && $g['cdp-content-posts'] == 'true') || ($type != 'post' && $g['cdp-content-custom'] == 'true')) {
+      if (($type == 'post' && isset($g['cdp-content-posts']) && $g['cdp-content-posts'] == 'true') || ($type != 'post' && isset($g['cdp-content-custom']) && $g['cdp-content-custom'] == 'true')) {
         $actions['cdp_copy'] = "<a href='#'><span class='cdp-copy-button cdp-tooltip-copy' x='" . $type . "' title='" . __('test', 'copy-delete-posts') . "' data-cdp-id='{$post->ID}'>" . __('Copy', 'copy-delete-posts') . "</span></a>";
       }
     }
@@ -406,15 +397,19 @@ add_filter('post_row_actions', function ($actions, $post) {
  * @since 1.0.0
  */
 add_filter('page_row_actions', function ($actions, $page) {
-    if (cdp_check_permissions(wp_get_current_user()) == false)
-        return $actions;
+
+    if (cdp_check_permissions(wp_get_current_user()) == false) {
+      return $actions;
+    }
 
     // Get global options and post type
     $g = get_option('_cdp_globals', array());
-    if (array_key_exists('others', $g))
-        $g = $g['others'];
-    else
-        $g = cdp_default_global_options();
+    if (isset($g['others'])) {
+      $g = $g['others'];
+    } else {
+      $g = cdp_default_global_options();
+    }
+
     $type = $page->post_type;
 
     // If user want to see the copy buton here pass
@@ -425,6 +420,7 @@ add_filter('page_row_actions', function ($actions, $page) {
     }
 
     return $actions;
+
 }, 10, 2);
 /** –– * */
 /** –– **\
@@ -436,10 +432,11 @@ add_filter('bulk_actions-edit-post', function ($bulk_actions) {
         return;
 
     $g = get_option('_cdp_globals', array());
-    if (array_key_exists('others', $g))
-        $g = $g['others'];
-    else
-        $g = cdp_default_global_options();
+    if (isset($g['others'])) {
+      $g = $g['others'];
+    } else {
+      $g = cdp_default_global_options();
+    }
 
     if (isset($g['cdp-display-bulk']) && $g['cdp-display-bulk'] == 'true' && isset($g['cdp-content-posts']) && $g['cdp-content-posts'] == 'true') {
       $bulk_actions['cdp_bulk_copy'] = __('Copy', 'copy-delete-posts');
@@ -457,10 +454,11 @@ add_filter('bulk_actions-edit-page', function ($bulk_actions) {
         return;
 
     $g = get_option('_cdp_globals', array());
-    if (array_key_exists('others', $g))
-        $g = $g['others'];
-    else
-        $g = cdp_default_global_options();
+    if (isset($g['others'])) {
+      $g = $g['others'];
+    } else {
+      $g = cdp_default_global_options();
+    }
 
     if (isset($g['cdp-display-bulk']) && $g['cdp-display-bulk'] == 'true' && isset($g['cdp-content-pages']) && $g['cdp-content-pages'] == 'true') {
       $bulk_actions['cdp_bulk_copy'] = __('Copy', 'copy-delete-posts');
@@ -474,31 +472,39 @@ add_filter('bulk_actions-edit-page', function ($bulk_actions) {
  * @since 1.0.0
  */
 add_action('admin_bar_menu', function ($admin_bar) {
-    if (cdp_check_permissions(wp_get_current_user()) == false)
-        return;
+    if (cdp_check_permissions(wp_get_current_user()) == false) {
+      return;
+    }
+
     $screen = ((function_exists('get_current_screen') ? get_current_screen() : false));
     $screens = ['post', 'page'];
 
-    if (!(is_single() || is_page() || (isset($screen) && ($screen != false && in_array($screen->id, $screens)))))
-        return;
+    if (!(is_single() || is_page() || (isset($screen) && ($screen != false && in_array($screen->id, $screens))))) {
+      return;
+    }
 
     $g = get_option('_cdp_globals', array());
-    if (array_key_exists('others', $g))
-        $g = $g['others'];
-    else
-        $g = cdp_default_global_options();
+    if (isset($g['others'])) {
+      $g = $g['others'];
+    } else {
+      $g = cdp_default_global_options();
+    }
 
     global $post;
-    if (is_object($post))
-        $type = $post->post_type;
-    else
-        $type = false;
-    $a = ($type == 'post' && $g['cdp-content-posts'] == 'true');
-    $b = ($type == 'page' && $g['cdp-content-pages'] == 'true');
-    $c = ($type != 'post' && $type != 'page' && $g['cdp-content-custom'] == 'true');
+    if (is_object($post)) {
+      $type = $post->post_type;
+    } else {
+      $type = false;
+    }
 
-    if (isset($g['cdp-display-admin']) && $g['cdp-display-admin'] == 'false')
-        return;
+    $a = ($type == 'post' && (isset($g['cdp-content-posts']) && $g['cdp-content-posts'] == 'true'));
+    $b = ($type == 'page' && (isset($g['cdp-content-pages']) && $g['cdp-content-pages'] == 'true'));
+    $c = ($type != 'post' && $type != 'page' && (isset($g['cdp-content-custom']) && $g['cdp-content-custom'] == 'true'));
+
+    if (isset($g['cdp-display-admin']) && $g['cdp-display-admin'] == 'false') {
+      return;
+    }
+
     global $cdp_plug_url;
 
     if ($a || $b || $c) {
@@ -560,10 +566,11 @@ add_action('wp_footer', function () {
         return;
 
     $g = get_option('_cdp_globals', array());
-    if (array_key_exists('others', $g))
-        $g = $g['others'];
-    else
-        $g = cdp_default_global_options();
+    if (isset($g['others'])) {
+      $g = $g['others'];
+    } else {
+      $g = cdp_default_global_options();
+    }
 
     if (isset($g['cdp-display-admin']) && $g['cdp-display-admin'] == 'false')
         return;
@@ -579,11 +586,16 @@ add_action('wp_footer', function () {
     $profiles = get_option('_cdp_profiles');
 
     if (is_single() || is_page()) {
-        $hx = false;
-        if ($g['cdp-premium-hide-tooltip'] == 'true')
-            $hx = true;
-        cdp_vars($hx, $cdp_plug_url, $post_id);
-        cdp_modal($screen, $profiles);
+
+      $hx = false;
+
+      if (isset($g['cdp-premium-hide-tooltip']) && $g['cdp-premium-hide-tooltip'] == 'true') {
+        $hx = true;
+      }
+
+      cdp_vars($hx, $cdp_plug_url, $post_id);
+      cdp_modal($screen, $profiles);
+
     }
 });
 /** –– * */
@@ -609,11 +621,11 @@ add_action('admin_init', function () {
               $post_id = $post->ID;
               $meta = get_post_meta($post->ID, '_cdp_origin');
               $site = get_post_meta($post->ID, '_cdp_origin_site');
-              if ($cdp_globals && array_key_exists('others', $cdp_globals) && array_key_exists('cdp-references-post', $cdp_globals['others'])) {
+              if ($cdp_globals && isset($cdp_globals['others']) && isset($cdp_globals['others']['cdp-references-post'])) {
                   if ($cdp_globals['others']['cdp-references-edit'] == 'true') {
                       if (function_exists('switch_to_blog') && $site)
                           switch_to_blog($site);
-                      if (array_key_exists(0, $meta) && get_post_status($meta[0])) {
+                      if (isset($meta[0]) && get_post_status($meta[0])) {
                           $parentTitle = get_the_title($meta[0]);
                           $link = get_post_permalink($meta[0]);
                           $hasParent = array(
@@ -627,7 +639,7 @@ add_action('admin_init', function () {
               }
           }
       }
-      if ($cdp_globals && array_key_exists('others', $cdp_globals) && array_key_exists('cdp-premium-hide-tooltip', $cdp_globals['others']) && $cdp_globals['others']['cdp-premium-hide-tooltip'] == 'true') {
+      if ($cdp_globals && isset($cdp_globals['others']) && isset($cdp_globals['others']['cdp-premium-hide-tooltip']) && $cdp_globals['others']['cdp-premium-hide-tooltip'] == 'true') {
           $hx = true;
       }
 
@@ -653,21 +665,26 @@ add_action('post_submitbox_start', function () {
     if (cdp_check_permissions(wp_get_current_user()) == false)
         return;
     $g = get_option('_cdp_globals', array());
-    if (array_key_exists('others', $g))
-        $g = $g['others'];
-    else
-        $g = cdp_default_global_options();
-    if (isset($g['cdp-display-edit']) && $g['cdp-display-edit'] == 'false')
-        return;
+    if (isset($g['others'])) {
+      $g = $g['others'];
+    } else {
+      $g = cdp_default_global_options();
+    }
+
+    if (isset($g['cdp-display-edit']) && $g['cdp-display-edit'] == 'false') {
+      return;
+    }
 
     global $post, $pagenow;
-    if (is_object($post))
-        $type = $post->post_type;
-    else
-        $type = false;
-    $a = ($type == 'post' && $g['cdp-content-posts'] == 'true');
-    $b = ($type == 'page' && $g['cdp-content-pages'] == 'true');
-    $c = ($type != 'post' && $type != 'page' && $g['cdp-content-custom'] == 'true');
+    if (is_object($post)) {
+      $type = $post->post_type;
+    } else {
+      $type = false;
+    }
+
+    $a = ($type == 'post' && (isset($g['cdp-content-posts']) && $g['cdp-content-posts'] == 'true'));
+    $b = ($type == 'page' && (isset($g['cdp-content-pages']) && $g['cdp-content-pages'] == 'true'));
+    $c = ($type != 'post' && $type != 'page' && (isset($g['cdp-content-custom']) && $g['cdp-content-custom'] == 'true'));
 
     if (($a || $b || $c) && $pagenow != 'post-new.php')
         echo '<div id="cdp-copy-btn"><a class="cdp-copy-btn-editor" href="#">' . __('Copy this post', 'copy-delete-posts') . '</a></div>';
@@ -681,7 +698,7 @@ add_action('cdp_cron_delete', function ($args = false) {
 
     $ids = $args['ids'];
     $trash = $args['trash'];
-    $site = (array_key_exists('site', $args)) ? $args['site'] : '-1';
+    $site = (isset($args['site'])) ? $args['site'] : '-1';
     $tok = $args['token']['token'];
     $tsk = $args['token']['tsk'];
 
@@ -723,7 +740,7 @@ add_action('cdp_cron_delete', function ($args = false) {
     if ($tsk == '-0' || $last == $tsk || $falsed == false || $cdp_cron[$tok]['tasks'][$last] != false) {
         $cdp_cron[$tok]['done'] = current_time('timestamp');
         $cdp_cron[$tok]['data'] = array('formated-date' => date('d M Y, H:i:s'));
-        if (array_key_exists('del_size', $cdp_cron[$tok])) {
+        if (isset($cdp_cron[$tok]['del_size'])) {
             $cdp_cron[$tok]['data']['amount'] = $cdp_cron[$tok]['del_size'];
             $cdp_cron[$tok]['data']['text'] = __('Manual Cleanup removed ', 'copy-delete-posts') . $cdp_cron[$tok]['del_size'] . ' post(s).';
         }
@@ -770,7 +787,7 @@ add_action('cdp_plugin_setup', 'cdp_setup_default_profile');
 function cdp_setup_default_profile() {
     $current = get_option('_cdp_globals');
     $isSetup = get_option('_cdp_default_setup');
-    if (($current != false && array_key_exists('default', $current)) || $isSetup)
+    if (($current != false && isset($current['default'])) || $isSetup)
         return;
 
     $already = array();
@@ -960,7 +977,7 @@ function cdp_default_global_options() {
  * @since 1.0.0
  */
 if (is_admin()) {
-    if ($cdp_globals && array_key_exists('others', $cdp_globals) && array_key_exists('cdp-references-post', $cdp_globals['others'])) {
+    if ($cdp_globals && isset($cdp_globals['others']) && isset($cdp_globals['others']['cdp-references-post'])) {
         if ($cdp_globals['others']['cdp-references-post'] == 'true')
             add_filter('display_post_states', 'cdp_state_post_add', 1, 10);
     }
@@ -976,7 +993,7 @@ function cdp_state_post_add($post_states, $post) {
     if (function_exists('switch_to_blog') && $site)
         switch_to_blog($site);
     for ($i = sizeof($meta); $i >= 0; --$i) {
-        if (array_key_exists(($i - 1), $meta) && get_post_status($meta[$i - 1])) {
+        if (isset($meta[($i - 1)]) && get_post_status($meta[$i - 1])) {
             $link = get_post_permalink($meta[$i - 1]);
             $title = get_the_title($meta[$i - 1]) . " – " . "ID: " . $meta[$i - 1];
             $post_states['_cdp'] = __('Copy of', 'copy-delete-posts') . " <a class='cdp-tooltip-top' title='$title' href='$link' target='_blank'>" . __('this', 'copy-delete-posts') . "</a> " . __('post', 'copy-delete-posts');
@@ -1099,10 +1116,6 @@ function cdp_sanitize_array($data = null) {
  */
 add_action('plugins_loaded', function () {
 
-  $protocols = array('http://', 'http://www.', 'www.', 'https://', 'https://www.');
-  $l = ord(strtolower(str_replace($protocols, '', home_url())[0]));
-  if (!($l <= 100 && 97 <= $l)) return;
-
   if (!(class_exists('\Inisev\Subs\Inisev_Try_Out_Plugins') || class_exists('Inisev\Subs\Inisev_Try_Out_Plugins') || class_exists('Inisev_Try_Out_Plugins'))) {
     require_once __DIR__ . '/modules/tryOutPlugins/tryOutPlugins.php';
     $try_out_plugins = new \Inisev\Subs\Inisev_Try_Out_Plugins(__FILE__, __DIR__, 'Duplicate Posts', 'admin.php?page=copy-delete-posts');
@@ -1112,6 +1125,12 @@ add_action('plugins_loaded', function () {
 
 if (!has_action('wp_ajax_tifm_save_decision')) {
   add_action('wp_ajax_tifm_save_decision', function () {
+
+    // Nonce verification
+    if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field($_POST['nonce']), 'tifm_notice_nonce')) {
+      wp_send_json_error();
+      return;
+    }
 
     if (isset($_POST['decision'])) {
 

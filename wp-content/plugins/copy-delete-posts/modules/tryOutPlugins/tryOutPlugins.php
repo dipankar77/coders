@@ -23,7 +23,7 @@
 
         function __construct($plugin_file, $plugin_dir, $plugin_name, $plugin_menu_page) {
 
-          if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+          if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
             add_action('wp_ajax_tifm_notice_actions', [&$this, 'noticeAjax']);
           }
 

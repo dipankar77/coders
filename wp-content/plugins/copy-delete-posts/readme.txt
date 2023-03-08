@@ -2,8 +2,8 @@
 Contributors: CopyDeletePosts, copydelete
 Tags: Duplicate post, Copy posts, Copy pages, Duplicate posts, Duplicate pages, Clone posts, Clone pages, Delete posts, Delete pages, Duplicator, copy post, copy page
 Requires at least: 4.6
-Tested up to: 6.1.1
-Stable tag: 1.3.7
+Tested up to: 6.2
+Stable tag: 1.3.9
 License: GPLv3
 Requires PHP: 5.6
 
@@ -139,8 +139,8 @@ Other duplicate post plugins mostly only allow you to duplicate post to the same
 = Is this plugin GDPR friendly? =
 Copy Delete Posts WordPress plugin doesn’t store any site visitor information so it is completely GDPR friendly.
 
-= ACF incompatibility =
-ACF is not fully supported by Copy Delete Post, as ACF is something more than a simple post. The plugin can only cop native posts and pages ( that are aligned with WordPress standards ). ACF does not stick with these standards as they put multiple posts attached to one post ID, which is visible on the list, while others are hidden. So it’s tricky but our co founder is working on adding ACF plugin in the future ( c priority ).
+= ACF compatibility =
+ACF is fully supported by Copy Delete Post Premium, as ACF is something more than a simple post. The plugin can only cop native posts and pages ( that are aligned with WordPress standards ). ACF does not stick with these standards as they put multiple posts attached to one post ID, which is visible on the list, while others are hidden.
 
 = Is the plugin also available in my language? =
 So far we have translated the plugin into these languages:
@@ -176,6 +176,22 @@ Vietnamese: [Sao chép bài đăng, sao chép trang, sao chép bài đăng tùy 
 8. Copy from Gutenberg editor
 
 == Changelog ==
+
+= 1.3.9 =
+* Tested up with WordPress 6.2
+* Removed two unused modules
+* Updated carrousel module
+* Fixed old database version compatibility
+* Extended TIF module for everyone
+
+= 1.3.8 =
+* Tested up WordPress 6.2-Beta1
+* [Premium] Added full ACF duplication support
+* Adjusted proper duplication of WooCommerce products
+* Fixed duplication of WooCommerce variations
+* Resolved issues with child-post custom types
+* Extended new module
+* Minimized styling conflicts in custom post type pages
 
 = 1.3.7 =
 * Included new module
@@ -297,7 +313,6 @@ Vietnamese: [Sao chép bài đăng, sao chép trang, sao chép bài đăng tùy 
 = 1.1.8 =
 * Performance adjustements for PHP 8
 * Plugin prepared for translation
-* Improvements for ACF plugin kind
 * Fixed activation/deactivation issues for Pro
 
 = 1.1.7 =
@@ -318,7 +333,6 @@ Vietnamese: [Sao chép bài đăng, sao chép trang, sao chép bài đăng tùy 
 * Tested up to WordPress 5.6.1
 * Added support chat
 * Added new premium feature (hide chat)
-* Added support for ACF
 
 = 1.1.3 =
 * Added support for PHP 8 and WordPress 5.6
@@ -386,8 +400,10 @@ Vietnamese: [Sao chép bài đăng, sao chép trang, sao chép bài đăng tùy 
 * Initial release
 
 == Upgrade Notice ==
-= 1.3.7 =
-What's new in 1.3.7?
-* Included new module
-* Fixed issues with deactivation feedback
-* Corrected display of arrow
+= 1.3.9 =
+What's new in 1.3.9?
+* Tested up with WordPress 6.2
+* Removed two unused modules
+* Updated carrousel module
+* Fixed old database version compatibility
+* Extended TIF module for everyone

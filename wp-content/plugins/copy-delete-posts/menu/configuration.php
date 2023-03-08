@@ -96,11 +96,6 @@ function cdp_configuration() {
     is_plugin_active('ultimate-social-media-plus/ultimate_social_media_plus.php')
   ) $isUSM = true;
 
-  $isInLRange = true;
-  $protocols = array('http://', 'http://www.', 'www.', 'https://', 'https://www.');
-  $l = ord(strtolower(str_replace($protocols, '', home_url())[0]));
-  if (!($l <= 100 && 97 <= $l)) $isInLRange = false;
-
   ?>
 
   <style>
@@ -592,7 +587,6 @@ function cdp_configuration() {
                   <label for="cdp-o-edits2"><input <?php echo ($gos['cdp-references-edit'] == 'true')?'checked ':''; ?>id="cdp-o-edits2" type="checkbox" class="cdp-other-inputs" name="cdp-references-edit"><?php _e('Edit screens', 'copy-delete-posts'); ?></label>
               </div>
 
-              <?php if ($isInLRange) { ?>
               <?php
                 $tifmdisabled = 'false';
                 if (get_option('_tifm_feature_enabled') === 'disabled') {
@@ -625,7 +619,6 @@ function cdp_configuration() {
                   </label>
                 </div>
               </div>
-              <?php } ?>
 
               <div><h2><b class="cdp-f-s-18 cdp-f-w-bold"><?php _e('Additional features', 'copy-delete-posts'); ?></b></h2></div>
               <div class="cdp-p-25-40 cdp-f-s-18 cdp-f-w-light">
@@ -1019,7 +1012,7 @@ function cdp_configuration() {
     <?php do_action('ins_global_print_carrousel'); ?>
   </div>
 
-  <?php if ($isInLRange === true && $tifmscrollTo === true) { ?>
+  <?php if ($tifmscrollTo === true) { ?>
     <script type="text/javascript">
       setTimeout(function () {
         if (document.querySelector('#cdp-global-section-collapser')) {

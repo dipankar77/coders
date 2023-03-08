@@ -266,7 +266,7 @@ function cdp_save_plugin_options($areWePro) {
     $globals = $entire;
 
     // Check if there is default profile
-    if (!array_key_exists('default', $already) || !array_key_exists('title', $already['default'])) {
+    if (!isset($already['default']) || !isset($already['default']['title'])) {
         $already['default'] = array();
 
         if (function_exists('cdp_default_options'))
@@ -450,11 +450,17 @@ function cdp_insert_new_post($areWePro = false) {
             'post_parent' => $post['post_parent'] // that's additional element which cannot be edited by user
         );
 
+        // For WooCommerce
+        if ($post['post_type'] == 'product_variation' || $post['post_type'] == 'acf-field') {
+          $new['post_status'] = 'publish';
+        }
+
         // Converter
-        if ((($opt == '2' && $swap == 'true') || $swap == 'true') && $areWePro && function_exists('cdpp_post_converter'))
-            $new['post_type'] = cdpp_post_converter($post['post_type']);
-        else
-            $new['post_type'] = $post['post_type'];
+        if ((($opt == '2' && $swap == 'true') || $swap == 'true') && $areWePro && function_exists('cdpp_post_converter')) {
+          $new['post_type'] = cdpp_post_converter($post['post_type']);
+        } else {
+          $new['post_type'] = $post['post_type'];
+        }
 
         // Add optional values of post – depending on settings
         if ($settings['slug'])
@@ -475,6 +481,14 @@ function cdp_insert_new_post($areWePro = false) {
             $new['tags_input'] = $post['tags_input'];
         if ($taxonomies != false)
             $new['tax_input'] = $ft;
+
+        // For ACF Fields
+        if ($post['post_type'] == 'acf-field') {
+          $new['post_name'] = 'group_' . md5(uniqid($post['post_name'], true));
+        }
+        if ($post['post_type'] == 'acf-field-group') {
+          $new['post_name'] = 'field_' . md5(uniqid($post['post_name'], true));
+        }
 
         // Return filtered data of current post
         return $new;
@@ -515,8 +529,11 @@ function cdp_insert_new_post($areWePro = false) {
             $h = (strpos($meta, 'elementor') === false) ? false : true;
             $i = ($areWePro && function_exists('cdpp_check_all_meta')) ? cdpp_check_all_meta($settings, $meta) : false;
 
+            // Deny these meta tags (they may cause conflicts with the further post edit)
+            $j = (mb_substr($meta, 0, 5) == '_trp_') ? false : true;
+
             // If any of above condition is true pass the meta tag
-            if ($a || $b || $c || $d || $e || $f || $g || $h || $i) {
+            if (($a || $b || $c || $d || $e || $f || $g || $h || $i) && $j) {
 
                 // Prepare data and insert filtered to results
                 foreach ($vals as $val)
@@ -615,7 +632,7 @@ function cdp_insert_new_post($areWePro = false) {
         // Get Counter value
         $prefix = (($site != -1) ? $wpdb->get_blog_prefix($site) : $wpdb->get_blog_prefix());
         $newestId = $wpdb->get_results("SELECT post_id FROM {$prefix}postmeta WHERE meta_key = '_cdp_origin' AND meta_value = {$id} ORDER BY post_id DESC LIMIT 1", ARRAY_A);
-        $newestId = ((array_key_exists(0, $newestId)) ? (intval($newestId[0]['post_id'])) : false);
+        $newestId = ((isset($newestId[0])) ? (intval($newestId[0]['post_id'])) : false);
         if (isset($newestId) && $newestId != false && $newestId > 0)
             $counter = $wpdb->get_results("SELECT meta_value AS 'Counter' FROM {$prefix}postmeta WHERE meta_key = '_cdp_counter' AND post_id = {$newestId} ORDER BY post_id DESC", ARRAY_A)[0]['Counter'];
         else
@@ -776,12 +793,18 @@ function cdp_insert_new_post($areWePro = false) {
      * @param $id string/int (post id)
      * @return array of child(s) ID(s)
      */
-    function cdp_check_childs($id) {
+    function cdp_check_childs($id, $areWePro) {
         $childs = [];
-        $childrens = get_children(array('post_parent' => $id));
+        $childrens = get_children(array(
+          'post_parent' => $id,
+          'post_type' => get_post_types(),
+          'suppress_filters' => true
+        ));
 
-        foreach ($childrens as $i => $child)
-            array_push($childs, $child->ID);
+        foreach ($childrens as $i => $child) {
+          if ($child->post_type == 'acf-field' && !$areWePro) continue;
+          array_push($childs, $child->ID);
+        }
 
         return $childs;
     }
@@ -949,20 +972,21 @@ function cdp_insert_new_post($areWePro = false) {
 
             // Check if this post type is allowed to copy
             $type = $post['post_type'];
-            if ($g['cdp-content-pages'] == 'false' && $type == 'page')
+            if ((isset($g['cdp-content-pages']) && $g['cdp-content-pages'] == 'false') && $type == 'page')
                 continue;
-            if ($g['cdp-content-posts'] == 'false' && $type == 'post')
+            if ((isset($g['cdp-content-posts']) && $g['cdp-content-posts'] == 'false') && $type == 'post')
                 continue;
-            if ($g['cdp-content-custom'] == 'false' && ($type != 'page' && $type != 'post'))
+            if ((isset($g['cdp-content-custom']) && $g['cdp-content-custom'] == 'false') && ($type != 'page' && $type != 'post'))
                 continue;
 
             // Post converting?
             $pConv = false;
-            if (array_key_exists('postConverter', $globals))
-                $pConv = $globals['postConverter'];
+            if (isset($globals['postConverter'])) {
+              $pConv = $globals['postConverter'];
+            }
 
             // Run process and validate response
-            $childrens = cdp_check_childs($id); // if sizeof($this) == has childs
+            $childrens = cdp_check_childs($id, $areWePro); // if sizeof($this) == has childs
             $post_data = cdp_filter_post($post, $swap, $pConv, $settings, $site, $taxonomies, $areWePro); // can be false
             $meta_data = cdp_filter_meta($meta, $settings, $id, $areWePro, $site, $post_data['post_title']); // can be false
             $inserted_posts = cdp_insert_post($id, $post_data, $times, $areWePro, $isChild, $p_ids, $site); // $res['error'] must be == 0
@@ -1045,11 +1069,11 @@ function cdp_insert_new_post($areWePro = false) {
         cdpp_handle_multisite($site[0]);
 
     $pConv = false;
-    if (array_key_exists('postConverter', $g) && $areWePro)
+    if (isset($g['postConverter']) && $areWePro)
         $pConv = (($g['postConverter'] === '2' || $g['postConverter'] === 2) ? true : false);
 
     // Output link if it's edited post
-    $aCop = ((array_key_exists('afterCopy', $g)) ? $g['afterCopy'] : '1');
+    $aCop = ((isset($g['afterCopy'])) ? $g['afterCopy'] : '1');
     if (($data['type'] == 'copy-custom-link' || $aCop == '2'))
         $output['link'] = get_edit_post_link($new_insertions['$new_posts']['parents'][0], 'x');
 
@@ -1255,7 +1279,7 @@ function cdp_clear_all_crons() {
     $cdp_cron = get_option('_cdp_crons');
 
     foreach ($cdp_cron as $cron => $val) {
-        if (array_key_exists('done', $val)) {
+        if (isset($val['done'])) {
             if ($val['done'] != true) {
                 echo json_encode(array(
                     'status' => 'fail',
@@ -1348,7 +1372,7 @@ function cdp_just_kill_task() {
     $token = ((isset($_POST['task'])) ? sanitize_text_field($_POST['task']) : false);
     $cdp_cron = get_option('_cdp_crons', array());
     $handler = $cdp_cron[$token]['handler'];
-    $args = (array_key_exists('args', $cdp_cron[$token]) ? $cdp_cron[$token]['args'] : array());
+    $args = (isset($cdp_cron[$token]['args']) ? $cdp_cron[$token]['args'] : array());
 
     if ($cdp_cron[$token]['done'] != false) {
         echo json_encode(array('status' => 'fail', 'type' => 'error', 'msg' => __('This task has already ended this work, please wait for list refresh and try again.', 'copy-delete-posts')));
