@@ -76,3 +76,4 @@
 [09-Mar-2023 15:55:16 UTC] PHP Warning:  Undefined array key "vimeo" in /home/mzmgzapj/public_html/wp-content/plugins/trobica_plugin/inc/about-us.php on line 144
 [09-Mar-2023 15:55:17 UTC] PHP Warning:  Undefined array key "styles_default" in /home/mzmgzapj/public_html/wp-content/plugins/recent-posts-widget-extended/classes/class-rpwe-widget.php on line 112
 [09-Mar-2023 15:55:17 UTC] PHP Warning:  Undefined array key "styles_default" in /home/mzmgzapj/public_html/wp-content/plugins/recent-posts-widget-extended/classes/class-rpwe-widget.php on line 122
+[09-Mar-2023 16:13:15 UTC] The WC_Cart::get_cart_url function is deprecated since version 2.5. Replace with wc_get_cart_url.
