@@ -3,9 +3,9 @@ Contributors: thimpress, tungnx89, nhamdv, hungkv, nguyenlammanh, tunnhn, phongl
 Donate link:
 Tags: elearning, education, course, lms, learning management system
 Requires at least: 5.8
-Tested up to: 6.1.1
+Tested up to: 6.2
 Requires PHP: 7.0
-Stable tag: 4.2.2.2
+Stable tag: 4.2.2.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -208,6 +208,21 @@ https://www.transifex.com/projects/p/learnpress/
 8. Add-ons of LearnPress.
 
 == Changelog ==
+
+= 4.2.2.4 (2023-04-04) =
+~ Compatible theme Gutenberg.
+~ Compatible WP 6.2.
+~ Fixed: auto add shortcode Profile.
+~ Show notification: Addons has new version.
+~ Fixed: error buy with Guest display pending Order.
+~ Tweak: shortcode learn_press_button_course.
+~ Fixed: error display title on mobile app.
+~ Lesson: stop support post-formats.
+
+= 4.2.2.3 (2023-03-21) =
+~ Fixed: some error with Profile, LP_Profile_Tabs class.
+~ Fixed: make some page builder like: elementor, visual composer work incorrect.
+~ Remove implements ArrayAccess of LP_Query_List_Table class (to compatible with PHP8.1).
 
 = 4.2.2.2 (2023-03-09) =
 ~ Fixed: permalink item 404 when install "YoastSeo" plugin.

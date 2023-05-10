@@ -1,4 +1,5 @@
 <?php
+
 /**
  * The base configuration for WordPress
  *
@@ -79,7 +80,7 @@ $table_prefix = 'en_';
  *
  * @link https://wordpress.org/support/article/debugging-in-wordpress/
  */
-define( 'WP_DEBUG', false );
+define( 'WP_DEBUG', true );
 
 /* Add any custom values between this line and the "stop editing" line. */
 
@@ -90,6 +91,16 @@ define( 'WP_DEBUG', false );
 /** Absolute path to the WordPress directory. */
 if ( ! defined( 'ABSPATH' ) ) {
 	define( 'ABSPATH', __DIR__ . '/' );
+}
+
+//Enable error logging.
+@ini_set('log_errors', 'On');
+@ini_set('error_log', '/home/mzmgzapj/public_html/wp-content/elm-error-logs/php-errors.log');
+
+//Don't show errors to site visitors.
+@ini_set('display_errors', 'Off');
+if ( !defined('WP_DEBUG_DISPLAY') ) {
+	define('WP_DEBUG_DISPLAY', false);
 }
 
 /** Sets up WordPress vars and included files. */
