@@ -1,15 +1,18 @@
 <?php
-/*
-Plugin Name: Ultimate FAQ - WordPress FAQ and Accordion Plugin
-Plugin URI: https://www.etoilewebdesign.com/plugins/ultimate-faq/
-Description: FAQ and accordion plugin with easy to use Gutenberg blocks, shortcodes and widgets. Includes an advanced FAQ search and FAQ schema.
-Author URI: https://www.etoilewebdesign.com/
-Terms and Conditions: https://www.etoilewebdesign.com/plugin-terms-and-conditions/
-Text Domain: ultimate-faqs
-Version: 2.2.6
-WC requires at least: 3.0
-WC tested up to: 7.5
-*/
+/**
+ * Plugin Name: Ultimate FAQ - WordPress FAQ and Accordion Plugin
+ * Plugin URI: https://www.etoilewebdesign.com/plugins/ultimate-faq/
+ * Description: FAQ and accordion plugin with easy to use Gutenberg blocks, shortcodes and widgets. Includes an advanced FAQ search and FAQ schema.
+ * Version: 2.2.9
+ * Author: Etoile Web Design
+ * Author URI: https://www.etoilewebdesign.com/
+ * Terms and Conditions: https://www.etoilewebdesign.com/plugin-terms-and-conditions/
+ * Text Domain: ultimate-faqs
+ * Domain Path: /languages/
+ * Requires at least: 6.0
+ * WC requires at least: 7.1
+ * WC tested up to: 8.0
+ */
 
 if ( ! defined( 'ABSPATH' ) )
 	exit;
@@ -46,7 +49,7 @@ class ewdufaqInit {
 		define( 'EWD_UFAQ_PLUGIN_URL', untrailingslashit( plugin_dir_url( __FILE__ ) ) );
 		define( 'EWD_UFAQ_PLUGIN_FNAME', plugin_basename( __FILE__ ) );
 		define( 'EWD_UFAQ_TEMPLATE_DIR', 'ewd-ufaq-templates' );
-		define( 'EWD_UFAQ_VERSION', '2.2.6' );
+		define( 'EWD_UFAQ_VERSION', '2.2.9' );
 
 		define( 'EWD_UFAQ_FAQ_POST_TYPE', 'ufaq' );
 		define( 'EWD_UFAQ_FAQ_CATEGORY_TAXONOMY', 'ufaq-category' );
@@ -161,6 +164,8 @@ class ewdufaqInit {
 		add_filter( 'plugin_action_links', 		array( $this, 'plugin_action_links' ), 10, 2);
 
 		add_action( 'wp_ajax_ewd_ufaq_hide_helper_notice', array( $this, 'hide_helper_notice' ) );
+
+		add_action( 'before_woocommerce_init', array( $this, 'declare_wc_hpos' ) );
 	}
 
 	/**
@@ -652,6 +657,17 @@ class ewdufaqInit {
 		return $menu_list;
 	}
 
+	/**
+	 * Declares compatibility with WooCommerce High-Performance Order Storage
+	 * @since 2.2.9
+	 */
+	public function declare_wc_hpos() {
+
+		if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+		}
+	}
 }
 } // endif;
 

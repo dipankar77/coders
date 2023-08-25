@@ -41,12 +41,12 @@ class LP_Page_Controller {
 			//add_action( 'posts_pre_query', [ $this, 'posts_pre_query' ], 10, 2 );
 			add_filter( 'template_include', array( $this, 'template_loader' ), 10 );
 			add_filter( 'template_include', array( $this, 'check_pages' ), 30 );
-			add_filter( 'template_include', array( $this, 'auto_shortcode' ), 50 );
+			//add_filter( 'template_include', array( $this, 'auto_shortcode' ), 50 );
 
 			add_filter( 'the_post', array( $this, 'setup_data_for_item_course' ) );
 			add_filter( 'request', array( $this, 'remove_course_post_format' ), 1 );
 
-			add_shortcode( 'learn_press_archive_course', array( $this, 'archive_content' ) );
+			//add_shortcode( 'learn_press_archive_course', array( $this, 'archive_content' ) );
 			add_filter( 'pre_get_document_title', array( $this, 'set_title_pages' ), 20, 1 );
 
 			// Yoast seo
@@ -60,6 +60,9 @@ class LP_Page_Controller {
 			add_action( 'init', [ $this, 'check_webhook_paypal_ipn' ] );
 			// Set again x-wp-nonce on header when has cache with not login.
 			add_filter( 'rest_send_nocache_headers', array( $this, 'check_x_wp_nonce_cache' ) );
+
+			// Rewrite lesson comment links
+			add_filter( 'get_comment_link', array( $this, 'edit_lesson_comment_links' ), 10, 2 );
 		}
 	}
 
@@ -119,48 +122,48 @@ class LP_Page_Controller {
 	/**
 	 * @deprecated 4.2.2.4
 	 */
-//	private function has_block_template( $template_name ) {
-//		if ( ! $template_name ) {
-//			return false;
-//		}
-//
-//		$has_template      = false;
-//		$template_name     = str_replace( 'course', LP_COURSE_CPT, $template_name );
-//		$template_filename = $template_name . '.html';
-//		// Since Gutenberg 12.1.0, the conventions for block templates directories have changed,
-//		// we should check both these possible directories for backwards-compatibility.
-//		$possible_templates_dirs = array( 'templates', 'block-templates' );
-//
-//		// Combine the possible root directory names with either the template directory
-//		// or the stylesheet directory for child themes, getting all possible block templates
-//		// locations combinations.
-//		$filepath        = DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . $template_filename;
-//		$legacy_filepath = DIRECTORY_SEPARATOR . 'block-templates' . DIRECTORY_SEPARATOR . $template_filename;
-//		$possible_paths  = array(
-//			get_stylesheet_directory() . $filepath,
-//			get_stylesheet_directory() . $legacy_filepath,
-//			get_template_directory() . $filepath,
-//			get_template_directory() . $legacy_filepath,
-//		);
-//
-//		// Check the first matching one.
-//		foreach ( $possible_paths as $path ) {
-//			if ( is_readable( $path ) ) {
-//				$has_template = true;
-//				break;
-//			}
-//		}
-//
-//		/**
-//		 * Filters the value of the result of the block template check.
-//		 *
-//		 * @since x.x.x
-//		 *
-//		 * @param boolean $has_template value to be filtered.
-//		 * @param string $template_name The name of the template.
-//		 */
-//		return (bool) apply_filters( 'learnpress_has_block_template', $has_template, $template_name );
-//	}
+	//  private function has_block_template( $template_name ) {
+	//      if ( ! $template_name ) {
+	//          return false;
+	//      }
+	//
+	//      $has_template      = false;
+	//      $template_name     = str_replace( 'course', LP_COURSE_CPT, $template_name );
+	//      $template_filename = $template_name . '.html';
+	//      // Since Gutenberg 12.1.0, the conventions for block templates directories have changed,
+	//      // we should check both these possible directories for backwards-compatibility.
+	//      $possible_templates_dirs = array( 'templates', 'block-templates' );
+	//
+	//      // Combine the possible root directory names with either the template directory
+	//      // or the stylesheet directory for child themes, getting all possible block templates
+	//      // locations combinations.
+	//      $filepath        = DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . $template_filename;
+	//      $legacy_filepath = DIRECTORY_SEPARATOR . 'block-templates' . DIRECTORY_SEPARATOR . $template_filename;
+	//      $possible_paths  = array(
+	//          get_stylesheet_directory() . $filepath,
+	//          get_stylesheet_directory() . $legacy_filepath,
+	//          get_template_directory() . $filepath,
+	//          get_template_directory() . $legacy_filepath,
+	//      );
+	//
+	//      // Check the first matching one.
+	//      foreach ( $possible_paths as $path ) {
+	//          if ( is_readable( $path ) ) {
+	//              $has_template = true;
+	//              break;
+	//          }
+	//      }
+	//
+	//      /**
+	//       * Filters the value of the result of the block template check.
+	//       *
+	//       * @since x.x.x
+	//       *
+	//       * @param boolean $has_template value to be filtered.
+	//       * @param string $template_name The name of the template.
+	//       */
+	//      return (bool) apply_filters( 'learnpress_has_block_template', $has_template, $template_name );
+	//  }
 
 	/**
 	 * Set title of pages
@@ -192,6 +195,14 @@ class LP_Page_Controller {
 		} elseif ( LP_Page_Controller::is_page_courses() ) { // Set title course archive page.
 			if ( learn_press_is_search() ) {
 				$title = __( 'Course Search Results', 'learnpress' );
+			} elseif ( is_tax( LP_COURSE_CATEGORY_TAX ) || is_tax( LP_COURSE_TAXONOMY_TAG ) ) {
+				/**
+				 * @var WP_Query $wp_query
+				 */
+				global $wp_query;
+				if ( $wp_query->queried_object ) {
+					$title = $wp_query->queried_object->name;
+				}
 			} else {
 				$title = $course_archive_page_id ? get_the_title( $course_archive_page_id ) : __( 'Courses', 'learnpress' );
 			}
@@ -289,8 +300,10 @@ class LP_Page_Controller {
 	 *
 	 * @return string;
 	 * @since 3.3.0
+	 * @deprecated 4.2.3
 	 */
 	public function auto_shortcode( $template ) {
+		_deprecated_function( __METHOD__, '4.2.3' );
 		global $post;
 		$the_post = $post;
 		if ( $the_post && is_page( $the_post->ID ) ) {
@@ -382,6 +395,8 @@ class LP_Page_Controller {
 
 			// Set item viewing
 			$user->set_viewing_item( $lp_course_item );
+
+			wp_localize_script( 'lp-single-curriculum', 'lpCourseItem', [ 'id' => $lp_course_item->get_id() ] );
 		} catch ( Throwable $e ) {
 			error_log( $e->getMessage() );
 		}
@@ -583,8 +598,10 @@ class LP_Page_Controller {
 	 * Archive course content.
 	 *
 	 * @return false|string
+	 * @deprecated 4.2.3.3.
 	 */
 	public function archive_content() {
+		_deprecated_function( __METHOD__, '4.2.3.3' );
 		ob_start();
 		learn_press_get_template( 'content-archive-course.php' );
 
@@ -622,30 +639,10 @@ class LP_Page_Controller {
 			return $q;
 		}
 
-		$theme_no_load_ajax = apply_filters(
-			'lp/page/courses/themes/no_load_ajax',
-			[
-				'Coaching',
-				'Course Builder',
-				'eLearningWP',
-				'Ivy School',
-				'StarKid',
-				'Academy LMS',
-				'Coaching Child',
-				'Course Builder Child',
-				'eLearningWP Child',
-				'Ivy School Child',
-				'StarKid Child',
-				'Academy LMS Child',
-			]
-		);
-		$theme_current      = wp_get_theme()->get( 'Name' );
-
 		try {
 			if ( LP_Page_Controller::is_page_courses() ) {
 				if ( LP_Settings_Courses::is_ajax_load_courses() && ! LP_Settings_Courses::is_no_load_ajax_first_courses()
-				&& ! in_array( $theme_current, $theme_no_load_ajax ) ) {
-					LearnPress::instance()->template( 'course' )->remove_callback( 'learn-press/after-courses-loop', 'loop/course/pagination.php', 10 );
+				&& ! LP_Settings::theme_no_support_load_courses_ajax() ) {
 					/**
 					 * If page is archive course - query set posts_per_page = 1
 					 * For fastest - because when page loaded - call API to load list courses
@@ -663,11 +660,16 @@ class LP_Page_Controller {
 					$is_need_check_in_arr = false;
 					$limit                = LP_Settings::get_option( 'archive_course_limit', 6 );
 
+					if ( LP_Settings_Courses::is_ajax_load_courses() &&
+						LP_Settings_Courses::get_type_pagination() != 'number' &&
+						! LP_Settings::theme_no_support_load_courses_ajax() ) {
+						$q->set( 'paged', 1 );
+					}
+
 					$q->set( 'posts_per_page', $limit );
 					// $q->set( 'cache_results', true ); // it default true
 
 					// Search courses by keyword
-					// $q->set( 's', $_REQUEST['c_search'] ?? '' );
 					if ( ! empty( $_REQUEST['c_search'] ) ) {
 						$filter->post_title   = LP_Helper::sanitize_params_submitted( $_REQUEST['c_search'] );
 						$is_need_check_in_arr = true;
@@ -678,7 +680,7 @@ class LP_Page_Controller {
 						$q->set( 'author', $author_ids_str );
 					}
 
-					// Meta query
+					// Search course has price/free
 					$meta_query = [];
 					if ( isset( $_REQUEST['sort_by'] ) ) {
 						$sort_by = LP_Helper::sanitize_params_submitted( $_REQUEST['sort_by'] );
@@ -692,16 +694,41 @@ class LP_Page_Controller {
 
 						if ( 'on_free' === $sort_by ) {
 							$meta_query[] = array(
-								'key'     => '_lp_price',
-								'value'   => 0,
-								'compare' => '=',
+								'relation' => 'OR',
+								[
+									'key'     => '_lp_price',
+									'value'   => 0,
+									'compare' => '=',
+								],
+								[
+									'key'     => '_lp_price',
+									'value'   => '',
+									'compare' => '=',
+								],
+								[
+									'key'     => '_lp_price',
+									'compare' => 'NOT EXISTS',
+								],
 							);
 						}
 					}
+
+					// Search by level
+					$c_level = LP_Helper::sanitize_params_submitted( urldecode( $_REQUEST['c_level'] ?? '' ) );
+					if ( ! empty( $c_level ) ) {
+						$c_level      = str_replace( 'all', '', $c_level );
+						$c_level      = explode( ',', $c_level );
+						$meta_query[] = array(
+							'key'     => '_lp_level',
+							'value'   => $c_level,
+							'compare' => 'IN',
+						);
+					}
+
 					$q->set( 'meta_query', $meta_query );
 					// End Meta query
 
-					// Tax query
+					// Search on Category
 					$tax_query    = [];
 					$term_ids_str = LP_Helper::sanitize_params_submitted( urldecode( $_REQUEST['term_id'] ?? '' ) );
 					if ( ! empty( $term_ids_str ) ) {
@@ -709,6 +736,19 @@ class LP_Page_Controller {
 
 						$tax_query[] = array(
 							'taxonomy' => 'course_category',
+							'field'    => 'term_id',
+							'terms'    => $term_ids,
+							'operator' => 'IN',
+						);
+					}
+
+					// Tag query
+					$tag_ids_str = LP_Helper::sanitize_params_submitted( urldecode( $_REQUEST['tag_id'] ?? '' ) );
+					if ( ! empty( $tag_ids_str ) ) {
+						$term_ids = explode( ',', $tag_ids_str );
+
+						$tax_query[] = array(
+							'taxonomy' => 'course_tag',
 							'field'    => 'term_id',
 							'terms'    => $term_ids,
 							'operator' => 'IN',
@@ -923,6 +963,10 @@ class LP_Page_Controller {
 			return LP_PAGE_BECOME_A_TEACHER;
 		} elseif ( self::is_page_profile() ) {
 			return LP_PAGE_PROFILE;
+		} elseif ( learn_press_is_instructors() ) {
+			return LP_PAGE_INSTRUCTORS;
+		} elseif ( self::is_page_instructor() ) {
+			return LP_PAGE_INSTRUCTOR;
 		} else {
 			return apply_filters( 'learnpress/page/current', '' );
 		}
@@ -969,8 +1013,8 @@ class LP_Page_Controller {
 			return $flag;
 		}
 
-		$is_tag      = is_tax( 'course_tag' );
-		$is_category = is_tax( 'course_category' );
+		$is_tag      = is_tax( LP_COURSE_TAXONOMY_TAG );
+		$is_category = is_tax( LP_COURSE_CATEGORY_TAX );
 
 		if ( $is_category || $is_tag || is_post_type_archive( 'lp_course' ) ) {
 			$flag = true;
@@ -1005,6 +1049,42 @@ class LP_Page_Controller {
 		}
 
 		$flag = self::page_is( 'profile' );
+
+		return $flag;
+	}
+
+	/**
+	 * Check is page instructor
+	 *
+	 * @return bool
+	 */
+	public static function is_page_instructors(): bool {
+		static $flag;
+		if ( ! is_null( $flag ) ) {
+			return $flag;
+		}
+
+		$flag = self::page_is( 'instructors' );
+
+		return $flag;
+	}
+
+	/**
+	 * Check is page instructor
+	 *
+	 * @return bool
+	 */
+	public static function is_page_instructor(): bool {
+		global $wp_query;
+		static $flag;
+		if ( ! is_null( $flag ) ) {
+			return $flag;
+		}
+
+		$flag = false;
+		if ( $wp_query->get( 'is_single_instructor' ) ) {
+			$flag = true;
+		}
 
 		return $flag;
 	}
@@ -1122,6 +1202,30 @@ class LP_Page_Controller {
 		}
 
 		return $send_no_cache_headers;
+	}
+
+	/**
+	 * Override lesson comment permalink.
+	 *
+	 * @return string $link The comment permalink with '#comment-$id' appended.
+	 * @param string     $link    The comment permalink with '#comment-$id' appended.
+	 * @param WP_Comment $comment The current comment object.
+	 * @since 4.2.3
+	 * @version 1.0.0
+	 */
+	public function edit_lesson_comment_links( $link, $comment ): string {
+		try {
+			$comment = get_comment( $comment );
+			if ( get_post_type( $comment->comment_post_ID ) == LP_LESSON_CPT ) {
+				$link = wp_get_referer() . '#comment-' . $comment->comment_ID;
+			}
+
+			return $link;
+		} catch ( Throwable $e ) {
+			error_log( $e->getMessage() );
+		}
+
+		return $link;
 	}
 }
 

@@ -121,12 +121,16 @@
     }
 
     function betterSlider1($scope, $) {
-        if ($('.better-slider').length) {
+        if ($('#js-cta-better-slider-style-1').length) {
 
             const slider = document.getElementById("js-cta-better-slider-style-1");
             const sliderNext = document.getElementById("js-cta-better-slider-style-1-next");
             const sliderPrevious = document.getElementById("js-cta-better-slider-style-1-previous");
             const interleaveOffset = 0.75;
+
+            var mySlider    = $( slider );
+            var myData      = mySlider.data( 'slider-settings' );
+            var myspeed     = myData.speed;
 
             const swiper = new Swiper(slider, {
                 loop: true,
@@ -135,7 +139,7 @@
                 grabCursor: true,
                 watchSlidesProgress: true,
                 autoplay: {
-                    delay: 2500,
+                    delay: myspeed,
                     disableOnInteraction: false
                 },
                 pagination: {

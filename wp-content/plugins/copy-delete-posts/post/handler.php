@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copy & Delete Posts – Post requests handler file.
  *
@@ -8,6 +7,7 @@
  * @author CopyDeletePosts
  * @since 1.0.0
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 /** –– **\
  * Main handler + It will also sanitize and verify that request a little bit.
  * @since 1.0.0
@@ -15,6 +15,10 @@
 add_action('wp_ajax_cdp_action_handling', function () {
     if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
         if (isset($_POST['token']) && $_POST['token'] == 'cdp' && isset($_POST['f']) && is_admin()) {
+
+            if (check_ajax_referer('copy-delete-posts-ajax', 'nonce', false) === false) {
+              return wp_send_json_error();
+            }
 
             // Expand execution time
             if (intval(ini_get('max_execution_time')) < 7200)
@@ -647,9 +651,13 @@ function cdp_insert_new_post($areWePro = false) {
           $buildUrl .= $parsedPostHomeURL['path'];
         }
 
+        $uploadsDirOld = wp_upload_dir()['basedir'];
+
         // Handle multisite for premium
         if ($areWePro && function_exists('cdpp_handle_multisite'))
             cdpp_handle_multisite($site);
+
+        $uploadsDirNew = wp_upload_dir()['basedir'];
 
         // Loop for each post iteration
         for ($i = 0; $i < $times; ++$i) {
@@ -688,17 +696,16 @@ function cdp_insert_new_post($areWePro = false) {
               array_push($results['ids'], $new);
 
               // SeedProd Premium CSS files
-              $uploadsDir = wp_upload_dir()['basedir'];
-              $oldCssFile = $uploadsDir . '/seedprod-css/style-' . $id . '.css';
-              $newCssFile = $uploadsDir . '/seedprod-css/style-' . $new . '.css';
+              $oldCssFile = $uploadsDirOld . '/seedprod-css/style-' . $id . '.css';
+              $newCssFile = $uploadsDirNew . '/seedprod-css/style-' . $new . '.css';
 
               if (file_exists($oldCssFile) && is_file($oldCssFile)) {
                 @copy($oldCssFile, $newCssFile);
               }
 
               // Elementor cached CSS
-              $oldCssFile = $uploadsDir . '/elementor/css/post-' . $id . '.css';
-              $newCssFile = $uploadsDir . '/elementor/css/post-' . $new . '.css';
+              $oldCssFile = $uploadsDirOld . '/elementor/css/post-' . $id . '.css';
+              $newCssFile = $uploadsDirNew . '/elementor/css/post-' . $new . '.css';
               if (file_exists($oldCssFile) && is_file($oldCssFile)) {
                 $customCssContent = file_get_contents($oldCssFile);
                 $customCssContent = str_replace('-' . $id, '-' . $new, $customCssContent);
@@ -949,6 +956,64 @@ function cdp_insert_new_post($areWePro = false) {
         return $all_inserts;
     }
 
+    /**
+     * cdp_clone_woocommerce_tables - Clones additional tables
+     *
+     * @return void
+     */
+    function cdp_clone_woocommerce_tables($sourceID, $newID) {
+
+      global $wpdb;
+      $tables = $wpdb->get_results('SHOW TABLES;');
+      $parsedTables = [];
+      foreach ($tables as $names) {
+        foreach ($names as $table => $name) {
+          $parsedTables[] = $name;
+        }
+      }
+
+      $affectedTables = [
+        'wusp_group_product_price_mapping',
+        'wusp_role_pricing_mapping',
+        'wusp_user_pricing_mapping'
+      ];
+
+      for ($i = 0; $i < sizeof($parsedTables); ++$i) {
+        $table = $parsedTables[$i];
+
+        for ($j = 0; $j < sizeof($affectedTables); ++$j) {
+          $affectTable = $affectedTables[$j];
+          if (substr($table, -strlen($affectTable)) == $affectTable) {
+            $results = $wpdb->get_results($wpdb->prepare(
+              "SELECT * FROM %i WHERE %i = %d",
+              array($table, 'product_id', $sourceID)
+            ));
+
+            foreach($results as $result => $row) {
+              $columns = [];
+              $values = [];
+
+              foreach($row as $column => $value) {
+                if ($column == 'id') continue;
+                $columns[] = $column;
+                if ($column == 'product_id') $values[] = $newID;
+                else $values[] = $value;
+              }
+
+              $preparedValues = [];
+              $preparedValues = array_merge($preparedValues, [$table], $columns, $values);
+
+              $query = $wpdb->get_results($wpdb->prepare(
+                "INSERT INTO %i (" . implode(', ', array_fill(0, sizeof($columns), '%i')) . ") VALUES (" . implode(', ', array_fill(0, sizeof($values), '%s')) . ")",
+                $preparedValues
+              ));
+            }
+          }
+        }
+      }
+
+    }
+
     // Main code for this duplication – for each id (post) do whole process
     function cdp_process_ids($ids, $swap, $settings, $times, $site, $areWePro, $g, $isChild = false, $p_ids = null) {
 
@@ -1001,6 +1066,12 @@ function cdp_insert_new_post($areWePro = false) {
             if ($settings['format'])
                 foreach ($inserted_posts['ids'] as $i => $tid)
                     $isReFormat = set_post_format($tid, get_post_format($id));
+
+            if ($areWePro && function_exists('cdpp_check_woo') && cdpp_check_woo($settings, $meta, $id)) {
+              foreach ($inserted_posts['ids'] as $i => $tid) {
+                cdp_clone_woocommerce_tables($id, $tid);
+              }
+            }
 
             if ($settings['f_image']) {
               $thumbnail_id = get_post_thumbnail_id($id);
@@ -1081,6 +1152,13 @@ function cdp_insert_new_post($areWePro = false) {
         $output['link'] = 'pConv';
     else
         update_option('_cdp_show_copy', true);
+
+    // Regenerate Elementor cache if needed
+    if (is_plugin_active('elementor/elementor.php') && class_exists('\Elementor\Plugin')) {
+      try { \Elementor\Plugin::$instance->files_manager->clear_cache(); }
+      catch (\Throwable $e) {}
+      catch (\Exception $e) {}
+  	}
 
     // Handle multisite for premium fix
     if ($areWePro && function_exists('cdpp_handle_multisite_after'))

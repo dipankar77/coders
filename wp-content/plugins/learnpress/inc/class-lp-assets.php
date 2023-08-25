@@ -19,6 +19,7 @@ class LP_Assets extends LP_Abstract_Assets {
 		parent::__construct();
 
 		add_action( 'wp_print_footer_scripts', array( $this, 'show_overlay' ) );
+		add_action( 'wp_head', [ $this, 'global_config_styles' ] );
 	}
 
 	/**
@@ -40,8 +41,29 @@ class LP_Assets extends LP_Abstract_Assets {
 				'learnpress'         => new LP_Asset_Key(
 					self::url( 'css/learnpress' . $is_rtl . self::$_min_assets . '.css' ),
 					array( 'font-awesome-5-all' ),
-					array( LP_PAGE_COURSES, LP_PAGE_SINGLE_COURSE, LP_PAGE_SINGLE_COURSE_CURRICULUM, LP_PAGE_QUIZ, LP_PAGE_QUESTION, LP_PAGE_CHECKOUT, LP_PAGE_BECOME_A_TEACHER, LP_PAGE_PROFILE ),
+					array(
+						LP_PAGE_COURSES,
+						LP_PAGE_SINGLE_COURSE,
+						LP_PAGE_SINGLE_COURSE_CURRICULUM,
+						LP_PAGE_QUIZ,
+						LP_PAGE_QUESTION,
+						LP_PAGE_CHECKOUT,
+						LP_PAGE_BECOME_A_TEACHER,
+						LP_PAGE_PROFILE,
+					),
 					0
+				),
+				'lp-instructor'      => new LP_Asset_Key(
+					self::url( 'css/instructor' . $is_rtl . self::$_min_assets . '.css' ),
+					array(),
+					array(),
+					1
+				),
+				'lp-instructors'     => new LP_Asset_Key(
+					self::url( 'css/instructors' . $is_rtl . self::$_min_assets . '.css' ),
+					[],
+					[],
+					1
 				),
 				'learnpress-widgets' => new LP_Asset_Key(
 					self::url( 'css/widgets' . $is_rtl . self::$_min_assets . '.css' ),
@@ -60,7 +82,7 @@ class LP_Assets extends LP_Abstract_Assets {
 	 */
 	public function _get_script_data(): array {
 		$localize_script = [
-			'lp-global'       => array(
+			'lp-global'   => array(
 				//'url'                                => learn_press_get_current_url(),
 				'siteurl'                            => site_url(),
 				'ajax'                               => admin_url( 'admin-ajax.php' ),
@@ -81,8 +103,10 @@ class LP_Assets extends LP_Abstract_Assets {
 				'lpArchiveSkeleton'                  => lp_archive_skeleton_get_args(),
 				'lpArchiveLoadAjax'                  => LP_Settings_Courses::is_ajax_load_courses() ? 1 : 0,
 				'lpArchiveNoLoadAjaxFirst'           => LP_Settings_Courses::is_ajax_load_courses() && LP_Settings_Courses::is_no_load_ajax_first_courses() ? 1 : 0,
+				'lpArchivePaginationType'            => LP_Settings::get_option( 'course_pagination_type' ),
+				'noLoadCoursesJs'                    => LP_Settings::theme_no_support_load_courses_ajax() ? 1 : 0,
 			),
-			'lp-checkout'     => array(
+			'lp-checkout' => array(
 				'ajaxurl'            => home_url( '/' ),
 				//'user_checkout'      => LP_Checkout::instance()->get_checkout_email(),
 				'i18n_processing'    => esc_html__( 'Processing', 'learnpress' ),
@@ -91,13 +115,14 @@ class LP_Assets extends LP_Abstract_Assets {
 				'i18n_unknown_error' => esc_html__( 'Unknown error', 'learnpress' ),
 				'i18n_place_order'   => esc_html__( 'Place order', 'learnpress' ),
 			),
-			'lp-profile-user' => array(
-				'processing'  => esc_html__( 'Processing', 'learnpress' ),
-				'redirecting' => esc_html__( 'Redirecting', 'learnpress' ),
-				//'avatar_size' => learn_press_get_avatar_thumb_size(),
+			'lp-profile'  => array(
+				'text_upload'  => __( 'Upload', 'learnpress' ),
+				'text_replace' => __( 'Replace', 'learnpress' ),
+				'text_remove'  => __( 'Remove', 'learnpress' ),
+				'text_save'    => __( 'Save', 'learnpress' ),
 			),
 			//'lp-course'       => learn_press_single_course_args(),
-			'lp-quiz'         => learn_press_single_quiz_args(),
+			'lp-quiz'     => learn_press_single_quiz_args(),
 		];
 
 		return apply_filters( 'learnpress/frontend/localize_script', $localize_script );
@@ -210,10 +235,17 @@ class LP_Assets extends LP_Abstract_Assets {
 				),
 				'lp-courses'           => new LP_Asset_Key(
 					self::url( 'js/dist/frontend/courses' . self::$_min_assets . '.js' ),
-					array( 'lp-global', 'lp-utils', 'wp-hooks' ),
+					array( 'lp-global', 'wp-hooks' ),
 					array( LP_PAGE_COURSES ),
 					0,
 					0
+				),
+				'lp-instructors'       => new LP_Asset_Key(
+					self::url( 'js/dist/frontend/instructors' . self::$_min_assets . '.js' ),
+					[ 'lp-global' ],
+					[],
+					1,
+					1
 				),
 				'lp-profile'           => new LP_Asset_Key(
 					self::url( 'js/dist/frontend/profile' . self::$_min_assets . '.js' ),
@@ -242,13 +274,20 @@ class LP_Assets extends LP_Abstract_Assets {
 					0,
 					1
 				),
+				'lp-course-filter'     => new LP_Asset_Key(
+					self::url( 'js/dist/frontend/course-filter' . self::$_min_assets . '.js' ),
+					array( 'lp-global' ),
+					array(),
+					1,
+					1
+				),
 			)
 		);
 
 		// Dequeue script 'smoothPageScroll' on item details, it makes can't scroll, when rewrite page item detail, can check to remove.
 		if ( LP_PAGE_SINGLE_COURSE_CURRICULUM === LP_Page_Controller::page_current() ||
-		LP_PAGE_QUIZ === LP_Page_Controller::page_current() ||
-		LP_PAGE_QUESTION === LP_Page_Controller::page_current() ) {
+			LP_PAGE_QUIZ === LP_Page_Controller::page_current() ||
+			LP_PAGE_QUESTION === LP_Page_Controller::page_current() ) {
 			wp_dequeue_script( 'smoothPageScroll' );
 		}
 
@@ -293,6 +332,28 @@ class LP_Assets extends LP_Abstract_Assets {
 		echo '<div class="lp-overlay">';
 		apply_filters( 'learnpress/modal-dialog', learn_press_get_template( 'global/lp-modal-overlay' ) );
 		echo '</div>';
+	}
+
+	/**
+	 * Global config styles
+	 *
+	 * @return void
+	 */
+	public function global_config_styles() {
+		$max_with          = LP_Settings::get_option( 'width_container', '1290px' );
+		$padding_container = apply_filters( 'learn-press/container-padding-width', '2rem' );
+		$primary_color     = LP_Settings::instance()->get( 'primary_color' );
+		$secondary_color   = LP_Settings::instance()->get( 'secondary_color' );
+		?>
+		<style id="learn-press-custom-css">
+			:root {
+				--lp-cotainer-max-with: <?php echo $max_with; ?>;
+				--lp-cotainer-padding: <?php echo $padding_container; ?>;
+				--lp-primary-color: <?php echo ! empty( $primary_color ) ? $primary_color : '#ffb606'; ?>;
+				--lp-secondary-color: <?php echo ! empty( $secondary_color ) ? $secondary_color : '#442e66'; ?>;
+			}
+		</style>
+		<?php
 	}
 
 	public static function instance() {

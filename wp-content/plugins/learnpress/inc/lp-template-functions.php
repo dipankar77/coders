@@ -8,6 +8,7 @@
  */
 
 use LearnPress\Helpers\Template;
+use LearnPress\TemplateHooks\Course\CourseMaterialTemplate;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -83,6 +84,19 @@ if ( ! function_exists( 'learn_press_get_course_tabs' ) ) {
 				'title'    => esc_html__( 'FAQs', 'learnpress' ),
 				'priority' => 50,
 				'callback' => LearnPress::instance()->template( 'course' )->func( 'faqs' ),
+			);
+		}
+
+		$is_enrolled_course = false;
+		if ( $user->has_course_status( $course->get_id(), array( LP_COURSE_ENROLLED ) )
+			|| $user->is_instructor() || $user->is_admin() ) {
+			$is_enrolled_course = true;
+		}
+		if ( $course->get_downloadable_material() && $is_enrolled_course ) {
+			$defaults['materials'] = array(
+				'title'    => esc_html__( 'Materials', 'learnpress' ),
+				'priority' => 45,
+				'callback' => LearnPress::instance()->template( 'course' )->func( 'metarials' ),
 			);
 		}
 
@@ -624,8 +638,9 @@ function learn_press_set_message( array $message_data = [] ) {
 		return;
 	}
 
-	// Set cookie for lp-message, allow get,set cookie on js.
-	add_option( 'lp-message', $message_data );
+	$customer_id      = LP_Session_Handler::instance()->get_customer_id();
+	$customer_message = [ $customer_id => $message_data ];
+	update_option( 'lp-customer-message', $customer_message );
 }
 
 /**
@@ -636,9 +651,17 @@ function learn_press_set_message( array $message_data = [] ) {
  */
 function learn_press_show_message() {
 	try {
-		$message_data = get_option( 'lp-message' );
-		delete_option( 'lp-message' );
-		Template::instance()->get_frontend_template( 'global/lp-message.php', compact( 'message_data' ) );
+		$customer_id      = LP_Session_Handler::instance()->get_customer_id();
+		$message_data     = get_option( 'lp-customer-message' ) ?? [];
+		$customer_message = $message_data[ $customer_id ] ?? '';
+		if ( ! $customer_message ) {
+			return;
+		}
+
+		unset( $message_data[ $customer_id ] );
+		update_option( 'lp-customer-message', $message_data );
+		//delete_option( 'lp-message' );
+		Template::instance()->get_frontend_template( 'global/lp-message.php', compact( 'customer_message' ) );
 	} catch ( Throwable $e ) {
 		error_log( $e->getMessage() );
 	}
@@ -1335,6 +1358,8 @@ if ( ! function_exists( 'learn_press_filter_get_comments_number' ) ) {
  * @return array
  *
  * @since 3.0.0
+ * @Todo tungnx review to remove
+ * @deprecated 4.2.3
  */
 function learn_press_body_classes( $classes ) {
 	$pages = learn_press_static_page_ids();
@@ -1360,7 +1385,7 @@ function learn_press_body_classes( $classes ) {
 	return $classes;
 }
 
-add_filter( 'body_class', 'learn_press_body_classes', 10 );
+//add_filter( 'body_class', 'learn_press_body_classes', 10 );
 
 /**
  * Return true if user is learning a course
@@ -1388,30 +1413,6 @@ function learn_press_is_learning_course( int $course_id = 0 ): bool {
 	}
 
 	return apply_filters( 'lp/is-learning-course', $is_learning, $course_id );
-}
-
-/**
- * Output custom css from settings
- *
- * @since 4.0.0
- */
-if ( ! function_exists( 'learn_press_print_custom_styles' ) ) {
-	function learn_press_print_custom_styles() {
-		$primary_color   = LP_Settings::instance()->get( 'primary_color' );
-		$secondary_color = LP_Settings::instance()->get( 'secondary_color' );
-		?>
-
-		<style id="learn-press-custom-css">
-			:root {
-				--lp-primary-color: <?php echo ! empty( $primary_color ) ? $primary_color : '#ffb606'; ?>;
-				--lp-secondary-color: <?php echo ! empty( $secondary_color ) ? $secondary_color : '#442e66'; ?>;
-			}
-		</style>
-
-		<?php
-	}
-
-	add_action( 'wp_head', 'learn_press_print_custom_styles' );
 }
 
 /**
@@ -1456,7 +1457,11 @@ function learn_press_content_item_summary_class( $more = '', $echo = true ) {
 	return $output;
 }
 
+/**
+ * @deprecated 4.2.3.1
+ */
 function learn_press_content_item_summary_classes( $classes ) {
+	_deprecated_function( __FUNCTION__, '4.2.3.1' );
 	$item = LP_Global::course_item();
 
 	if ( ! $item ) {
@@ -1801,23 +1806,16 @@ if ( ! function_exists( 'lp_taxonomy_archive_course_description' ) ) {
  * @return array
  */
 function lp_archive_skeleton_get_args(): array {
-	global $post, $wp;
-
-	$args = array();
+	$args = [];
 
 	if ( ! empty( $_GET ) ) {
-		$args = (array) $_GET;
+		$args = $_GET;
 	}
 
-	$params = apply_filters(
-		'lp/template/archive-course/skeleton/args',
-		array(
-			'paged'    => 1,
-			'c_search' => '',
-			'orderby'  => '',
-			'order'    => '',
-		)
-	);
+	global $wp_query;
+	if ( ! empty( $wp_query->get( 'paged' ) ) ) {
+		$args['paged'] = $wp_query->get( 'paged' );
+	}
 
 	if ( learn_press_is_course_category() || learn_press_is_course_tag() ) {
 		$cat = get_queried_object();
@@ -1826,15 +1824,13 @@ function lp_archive_skeleton_get_args(): array {
 		$args['taxonomy'] = $cat->taxonomy;
 	}
 
-	if ( learn_press_is_course_archive() ) {
+	/*if ( learn_press_is_course_archive() ) {
 		foreach ( $params as $key => $param ) {
 			if ( isset( $_REQUEST[ $key ] ) ) {
 				$args[ $key ] = LP_Helper::sanitize_params_submitted( $_REQUEST[ $key ] );
-			} else {
-				$args[ $key ] = $param;
 			}
 		}
-	}
+	}*/
 
-	return $args;
+	return apply_filters( 'lp/template/archive-course/skeleton/args', $args );
 }

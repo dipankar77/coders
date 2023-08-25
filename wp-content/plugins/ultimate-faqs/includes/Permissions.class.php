@@ -29,8 +29,7 @@ class ewdufaqPermissions {
 	}
 
 	public function set_permissions() {
-		global $ewd_otp_controller;
-
+		
 		if ( is_array( get_option( 'ewd-ufaq-permission-level' ) ) ) { return; }
 
 		if ( ! empty( get_option( 'ewd-ufaq-permission-level' ) ) ) { 

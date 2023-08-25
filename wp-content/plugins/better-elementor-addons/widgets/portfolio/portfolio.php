@@ -854,6 +854,7 @@ class Better_Portfolio extends Widget_Base {
 				'size_units' => [ 'px', '%' ],
 				'selectors' => [
 					'{{WRAPPER}} .better-portfolio .gallery .items' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .better-portfolio.style-1 .item .info' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);

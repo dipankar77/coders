@@ -502,16 +502,17 @@ class ewdufaqViewFAQs extends ewdufaqView {
 
 		$handle = 'ewd-ufaq-js';
 		$args = array(
-			'faq_accordion'      => isset( $this->faq_accordion ) ? $this->faq_accordion : $ewd_ufaq_controller->settings->get_setting( 'faq-accordion' ),
-			'category_accordion' => isset( $this->category_accordion ) ? $this->category_accordion : $ewd_ufaq_controller->settings->get_setting( 'faq-category-accordion' ),
-			'faq_scroll'         => $ewd_ufaq_controller->settings->get_setting( 'scroll-to-top' ),
-			'reveal_effect'      => $ewd_ufaq_controller->settings->get_setting( 'reveal-effect' ),
-			'retrieving_results' => $ewd_ufaq_controller->settings->get_setting( 'label-retrieving-results' ),
+			'faq_accordion'         => isset( $this->faq_accordion ) ? $this->faq_accordion : $ewd_ufaq_controller->settings->get_setting( 'faq-accordion' ),
+			'category_accordion'    => isset( $this->category_accordion ) ? $this->category_accordion : $ewd_ufaq_controller->settings->get_setting( 'faq-category-accordion' ),
+			'faq_scroll'            => $ewd_ufaq_controller->settings->get_setting( 'scroll-to-top' ),
+			'reveal_effect'         => $ewd_ufaq_controller->settings->get_setting( 'reveal-effect' ),
+			'retrieving_results'    => $ewd_ufaq_controller->settings->get_setting( 'label-retrieving-results' ),
 			'highlight_search_term' => $ewd_ufaq_controller->settings->get_setting( 'highlight-search-term' ),
+			'save_search_terms'     => $ewd_ufaq_controller->settings->get_setting( 'save-search-terms' ),
 			'autocomplete_question' => $ewd_ufaq_controller->settings->get_setting( 'auto-complete-titles' ),
-			'question_titles' => $this->get_faq_titles(),
-			'display_faq'     => 0,
-			'nonce'           => wp_create_nonce( $handle ),
+			'question_titles'       => $this->get_faq_titles(),
+			'display_faq'           => 0,
+			'nonce'                 => wp_create_nonce( $handle ),
 		);
 
 		if ( ! empty( get_query_var( 'single_faq' ) ) ) {
@@ -534,7 +535,7 @@ class ewdufaqViewFAQs extends ewdufaqView {
 		$ewd_ufaq_controller->add_front_end_php_data( $handle, 'question_titles', $args['question_titles'] );
 
 		wp_enqueue_script( $handle );
-
+		
 		$ewd_ufaq_controller->add_front_end_php_data( $handle, 'ewd_ufaq_php_data', apply_filters( 'ewd_ufaq_js_localize_data', $args ) );
 
 		wp_enqueue_script( 'jquery-ui-core' );

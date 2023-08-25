@@ -18,6 +18,9 @@
  */
 
 
+use LearnPress\Helpers\Template;
+use LearnPress\TemplateHooks\Course\ListCoursesTemplate;
+
 defined( 'ABSPATH' ) || exit();
 
 /**
@@ -189,11 +192,38 @@ add_action(
 /** END: Archive course loop item */
 
 /** Archive course pagination */
-add_action(
-	'learn-press/after-courses-loop',
-	LearnPress::instance()->template( 'course' )->callback( 'loop/course/pagination.php' ),
-	10
-);
+if ( LP_Settings::theme_no_support_load_courses_ajax() ) {
+	add_action(
+		'learn-press/after-courses-loop',
+		LearnPress::instance()->template( 'course' )->callback( 'loop/course/pagination.php' )
+	);
+} else {
+	add_action(
+		'learn-press/after-courses-loop',
+		function() {
+			$listCourseTemplate    = ListCoursesTemplate::instance();
+			$pagination_type       = LP_Settings::get_option( 'course_pagination_type', 'number' );
+			$enableAjaxLoadCourses = LP_Settings_Courses::is_ajax_load_courses();
+			$enableNoLoadAjaxFirst = LP_Settings_Courses::is_no_load_ajax_first_courses();
+			if ( $enableAjaxLoadCourses && $pagination_type !== 'number' ) {
+				if ( $enableNoLoadAjaxFirst ) {
+					if ( 'load-more' === $pagination_type ) {
+						echo $listCourseTemplate->html_pagination_load_more();
+					} elseif ( 'infinite' === $pagination_type ) {
+						echo $listCourseTemplate->html_pagination_infinite();
+					}
+				}
+
+				return;
+			}
+
+			if ( ! $enableAjaxLoadCourses || ( $enableAjaxLoadCourses && $enableNoLoadAjaxFirst ) ) {
+				Template::instance()->get_frontend_template( 'loop/course/pagination.php' );
+			}
+		},
+		10
+	);
+}
 /** END: Archive course */
 
 /** BEGIN: Main content of single course */
@@ -376,7 +406,7 @@ add_action(
  */
 add_action(
 	'learn-press/single-button-toggle-sidebar',
-	LearnPress::instance()->template( 'course' )->text( '<input type="checkbox" id="sidebar-toggle" />', 'single-button-toggle-sidebar' ),
+	LearnPress::instance()->template( 'course' )->text( '<input type="checkbox" id="sidebar-toggle" title="Show/Hide curriculum" />', 'single-button-toggle-sidebar' ),
 	5
 );
 
@@ -429,6 +459,11 @@ add_action(
 );
 add_action(
 	'learn-press/after-content-item-summary/lp_lesson',
+	LearnPress::instance()->template( 'course' )->func( 'item_lesson_material' ),
+	12
+);
+add_action(
+	'learn-press/after-content-item-summary/lp_lesson',
 	LearnPress::instance()->template( 'course' )->func( 'course_finish_button' ),
 	15
 );
@@ -450,6 +485,8 @@ add_action( 'learn-press/course-item-content', LearnPress::instance()->template(
 
 add_action( 'learn-press/user-profile', LearnPress::instance()->template( 'profile' )->func( 'sidebar' ), 10 );
 add_action( 'learn-press/user-profile', LearnPress::instance()->template( 'profile' )->func( 'content' ), 20 );
+
+add_action( 'learn-press/user-profile/private', LearnPress::instance()->template( 'profile' )->func( 'sidebar' ), 10 );
 
 add_action( 'learn-press/user-profile-account', LearnPress::instance()->template( 'profile' )->text( ' <div class="lp-profile-left">', 'user-profile-account-left-open' ), 5 );
 add_action( 'learn-press/user-profile-account', LearnPress::instance()->template( 'profile' )->func( 'avatar' ), 10 );
@@ -516,7 +553,7 @@ add_action( 'learn-press/after-checkout-form', LearnPress::instance()->template(
 
 // ******************************************************************************************************************* //
 
-add_action( 'learn-press/content-item-summary-class', 'learn_press_content_item_summary_classes', 15 );
+//add_action( 'learn-press/content-item-summary-class', 'learn_press_content_item_summary_classes', 15 );
 add_action(
 	'learn-press/before-content-item-summary/lp_quiz',
 	LearnPress::instance()->template( 'course' )->callback( 'content-quiz/title.php' ),

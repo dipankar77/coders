@@ -1,4 +1,4 @@
-/******/ (() => { // webpackBootstrap
+/******/ (function() { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
@@ -6,12 +6,9 @@
 /*!*************************************************************************!*\
   !*** ./assets/src/apps/js/admin/pages/tools/database/clean_database.js ***!
   \*************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 /* harmony import */ var _utils_lp_modal_overlay__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../utils/lp-modal-overlay */ "./assets/src/apps/js/utils/lp-modal-overlay.js");
 /* harmony import */ var _utils_handle_ajax_api__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../utils/handle-ajax-api */ "./assets/src/apps/js/utils/handle-ajax-api.js");
 
@@ -132,7 +129,7 @@ const cleanDatabases = () => {
     };
   });
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (cleanDatabases);
+/* harmony default export */ __webpack_exports__["default"] = (cleanDatabases);
 
 /***/ }),
 
@@ -140,12 +137,9 @@ const cleanDatabases = () => {
 /*!************************************************************************!*\
   !*** ./assets/src/apps/js/admin/pages/tools/database/create_indexs.js ***!
   \************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 /* harmony import */ var _utils_lp_modal_overlay__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../utils/lp-modal-overlay */ "./assets/src/apps/js/utils/lp-modal-overlay.js");
 /* harmony import */ var _utils_handle_ajax_api__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../utils/handle-ajax-api */ "./assets/src/apps/js/utils/handle-ajax-api.js");
 
@@ -265,7 +259,7 @@ const createIndexes = () => {
     (0,_utils_handle_ajax_api__WEBPACK_IMPORTED_MODULE_1__["default"])(url, params, functions);
   });
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (createIndexes);
+/* harmony default export */ __webpack_exports__["default"] = (createIndexes);
 
 /***/ }),
 
@@ -273,12 +267,9 @@ const createIndexes = () => {
 /*!************************************************************************!*\
   !*** ./assets/src/apps/js/admin/pages/tools/database/re-upgrade-db.js ***!
   \************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 /* harmony import */ var _utils_lp_modal_overlay__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../utils/lp-modal-overlay */ "./assets/src/apps/js/utils/lp-modal-overlay.js");
 /* harmony import */ var _utils_handle_ajax_api__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../utils/handle-ajax-api */ "./assets/src/apps/js/utils/handle-ajax-api.js");
 
@@ -333,7 +324,7 @@ const reUpgradeDB = () => {
     error(err) {}
   });
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (reUpgradeDB);
+/* harmony default export */ __webpack_exports__["default"] = (reUpgradeDB);
 
 /***/ }),
 
@@ -341,12 +332,9 @@ const reUpgradeDB = () => {
 /*!******************************************************************!*\
   !*** ./assets/src/apps/js/admin/pages/tools/database/upgrade.js ***!
   \******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 /* harmony import */ var _utils_lp_modal_overlay__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../utils/lp-modal-overlay */ "./assets/src/apps/js/utils/lp-modal-overlay.js");
 /* harmony import */ var _utils_handle_ajax_api__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../utils/handle-ajax-api */ "./assets/src/apps/js/utils/handle-ajax-api.js");
 
@@ -591,7 +579,7 @@ const getStepsUpgradeStatus = () => {
   };
   (0,_utils_handle_ajax_api__WEBPACK_IMPORTED_MODULE_1__["default"])(urlHandle, {}, funcCallBack);
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (getStepsUpgradeStatus);
+/* harmony default export */ __webpack_exports__["default"] = (getStepsUpgradeStatus);
 
 /***/ }),
 
@@ -599,12 +587,9 @@ const getStepsUpgradeStatus = () => {
 /*!*******************************************************************!*\
   !*** ./assets/src/apps/js/admin/pages/tools/reset-data/course.js ***!
   \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 
@@ -813,7 +798,7 @@ const ResetCourse = () => {
 				}\
 				'));
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ResetCourse);
+/* harmony default export */ __webpack_exports__["default"] = (ResetCourse);
 
 /***/ }),
 
@@ -821,12 +806,9 @@ const ResetCourse = () => {
 /*!******************************************************************!*\
   !*** ./assets/src/apps/js/admin/pages/tools/reset-data/index.js ***!
   \******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _course__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./course */ "./assets/src/apps/js/admin/pages/tools/reset-data/course.js");
@@ -837,7 +819,7 @@ const resetData = () => {
     wp.element.render((0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_course__WEBPACK_IMPORTED_MODULE_1__["default"], null), [...document.querySelectorAll('#learn-press-reset-course-users')][0]);
   }
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (resetData);
+/* harmony default export */ __webpack_exports__["default"] = (resetData);
 
 /***/ }),
 
@@ -845,12 +827,9 @@ const resetData = () => {
 /*!*****************************************************!*\
   !*** ./assets/src/apps/js/utils/handle-ajax-api.js ***!
   \*****************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 const handleAjax = function (url, params, functions) {
   wp.apiFetch({
     path: url,
@@ -870,7 +849,7 @@ const handleAjax = function (url, params, functions) {
     }
   });
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (handleAjax);
+/* harmony default export */ __webpack_exports__["default"] = (handleAjax);
 
 /***/ }),
 
@@ -878,12 +857,9 @@ const handleAjax = function (url, params, functions) {
 /*!******************************************************!*\
   !*** ./assets/src/apps/js/utils/lp-modal-overlay.js ***!
   \******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 const $ = jQuery;
 let elLPOverlay = null;
 const lpModalOverlay = {
@@ -936,7 +912,7 @@ const lpModalOverlay = {
     this.elTitle.html(content);
   }
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (lpModalOverlay);
+/* harmony default export */ __webpack_exports__["default"] = (lpModalOverlay);
 
 /***/ }),
 
@@ -944,7 +920,7 @@ const lpModalOverlay = {
 /*!*********************************!*\
   !*** external ["wp","element"] ***!
   \*********************************/
-/***/ ((module) => {
+/***/ (function(module) {
 
 module.exports = window["wp"]["element"];
 
@@ -978,49 +954,49 @@ module.exports = window["wp"]["element"];
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	(() => {
+/******/ 	!function() {
 /******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = (module) => {
+/******/ 		__webpack_require__.n = function(module) {
 /******/ 			var getter = module && module.__esModule ?
-/******/ 				() => (module['default']) :
-/******/ 				() => (module);
+/******/ 				function() { return module['default']; } :
+/******/ 				function() { return module; };
 /******/ 			__webpack_require__.d(getter, { a: getter });
 /******/ 			return getter;
 /******/ 		};
-/******/ 	})();
+/******/ 	}();
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	(() => {
+/******/ 	!function() {
 /******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 		__webpack_require__.d = function(exports, definition) {
 /******/ 			for(var key in definition) {
 /******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
 /******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 				}
 /******/ 			}
 /******/ 		};
-/******/ 	})();
+/******/ 	}();
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	(() => {
-/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
-/******/ 	})();
+/******/ 	!function() {
+/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
+/******/ 	}();
 /******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
-/******/ 	(() => {
+/******/ 	!function() {
 /******/ 		// define __esModule on exports
-/******/ 		__webpack_require__.r = (exports) => {
+/******/ 		__webpack_require__.r = function(exports) {
 /******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
 /******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
 /******/ 			}
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
 /******/ 		};
-/******/ 	})();
+/******/ 	}();
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
-(() => {
+!function() {
 /*!*************************************************!*\
   !*** ./assets/src/apps/js/admin/pages/tools.js ***!
   \*************************************************/
@@ -1131,8 +1107,7 @@ __webpack_require__.r(__webpack_exports__);
     $doc.on('click', '.lp-install-sample__install', installSampleCourse).on('click', '.lp-install-sample__uninstall', uninstallSampleCourse).on('click', '#learn-press-clear-cache', clearHardCache).on('click', 'input[name="enable_hard_cache"]', toggleHardCache).on('click', '.lp-install-sample__toggle-options', toggleOptions);
   });
 })(jQuery);
-})();
-
+}();
 /******/ })()
 ;
 //# sourceMappingURL=tools.js.map

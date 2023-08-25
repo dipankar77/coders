@@ -10,7 +10,7 @@
 
   $('.nri-dismiss').on('click', function () {
 
-    $.post(ajaxurl, { action: 'inisev_review', token: 'irbh', slug: slug, mode: 'dismiss' }).done(function (res) {
+    $.post(ajaxurl, { action: 'inisev_review', nonce: inisev_review_dismiss.nonce, token: 'irbh', slug: slug, mode: 'dismiss' }).done(function (res) {
 
     }).fail(function (err) {
       console.error(err);
@@ -22,7 +22,7 @@
 
   $('.nri-remind').on('click', function () {
 
-    $.post(ajaxurl, { action: 'inisev_review', token: 'irbh', slug: slug, mode: 'remind' }).done(function (res) {
+    $.post(ajaxurl, { action: 'inisev_review', nonce: inisev_review_dismiss.nonce, token: 'irbh', slug: slug, mode: 'remind' }).done(function (res) {
 
     }).fail(function (err) {
       console.error(err);

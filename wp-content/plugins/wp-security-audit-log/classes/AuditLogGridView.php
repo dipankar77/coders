@@ -225,6 +225,8 @@ class WSAL_AuditLogGridView extends WP_List_Table {
 			}
 		}
 
+		// phpcs:disable
+		// phpcs:enable
 	}
 
 	/**
@@ -413,6 +415,8 @@ class WSAL_AuditLogGridView extends WP_List_Table {
 					$tooltip = WSAL_Utilities_UsersUtils::get_tooltip_user_content( $user );
 					$uhtml   = '<a class="tooltip" data-tooltip="' . esc_attr( $tooltip ) . '" data-user="' . $user->user_login . '" href="' . $user_edit_link . '" target="_blank">' . esc_html( $display_name ) . '</a>';
 
+					// phpcs:disable
+					// phpcs:enable
 
 					$roles = WSAL_Utilities_UsersUtils::get_roles_label( $item['user_roles'] );
 				} elseif ( 'Plugin' === $username ) {
@@ -451,7 +455,13 @@ class WSAL_AuditLogGridView extends WP_List_Table {
 
 				// If there's no IP...
 				if ( is_null( $scip ) || '' === $scip ) {
-					return '<i>unknown</i>';
+					if ( isset( $item['meta_values'] ) && isset( $item['meta_values']['OtherIPs'] ) ) {
+						if ( is_array( $item['meta_values']['OtherIPs'] ) ) {
+							$scip = reset( $item['meta_values']['OtherIPs'] )[0];
+						}
+					} else {
+						return '<i>unknown</i>';
+					}
 				}
 
 				// If there's only one IP...
@@ -462,10 +472,8 @@ class WSAL_AuditLogGridView extends WP_List_Table {
 					if ( count( $oips ) < 2 ) {
 						$oips_html = "<a class='search-ip' data-tooltip='$tooltip' data-ip='$scip' target='_blank' href='$link'>" . esc_html( $scip ) . '</a>';
 					}
-				} else {
-					if ( count( $oips ) < 2 ) {
+				} elseif ( count( $oips ) < 2 ) {
 						$oips_html = "<a target='_blank' href='$link'>" . esc_html( $scip ) . '</a>';
-					}
 				}
 
 				// If there are many IPs...
@@ -526,11 +534,11 @@ class WSAL_AuditLogGridView extends WP_List_Table {
 			case 'data':
 				$url     = admin_url( 'admin-ajax.php' ) . '?action=AjaxInspector&amp;occurrence=' . $item['id'];
 				$tooltip = esc_attr__( 'View all details of this change', 'wp-security-audit-log' );
-				return '<a class="more-info thickbox" data-tooltip="' . $tooltip . '" title="' . __( 'Alert Data Inspector', 'wp-security-audit-log' ) . '"'
-					. ' href="' . $url . '&amp;TB_iframe=true&amp;width=600&amp;height=550">&hellip;</a>';
+				return '<a class="more-info button button-secondary thickbox" data-tooltip="' . $tooltip . '" title="' . __( 'Event data inspector', 'wp-security-audit-log' ) . '"'
+				. ' href="' . $url . '&amp;TB_iframe=true&amp;width=600&amp;height=550">' . __( 'More details...', 'wp-security-audit-log' ) . '</a>';
 			default:
-				return isset( $item[$column_name] )
-					? esc_html( $item[$column_name] )
+				return isset( $item[ $column_name ] )
+					? esc_html( $item[ $column_name ] )
 					: 'Column "' . esc_html( $column_name ) . '" not found';
 		}
 	}
@@ -623,7 +631,7 @@ class WSAL_AuditLogGridView extends WP_List_Table {
 			static $cb_counter = 1;
 			$columns['cb']     = '<label class="screen-reader-text" for="cb-select-all-' . $cb_counter . '">' . __( 'Select All' ) . '</label>'
 				. '<input id="cb-select-all-' . $cb_counter . '" type="checkbox" />';
-			$cb_counter++;
+			++$cb_counter;
 		}
 
 		foreach ( $columns as $column_key => $column_display_name ) {
@@ -706,6 +714,8 @@ class WSAL_AuditLogGridView extends WP_List_Table {
 	 * @return array
 	 */
 	public function query_events( $paged = 0 ) {
+		// phpcs:disable
+		// phpcs:enable
 
 		// TO DO: Get rid of OccurrenceQuery and use the Occurrence Model.
 		$query = new WSAL_Models_OccurrenceQuery();

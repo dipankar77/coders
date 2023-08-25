@@ -1,4 +1,4 @@
-/*! elementor - v3.12.2 - 23-04-2023 */
+/*! elementor - v3.15.0 - 20-08-2023 */
 (self["webpackChunkelementor"] = self["webpackChunkelementor"] || []).push([["frontend-modules"],{
 
 /***/ "../assets/dev/js/editor/utils/is-instanceof.js":
@@ -98,6 +98,338 @@ class _default extends elementorModules.ViewModule {
   onSettingsChange() {}
 }
 exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../assets/dev/js/frontend/handlers/base-carousel.js":
+/*!***********************************************************!*\
+  !*** ../assets/dev/js/frontend/handlers/base-carousel.js ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _baseSwiper = _interopRequireDefault(__webpack_require__(/*! ./base-swiper */ "../assets/dev/js/frontend/handlers/base-swiper.js"));
+class CarouselHandlerBase extends _baseSwiper.default {
+  getDefaultSettings() {
+    return {
+      selectors: {
+        carousel: `.${elementorFrontend.config.swiperClass}`,
+        swiperWrapper: '.swiper-wrapper',
+        slideContent: '.swiper-slide',
+        swiperArrow: '.elementor-swiper-button',
+        paginationWrapper: '.swiper-pagination',
+        paginationBullet: '.swiper-pagination-bullet',
+        paginationBulletWrapper: '.swiper-pagination-bullets'
+      }
+    };
+  }
+  getDefaultElements() {
+    const selectors = this.getSettings('selectors'),
+      elements = {
+        $swiperContainer: this.$element.find(selectors.carousel),
+        $swiperWrapper: this.$element.find(selectors.swiperWrapper),
+        $swiperArrows: this.$element.find(selectors.swiperArrow),
+        $paginationWrapper: this.$element.find(selectors.paginationWrapper),
+        $paginationBullets: this.$element.find(selectors.paginationBullet),
+        $paginationBulletWrapper: this.$element.find(selectors.paginationBulletWrapper)
+      };
+    elements.$slides = elements.$swiperContainer.find(selectors.slideContent);
+    return elements;
+  }
+  getSwiperSettings() {
+    const elementSettings = this.getElementSettings(),
+      slidesToShow = +elementSettings.slides_to_show || 3,
+      isSingleSlide = 1 === slidesToShow,
+      elementorBreakpoints = elementorFrontend.config.responsive.activeBreakpoints,
+      defaultSlidesToShowMap = {
+        mobile: 1,
+        tablet: isSingleSlide ? 1 : 2
+      };
+    const swiperOptions = {
+      slidesPerView: slidesToShow,
+      loop: 'yes' === elementSettings.infinite,
+      speed: elementSettings.speed,
+      handleElementorBreakpoints: true
+    };
+    swiperOptions.breakpoints = {};
+    let lastBreakpointSlidesToShowValue = slidesToShow;
+    Object.keys(elementorBreakpoints).reverse().forEach(breakpointName => {
+      // Tablet has a specific default `slides_to_show`.
+      const defaultSlidesToShow = defaultSlidesToShowMap[breakpointName] ? defaultSlidesToShowMap[breakpointName] : lastBreakpointSlidesToShowValue;
+      swiperOptions.breakpoints[elementorBreakpoints[breakpointName].value] = {
+        slidesPerView: +elementSettings['slides_to_show_' + breakpointName] || defaultSlidesToShow,
+        slidesPerGroup: +elementSettings['slides_to_scroll_' + breakpointName] || 1
+      };
+      if (elementSettings.image_spacing_custom) {
+        swiperOptions.breakpoints[elementorBreakpoints[breakpointName].value].spaceBetween = this.getSpaceBetween(breakpointName);
+      }
+      lastBreakpointSlidesToShowValue = +elementSettings['slides_to_show_' + breakpointName] || defaultSlidesToShow;
+    });
+    if ('yes' === elementSettings.autoplay) {
+      swiperOptions.autoplay = {
+        delay: elementSettings.autoplay_speed,
+        disableOnInteraction: 'yes' === elementSettings.pause_on_interaction
+      };
+    }
+    if (isSingleSlide) {
+      swiperOptions.effect = elementSettings.effect;
+      if ('fade' === elementSettings.effect) {
+        swiperOptions.fadeEffect = {
+          crossFade: true
+        };
+      }
+    } else {
+      swiperOptions.slidesPerGroup = +elementSettings.slides_to_scroll || 1;
+    }
+    if (elementSettings.image_spacing_custom) {
+      swiperOptions.spaceBetween = this.getSpaceBetween();
+    }
+    const showArrows = 'arrows' === elementSettings.navigation || 'both' === elementSettings.navigation,
+      showPagination = 'dots' === elementSettings.navigation || 'both' === elementSettings.navigation || elementSettings.pagination;
+    if (showArrows) {
+      swiperOptions.navigation = {
+        prevEl: '.elementor-swiper-button-prev',
+        nextEl: '.elementor-swiper-button-next'
+      };
+    }
+    if (showPagination) {
+      swiperOptions.pagination = {
+        el: `.elementor-element-${this.getID()} .swiper-pagination`,
+        type: !!elementSettings.pagination ? elementSettings.pagination : 'bullets',
+        clickable: true,
+        renderBullet: (index, classname) => {
+          return `<span class="${classname}" data-bullet-index="${index}" aria-label="${elementorFrontend.config.i18n.a11yCarouselPaginationBulletMessage} ${index + 1}"></span>`;
+        }
+      };
+    }
+    if ('yes' === elementSettings.lazyload) {
+      swiperOptions.lazy = {
+        loadPrevNext: true,
+        loadPrevNextAmount: 1
+      };
+    }
+    swiperOptions.a11y = {
+      enabled: true,
+      prevSlideMessage: elementorFrontend.config.i18n.a11yCarouselPrevSlideMessage,
+      nextSlideMessage: elementorFrontend.config.i18n.a11yCarouselNextSlideMessage,
+      firstSlideMessage: elementorFrontend.config.i18n.a11yCarouselFirstSlideMessage,
+      lastSlideMessage: elementorFrontend.config.i18n.a11yCarouselLastSlideMessage
+    };
+    swiperOptions.on = {
+      slideChangeTransitionEnd: () => {
+        this.a11ySetSlideAriaHidden();
+      },
+      slideChange: () => {
+        this.a11ySetPaginationTabindex();
+        this.handleElementHandlers();
+      }
+    };
+    this.applyOffsetSettings(elementSettings, swiperOptions, slidesToShow);
+    return swiperOptions;
+  }
+  getOffsetWidth() {
+    const currentDevice = elementorFrontend.getCurrentDeviceMode();
+    return elementorFrontend.utils.controls.getResponsiveControlValue(this.getElementSettings(), 'offset_width', 'size', currentDevice) || 0;
+  }
+  applyOffsetSettings(elementSettings, swiperOptions, slidesToShow) {
+    const offsetSide = elementSettings.offset_sides,
+      isNestedCarouselInEditMode = elementorFrontend.isEditMode() && 'NestedCarousel' === this.constructor.name;
+    if (isNestedCarouselInEditMode || !offsetSide || 'none' === offsetSide) {
+      return;
+    }
+    const offset = this.getOffsetWidth();
+    switch (offsetSide) {
+      case 'right':
+        this.forceSliderToShowNextSlideWhenOnLast(swiperOptions, slidesToShow);
+        this.addClassToSwiperContainer('offset-right');
+        break;
+      case 'left':
+        this.addClassToSwiperContainer('offset-left');
+        break;
+      case 'both':
+        this.forceSliderToShowNextSlideWhenOnLast(swiperOptions, slidesToShow);
+        this.addClassToSwiperContainer('offset-both');
+        break;
+    }
+  }
+  forceSliderToShowNextSlideWhenOnLast(swiperOptions, slidesToShow) {
+    swiperOptions.slidesPerView = slidesToShow + 0.001;
+  }
+  addClassToSwiperContainer(className) {
+    this.getDefaultElements().$swiperContainer[0].classList.add(className);
+  }
+  async onInit() {
+    super.onInit(...arguments);
+    if (!this.elements.$swiperContainer.length || 2 > this.elements.$slides.length) {
+      return;
+    }
+    const Swiper = elementorFrontend.utils.swiper;
+    this.swiper = await new Swiper(this.elements.$swiperContainer, this.getSwiperSettings());
+
+    // Expose the swiper instance in the frontend
+    this.elements.$swiperContainer.data('swiper', this.swiper);
+    const elementSettings = this.getElementSettings();
+    if ('yes' === elementSettings.pause_on_hover) {
+      this.togglePauseOnHover(true);
+    }
+    this.a11ySetWidgetAriaDetails();
+    this.a11ySetPaginationTabindex();
+    this.a11ySetSlideAriaHidden('initialisation');
+  }
+  bindEvents() {
+    this.elements.$swiperArrows.on('keydown', this.onDirectionArrowKeydown.bind(this));
+    this.elements.$paginationWrapper.on('keydown', '.swiper-pagination-bullet', this.onDirectionArrowKeydown.bind(this));
+    this.elements.$swiperContainer.on('keydown', '.swiper-slide', this.onDirectionArrowKeydown.bind(this));
+    this.$element.find(':focusable').on('focus', this.onFocusDisableAutoplay.bind(this));
+    elementorFrontend.elements.$window.on('resize', this.getSwiperSettings.bind(this));
+  }
+  unbindEvents() {
+    this.elements.$swiperArrows.off();
+    this.elements.$paginationWrapper.off();
+    this.elements.$swiperContainer.off();
+    this.$element.find(':focusable').off();
+    elementorFrontend.elements.$window.off('resize');
+  }
+  onDirectionArrowKeydown(event) {
+    const isRTL = elementorFrontend.config.isRTL,
+      inlineDirectionArrows = ['ArrowLeft', 'ArrowRight'],
+      currentKeydown = event.originalEvent.code,
+      isDirectionInlineKeydown = -1 !== inlineDirectionArrows.indexOf(currentKeydown),
+      directionStart = isRTL ? 'ArrowRight' : 'ArrowLeft',
+      directionEnd = isRTL ? 'ArrowLeft' : 'ArrowRight';
+    if (!isDirectionInlineKeydown) {
+      return true;
+    } else if (directionStart === currentKeydown) {
+      this.swiper.slidePrev();
+    } else if (directionEnd === currentKeydown) {
+      this.swiper.slideNext();
+    }
+  }
+  onFocusDisableAutoplay() {
+    this.swiper.autoplay.stop();
+  }
+  updateSwiperOption(propertyName) {
+    const elementSettings = this.getElementSettings(),
+      newSettingValue = elementSettings[propertyName],
+      params = this.swiper.params;
+
+    // Handle special cases where the value to update is not the value that the Swiper library accepts.
+    switch (propertyName) {
+      case 'autoplay_speed':
+        params.autoplay.delay = newSettingValue;
+        break;
+      case 'speed':
+        params.speed = newSettingValue;
+        break;
+    }
+    this.swiper.update();
+  }
+  getChangeableProperties() {
+    return {
+      pause_on_hover: 'pauseOnHover',
+      autoplay_speed: 'delay',
+      speed: 'speed',
+      arrows_position: 'arrows_position' // Not a Swiper setting.
+    };
+  }
+
+  onElementChange(propertyName) {
+    if (0 === propertyName.indexOf('image_spacing_custom')) {
+      this.updateSpaceBetween(propertyName);
+      return;
+    }
+    const changeableProperties = this.getChangeableProperties();
+    if (changeableProperties[propertyName]) {
+      // 'pause_on_hover' is implemented by the handler with event listeners, not the Swiper library.
+      if ('pause_on_hover' === propertyName) {
+        const newSettingValue = this.getElementSettings('pause_on_hover');
+        this.togglePauseOnHover('yes' === newSettingValue);
+      } else {
+        this.updateSwiperOption(propertyName);
+      }
+    }
+  }
+  onEditSettingsChange(propertyName) {
+    if ('activeItemIndex' === propertyName) {
+      this.swiper.slideToLoop(this.getEditSettings('activeItemIndex') - 1);
+    }
+  }
+  getSpaceBetween() {
+    let device = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+    return elementorFrontend.utils.controls.getResponsiveControlValue(this.getElementSettings(), 'image_spacing_custom', 'size', device) || 0;
+  }
+  updateSpaceBetween(propertyName) {
+    const deviceMatch = propertyName.match('image_spacing_custom_(.*)'),
+      device = deviceMatch ? deviceMatch[1] : 'desktop',
+      newSpaceBetween = this.getSpaceBetween(device);
+    if ('desktop' !== device) {
+      this.swiper.params.breakpoints[elementorFrontend.config.responsive.activeBreakpoints[device].value].spaceBetween = newSpaceBetween;
+    }
+    this.swiper.params.spaceBetween = newSpaceBetween;
+    this.swiper.update();
+  }
+  getPaginationBullets() {
+    let type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'array';
+    const paginationBullets = this.$element.find(this.getSettings('selectors').paginationBullet);
+    return 'array' === type ? Array.from(paginationBullets) : paginationBullets;
+  }
+  a11ySetWidgetAriaDetails() {
+    const $widget = this.$element;
+    $widget.attr('aria-roledescription', 'carousel');
+    $widget.attr('aria-label', elementorFrontend.config.i18n.a11yCarouselWrapperAriaLabel);
+  }
+  a11ySetPaginationTabindex() {
+    const bulletClass = this.swiper?.params.pagination.bulletClass,
+      activeBulletClass = this.swiper?.params.pagination.bulletActiveClass;
+    this.getPaginationBullets().forEach(bullet => {
+      if (!bullet.classList.contains(activeBulletClass)) {
+        bullet.removeAttribute('tabindex');
+      }
+    });
+    const isDirectionInlineArrowKey = 'ArrowLeft' === event?.code || 'ArrowRight' === event?.code;
+    if (event?.target?.classList.contains(bulletClass) && isDirectionInlineArrowKey) {
+      this.$element.find(`.${activeBulletClass}`).trigger('focus');
+    }
+  }
+  getSwiperWrapperTranformXValue() {
+    let transformValue = this.elements.$swiperWrapper[0]?.style.transform;
+    transformValue = transformValue.replace('translate3d(', '');
+    transformValue = transformValue.split(',');
+    transformValue = parseInt(transformValue[0].replace('px', ''));
+    return !!transformValue ? transformValue : 0;
+  }
+  a11ySetSlideAriaHidden() {
+    let status = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+    const currentIndex = 'initialisation' === status ? 0 : this.swiper?.activeIndex;
+    if ('number' !== typeof currentIndex) {
+      return;
+    }
+    const swiperWrapperTransformXValue = this.getSwiperWrapperTranformXValue(),
+      swiperWrapperWidth = this.elements.$swiperWrapper[0].clientWidth,
+      $slides = this.elements.$swiperContainer.find(this.getSettings('selectors').slideContent);
+    $slides.each((index, slide) => {
+      const isSlideInsideWrapper = 0 <= slide.offsetLeft + swiperWrapperTransformXValue && swiperWrapperWidth > slide.offsetLeft + swiperWrapperTransformXValue;
+      if (!isSlideInsideWrapper) {
+        slide.setAttribute('aria-hidden', true);
+        slide.setAttribute('inert', '');
+      } else {
+        slide.removeAttribute('aria-hidden');
+        slide.removeAttribute('inert');
+      }
+    });
+  }
+
+  // Empty method which can be overwritten by child methods.
+  handleElementHandlers() {}
+}
+exports["default"] = CarouselHandlerBase;
 
 /***/ }),
 
@@ -478,7 +810,9 @@ var _stretchElement = _interopRequireDefault(__webpack_require__(/*! ./tools/str
 var _stretchedElement = _interopRequireDefault(__webpack_require__(/*! ./handlers/stretched-element */ "../assets/dev/js/frontend/handlers/stretched-element.js"));
 var _base = _interopRequireDefault(__webpack_require__(/*! ./handlers/base */ "../assets/dev/js/frontend/handlers/base.js"));
 var _baseSwiper = _interopRequireDefault(__webpack_require__(/*! ./handlers/base-swiper */ "../assets/dev/js/frontend/handlers/base-swiper.js"));
+var _baseCarousel = _interopRequireDefault(__webpack_require__(/*! ./handlers/base-carousel */ "../assets/dev/js/frontend/handlers/base-carousel.js"));
 var _nestedTabs = _interopRequireDefault(__webpack_require__(/*! elementor/modules/nested-tabs/assets/js/frontend/handlers/nested-tabs */ "../modules/nested-tabs/assets/js/frontend/handlers/nested-tabs.js"));
+var _nestedAccordion = _interopRequireDefault(__webpack_require__(/*! elementor/modules/nested-accordion/assets/js/frontend/handlers/nested-accordion */ "../modules/nested-accordion/assets/js/frontend/handlers/nested-accordion.js"));
 _modules.default.frontend = {
   Document: _document.default,
   tools: {
@@ -488,7 +822,9 @@ _modules.default.frontend = {
     Base: _base.default,
     StretchedElement: _stretchedElement.default,
     SwiperBase: _baseSwiper.default,
-    NestedTabs: _nestedTabs.default
+    CarouselBase: _baseCarousel.default,
+    NestedTabs: _nestedTabs.default,
+    NestedAccordion: _nestedAccordion.default
   }
 };
 
@@ -576,6 +912,100 @@ module.exports = elementorModules.ViewModule.extend({
     this.elements.$element.css(css);
   }
 });
+
+/***/ }),
+
+/***/ "../assets/dev/js/frontend/utils/flex-horizontal-scroll.js":
+/*!*****************************************************************!*\
+  !*** ../assets/dev/js/frontend/utils/flex-horizontal-scroll.js ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.changeScrollStatus = changeScrollStatus;
+exports.setHorizontalScrollAlignment = setHorizontalScrollAlignment;
+exports.setHorizontalTitleScrollValues = setHorizontalTitleScrollValues;
+function changeScrollStatus(element, event) {
+  if ('mousedown' === event.type) {
+    element.classList.add('e-scroll');
+    element.dataset.pageX = event.pageX;
+  } else {
+    element.classList.remove('e-scroll', 'e-scroll-active');
+    element.dataset.pageX = '';
+  }
+}
+
+// This function was written using this example https://codepen.io/thenutz/pen/VwYeYEE.
+function setHorizontalTitleScrollValues(element, horizontalScrollStatus, event) {
+  const isActiveScroll = element.classList.contains('e-scroll'),
+    isHorizontalScrollActive = 'enable' === horizontalScrollStatus,
+    headingContentIsWiderThanWrapper = element.scrollWidth > element.clientWidth;
+  if (!isActiveScroll || !isHorizontalScrollActive || !headingContentIsWiderThanWrapper) {
+    return;
+  }
+  event.preventDefault();
+  const previousPositionX = parseFloat(element.dataset.pageX),
+    mouseMoveX = event.pageX - previousPositionX,
+    maximumScrollValue = 5,
+    stepLimit = 20;
+  let toScrollDistanceX = 0;
+  if (stepLimit < mouseMoveX) {
+    toScrollDistanceX = maximumScrollValue;
+  } else if (stepLimit * -1 > mouseMoveX) {
+    toScrollDistanceX = -1 * maximumScrollValue;
+  } else {
+    toScrollDistanceX = mouseMoveX;
+  }
+  element.scrollLeft = element.scrollLeft - toScrollDistanceX;
+  element.classList.add('e-scroll-active');
+}
+function setHorizontalScrollAlignment(_ref) {
+  let {
+    element,
+    direction,
+    justifyCSSVariable,
+    horizontalScrollStatus
+  } = _ref;
+  if (!element) {
+    return;
+  }
+  if (isHorizontalScroll(element, horizontalScrollStatus)) {
+    initialScrollPosition(element, direction, justifyCSSVariable);
+  } else {
+    element.style.setProperty(justifyCSSVariable, '');
+  }
+}
+function isHorizontalScroll(element, horizontalScrollStatus) {
+  return element.clientWidth < getChildrenWidth(element.children) && 'enable' === horizontalScrollStatus;
+}
+function getChildrenWidth(children) {
+  let totalWidth = 0;
+  const parentContainer = children[0].parentNode,
+    computedStyles = getComputedStyle(parentContainer),
+    gap = parseFloat(computedStyles.gap) || 0; // Get the gap value or default to 0 if it's not specified
+
+  for (let i = 0; i < children.length; i++) {
+    totalWidth += children[i].offsetWidth + gap;
+  }
+  return totalWidth;
+}
+function initialScrollPosition(element, direction, justifyCSSVariable) {
+  const isRTL = elementorCommon.config.isRTL;
+  switch (direction) {
+    case 'end':
+      element.style.setProperty(justifyCSSVariable, 'start');
+      element.scrollLeft = isRTL ? -1 * getChildrenWidth(element.children) : getChildrenWidth(element.children);
+      break;
+    default:
+      element.style.setProperty(justifyCSSVariable, 'start');
+      element.scrollLeft = 0;
+  }
+}
 
 /***/ }),
 
@@ -1209,6 +1639,142 @@ exports["default"] = _default;
 
 /***/ }),
 
+/***/ "../modules/nested-accordion/assets/js/frontend/handlers/nested-accordion.js":
+/*!***********************************************************************************!*\
+  !*** ../modules/nested-accordion/assets/js/frontend/handlers/nested-accordion.js ***!
+  \***********************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _base = _interopRequireDefault(__webpack_require__(/*! elementor/assets/dev/js/frontend/handlers/base */ "../assets/dev/js/frontend/handlers/base.js"));
+class NestedAccordion extends _base.default {
+  constructor() {
+    super(...arguments);
+    this.animations = new Map();
+  }
+  getDefaultSettings() {
+    return {
+      selectors: {
+        accordion: '.e-n-accordion',
+        accordionContentContainers: '.e-n-accordion > .e-con',
+        accordionItems: '.e-n-accordion-item',
+        accordionItemTitles: '.e-n-accordion-item-title',
+        accordionContent: '.e-n-accordion-item > .e-con'
+      },
+      default_state: 'expanded'
+    };
+  }
+  getDefaultElements() {
+    const selectors = this.getSettings('selectors');
+    return {
+      $accordion: this.findElement(selectors.accordion),
+      $contentContainers: this.findElement(selectors.accordionContentContainers),
+      $accordionItems: this.findElement(selectors.accordionItems),
+      $accordionTitles: this.findElement(selectors.accordionItemTitles),
+      $accordionContent: this.findElement(selectors.accordionContent)
+    };
+  }
+  onInit() {
+    super.onInit(...arguments);
+    if (elementorFrontend.isEditMode()) {
+      this.interlaceContainers();
+    }
+  }
+  interlaceContainers() {
+    const {
+      $contentContainers,
+      $accordionItems
+    } = this.getDefaultElements();
+    $contentContainers.each((index, element) => {
+      $accordionItems[index].appendChild(element);
+    });
+  }
+  bindEvents() {
+    this.elements.$accordionTitles.on('click', this.clickListener.bind(this));
+  }
+  unbindEvents() {
+    this.elements.$accordionTitles.off();
+  }
+  clickListener(event) {
+    event.preventDefault();
+    const accordionItem = event.currentTarget.parentElement,
+      settings = this.getSettings(),
+      accordionContent = accordionItem.querySelector(settings.selectors.accordionContent),
+      {
+        max_items_expended: maxItemsExpended
+      } = this.getElementSettings(),
+      {
+        $accordionTitles,
+        $accordionItems
+      } = this.elements;
+    if ('one' === maxItemsExpended) {
+      this.closeAllItems($accordionItems, $accordionTitles);
+    }
+    if (!accordionItem.open) {
+      this.prepareOpenAnimation(accordionItem, event.currentTarget, accordionContent);
+    } else {
+      this.closeAccordionItem(accordionItem, event.currentTarget);
+    }
+  }
+  animateItem(accordionItem, startHeight, endHeight, isOpen) {
+    accordionItem.style.overflow = 'hidden';
+    let animation = this.animations.get(accordionItem);
+    if (animation) {
+      animation.cancel();
+    }
+    animation = accordionItem.animate({
+      height: [startHeight, endHeight]
+    }, {
+      duration: this.getAnimationDuration()
+    });
+    animation.onfinish = () => this.onAnimationFinish(accordionItem, isOpen);
+    this.animations.set(accordionItem, animation);
+  }
+  closeAccordionItem(accordionItem, accordionItemTitle) {
+    const startHeight = `${accordionItem.offsetHeight}px`,
+      endHeight = `${accordionItemTitle.offsetHeight}px`;
+    this.animateItem(accordionItem, startHeight, endHeight, false);
+  }
+  prepareOpenAnimation(accordionItem, accordionItemTitle, accordionItemContent) {
+    accordionItem.style.overflow = 'hidden';
+    accordionItem.style.height = `${accordionItem.offsetHeight}px`;
+    accordionItem.open = true;
+    window.requestAnimationFrame(() => this.openAccordionItem(accordionItem, accordionItemTitle, accordionItemContent));
+  }
+  openAccordionItem(accordionItem, accordionItemTitle, accordionItemContent) {
+    const startHeight = `${accordionItem.offsetHeight}px`,
+      endHeight = `${accordionItemTitle.offsetHeight + accordionItemContent.offsetHeight}px`;
+    this.animateItem(accordionItem, startHeight, endHeight, true);
+  }
+  onAnimationFinish(accordionItem, isOpen) {
+    accordionItem.open = isOpen;
+    this.animations.set(accordionItem, null);
+    accordionItem.style.height = accordionItem.style.overflow = '';
+  }
+  closeAllItems($items, $titles) {
+    $titles.each((index, title) => {
+      this.closeAccordionItem($items[index], title);
+    });
+  }
+  getAnimationDuration() {
+    const {
+      size,
+      unit
+    } = this.getElementSettings('n_accordion_animation_duration');
+    return size * ('ms' === unit ? 1 : 1000);
+  }
+}
+exports["default"] = NestedAccordion;
+
+/***/ }),
+
 /***/ "../modules/nested-tabs/assets/js/frontend/handlers/nested-tabs.js":
 /*!*************************************************************************!*\
   !*** ../modules/nested-tabs/assets/js/frontend/handlers/nested-tabs.js ***!
@@ -1223,8 +1789,14 @@ Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = void 0;
-var _base = _interopRequireDefault(__webpack_require__(/*! ../../../../../../assets/dev/js/frontend/handlers/base */ "../assets/dev/js/frontend/handlers/base.js"));
+var _base = _interopRequireDefault(__webpack_require__(/*! elementor/assets/dev/js/frontend/handlers/base */ "../assets/dev/js/frontend/handlers/base.js"));
+var _flexHorizontalScroll = __webpack_require__(/*! elementor/assets/dev/js/frontend/utils/flex-horizontal-scroll */ "../assets/dev/js/frontend/utils/flex-horizontal-scroll.js");
 class NestedTabs extends _base.default {
+  constructor() {
+    super(...arguments);
+    this.resizeListenerNestedTabs = null;
+  }
+
   /**
    * @param {string|number} tabIndex
    *
@@ -1355,13 +1927,16 @@ class NestedTabs extends _base.default {
       $activeTitle = this.elements.$tabTitles.filter(activeTitleFilter),
       $activeContent = this.elements.$tabContents.filter(activeContentFilter);
     $activeTitle.add($activeContent).removeClass(activeClass);
-    $activeTitle.attr({
+    $activeTitle.attr(this.getTitleDeactivationAttributes());
+    $activeContent[settings.hideTabFn](0, () => this.onHideTabContent($activeContent));
+    $activeContent.attr('hidden', 'hidden');
+  }
+  getTitleDeactivationAttributes() {
+    return {
       tabindex: '-1',
       'aria-selected': 'false',
       'aria-expanded': 'false'
-    });
-    $activeContent[settings.hideTabFn](0, () => this.onHideTabContent($activeContent));
-    $activeContent.attr('hidden', 'hidden');
+    };
   }
   onHideTabContent($activeContent) {}
   activateTab(tabIndex) {
@@ -1390,6 +1965,7 @@ class NestedTabs extends _base.default {
   onShowTabContent($requestedContent) {
     elementorFrontend.elements.$window.trigger('elementor-pro/motion-fx/recalc');
     elementorFrontend.elements.$window.trigger('elementor/nested-tabs/activate', $requestedContent);
+    elementorFrontend.elements.$window.trigger('elementor/bg-video/recalc');
   }
   isActiveTab(tabIndex) {
     return this.elements.$tabTitles.filter('[data-tab="' + tabIndex + '"]').hasClass(this.getSettings('classes.active'));
@@ -1399,7 +1975,6 @@ class NestedTabs extends _base.default {
     this.changeActiveTab(event.currentTarget.getAttribute('data-tab'), true);
   }
   onTabKeyDown(event) {
-    this.preventDefaultLinkBehaviourForTabTitle(event);
     this.onKeydownAvoidUndesiredPageScrolling(event);
   }
   onTabKeyUp(event) {
@@ -1422,15 +1997,33 @@ class NestedTabs extends _base.default {
       click: this.onTabClick.bind(this)
     };
   }
+  getHeadingEvents() {
+    const navigationWrapper = this.elements.$headingContainer[0];
+    return {
+      mousedown: _flexHorizontalScroll.changeScrollStatus.bind(this, navigationWrapper),
+      mouseup: _flexHorizontalScroll.changeScrollStatus.bind(this, navigationWrapper),
+      mouseleave: _flexHorizontalScroll.changeScrollStatus.bind(this, navigationWrapper),
+      mousemove: _flexHorizontalScroll.setHorizontalTitleScrollValues.bind(this, navigationWrapper, this.getHorizontalScrollSetting())
+    };
+  }
   bindEvents() {
     this.elements.$tabTitles.on(this.getTabEvents());
+    this.elements.$headingContainer.on(this.getHeadingEvents());
+    const settingsObject = {
+      element: this.elements.$headingContainer[0],
+      direction: this.getTabsDirection(),
+      justifyCSSVariable: '--n-tabs-heading-justify-content',
+      horizontalScrollStatus: this.getHorizontalScrollSetting()
+    };
+    this.resizeListenerNestedTabs = _flexHorizontalScroll.setHorizontalScrollAlignment.bind(this, settingsObject);
+    elementorFrontend.elements.$window.on('resize', this.resizeListenerNestedTabs);
     elementorFrontend.elements.$window.on('elementor/nested-tabs/activate', this.reInitSwipers);
   }
-  preventDefaultLinkBehaviourForTabTitle(event) {
-    // Support for old markup that includes an `<a>` tag in the tab
-    if (jQuery(event.target).is('a') && `Enter` === event.key) {
-      event.preventDefault();
-    }
+  unbindEvents() {
+    this.elements.$tabTitles.off();
+    this.elements.$headingContainer.off();
+    elementorFrontend.elements.$window.off('resize');
+    elementorFrontend.elements.$window.off('elementor/nested-tabs/activate');
   }
   onKeydownAvoidUndesiredPageScrolling(event) {
     // We listen to keydowon event for these keys in order to prevent undesired page scrolling
@@ -1467,11 +2060,32 @@ class NestedTabs extends _base.default {
     if (this.getSettings('autoExpand')) {
       this.activateDefaultTab();
     }
+    const settingsObject = {
+      element: this.elements.$headingContainer[0],
+      direction: this.getTabsDirection(),
+      justifyCSSVariable: '--n-tabs-heading-justify-content',
+      horizontalScrollStatus: this.getHorizontalScrollSetting()
+    };
+    (0, _flexHorizontalScroll.setHorizontalScrollAlignment)(settingsObject);
   }
   onEditSettingsChange(propertyName, value) {
     if ('activeItemIndex' === propertyName) {
       this.changeActiveTab(value, false);
     }
+  }
+  onElementChange(propertyName) {
+    if (this.checkSliderPropsToWatch(propertyName)) {
+      const settingsObject = {
+        element: this.elements.$headingContainer[0],
+        direction: this.getTabsDirection(),
+        justifyCSSVariable: '--n-tabs-heading-justify-content',
+        horizontalScrollStatus: this.getHorizontalScrollSetting()
+      };
+      (0, _flexHorizontalScroll.setHorizontalScrollAlignment)(settingsObject);
+    }
+  }
+  checkSliderPropsToWatch(propertyName) {
+    return 0 === propertyName.indexOf('horizontal_scroll') || 0 === propertyName.indexOf('tabs_justify_horizontal') || 0 === propertyName.indexOf('tabs_title_space_between');
   }
 
   /**
@@ -1601,7 +2215,7 @@ class NestedTabs extends _base.default {
       currentTabTitleIndex = parseInt(currentTabTitle.getAttribute('data-tab'));
     if (isOnlyTabPressed && this.tabTitleHasActiveContentContainer(currentTabTitleIndex) && !!$firstFocusableItem) {
       event.preventDefault();
-      $firstFocusableItem.focus();
+      $firstFocusableItem.trigger('focus');
     }
   }
   itemInsideContentContainerHasFocus(position) {
@@ -1630,6 +2244,14 @@ class NestedTabs extends _base.default {
       isTabTitleActive = $tabTitleElement[0]?.classList.contains(`${this.getActiveClass()}`),
       $tabTitleContainerElement = this.elements.$tabContents.filter(this.getTabContentFilterSelector(index));
     return !!$tabTitleContainerElement && isTabTitleActive ? true : false;
+  }
+  getTabsDirection() {
+    const currentDevice = elementorFrontend.getCurrentDeviceMode();
+    return elementorFrontend.utils.controls.getResponsiveControlValue(this.getElementSettings(), 'tabs_justify_horizontal', '', currentDevice);
+  }
+  getHorizontalScrollSetting() {
+    const currentDevice = elementorFrontend.getCurrentDeviceMode();
+    return elementorFrontend.utils.controls.getResponsiveControlValue(this.getElementSettings(), 'horizontal_scroll', '', currentDevice);
   }
 }
 exports["default"] = NestedTabs;
@@ -3201,10 +3823,10 @@ var store = __webpack_require__(/*! ../internals/shared-store */ "../node_module
 (module.exports = function (key, value) {
   return store[key] || (store[key] = value !== undefined ? value : {});
 })('versions', []).push({
-  version: '3.28.0',
+  version: '3.30.1',
   mode: IS_PURE ? 'pure' : 'global',
   copyright: '© 2014-2023 Denis Pushkarev (zloirock.ru)',
-  license: 'https://github.com/zloirock/core-js/blob/v3.28.0/LICENSE',
+  license: 'https://github.com/zloirock/core-js/blob/v3.30.1/LICENSE',
   source: 'https://github.com/zloirock/core-js'
 });
 

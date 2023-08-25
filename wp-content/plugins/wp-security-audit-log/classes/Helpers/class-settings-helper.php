@@ -80,6 +80,15 @@ if ( ! class_exists( '\WSAL\Helpers\Settings_Helper' ) ) {
 		private static $excluded_users = array();
 
 		/**
+		 * Users excluded from monitoring.
+		 *
+		 * @var array
+		 *
+		 * @since 4.5.0
+		 */
+		private static $excluded_roles = array();
+
+		/**
 		 * Holds the main IP of the client.
 		 *
 		 * @var string
@@ -123,6 +132,15 @@ if ( ! class_exists( '\WSAL\Helpers\Settings_Helper' ) ) {
 		 * @since 4.5.0
 		 */
 		private static $database_logging_enabled = null;
+
+		/**
+		 * Is the database logging enabled or not.
+		 *
+		 * @var bool
+		 *
+		 * @since 4.5.1
+		 */
+		private static $frontend_events = null;
 
 		/**
 		 * Gets the value of an option.
@@ -363,7 +381,7 @@ if ( ! class_exists( '\WSAL\Helpers\Settings_Helper' ) ) {
 		 * @since 4.4.3
 		 */
 		public static function get_all_mirrors() {
-			$mirrors_options = self::get_options_by_prefix( WSAL_MIRROR_PREFIX, true );
+			$mirrors_options = self::get_options_by_prefix( \WSAL_MIRROR_PREFIX, true );
 
 			$mirrors = array();
 
@@ -498,7 +516,9 @@ if ( ! class_exists( '\WSAL\Helpers\Settings_Helper' ) ) {
 			if ( '' === self::$main_client_ip ) {
 				if ( self::get_boolean_option_value( 'use-proxy-ip' ) ) {
 					// TODO: The algorithm below just gets the first IP in the list...we might want to make this more intelligent somehow.
-					self::$main_client_ip = isset( self::get_client_ips()[0] ) ? self::get_client_ips()[0] : null;
+					$ips                  = self::get_client_ips();
+					$ips                  = reset( $ips );
+					self::$main_client_ip = isset( $ips[0] ) ? $ips[0] : '';
 				} elseif ( isset( $_SERVER['REMOTE_ADDR'] ) ) {
 					$ip                   = sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) );
 					self::$main_client_ip = self::normalize_ip( $ip );
@@ -902,7 +922,7 @@ if ( ! class_exists( '\WSAL\Helpers\Settings_Helper' ) ) {
 		public static function get_excluded_user_meta_fields() {
 			if ( empty( self::$excluded_user_meta ) ) {
 				$excluded_user_meta = self::get_option_value( 'excluded-user-meta', '' );
-				if ( ! is_null( $excluded_user_meta ) && empty( $excluded_user_meta ) ) {
+				if ( ! is_null( $excluded_user_meta ) && ! empty( $excluded_user_meta ) ) {
 					self::$excluded_user_meta = array_unique( array_filter( explode( ',', $excluded_user_meta ) ) );
 					asort( self::$excluded_user_meta );
 				} else {
@@ -963,7 +983,12 @@ if ( ! class_exists( '\WSAL\Helpers\Settings_Helper' ) ) {
 		 */
 		public static function get_excluded_monitoring_users() {
 			if ( empty( self::$excluded_users ) ) {
-				self::$excluded_users = array_unique( array_filter( explode( ',', self::get_option_value( 'excluded-users', '' ) ) ) );
+				self::$excluded_users = self::get_option_value( 'excluded-users', array() );
+			}
+
+			if ( is_string( self::$excluded_users ) ) {
+				self::$excluded_users = array_unique( array_filter( explode( ',', self::$excluded_users ) ) );
+				self::set_option_value( 'excluded-users', self::$excluded_users );
 			}
 
 			return self::$excluded_users;
@@ -978,7 +1003,7 @@ if ( ! class_exists( '\WSAL\Helpers\Settings_Helper' ) ) {
 		 */
 		public static function set_excluded_monitoring_users( $users ) {
 			$old_value = self::get_option_value( 'excluded-users', array() );
-			$changes   = self::determine_added_and_removed_items( $old_value, implode( ',', $users ) );
+			$changes   = self::determine_added_and_removed_items( $old_value, $users );
 
 			if ( ! empty( $changes['added'] ) ) {
 				foreach ( $changes['added'] as $user ) {
@@ -1006,7 +1031,68 @@ if ( ! class_exists( '\WSAL\Helpers\Settings_Helper' ) ) {
 			}
 
 			self::$excluded_users = $users;
-			self::set_option_value( 'excluded-users', esc_html( implode( ',', self::$excluded_users ) ) );
+			self::set_option_value( 'excluded-users', array_unique( array_filter( $users ) ) );
+		}
+
+		/**
+		 * Set roles excluded from monitoring.
+		 *
+		 * @param array $roles - Array of roles.
+		 *
+		 * @since 4.5.0
+		 */
+		public static function set_excluded_monitoring_roles( $roles ) {
+			// Trigger alert.
+			$old_value = self::get_option_value( 'excluded-roles', array() );
+			$changes   = self::determine_added_and_removed_items( $old_value, $roles );
+
+			if ( ! empty( $changes['added'] ) ) {
+				foreach ( $changes['added'] as $user ) {
+					Alert_Manager::trigger_event(
+						6054,
+						array(
+							'role'           => $user,
+							'previous_users' => ( empty( $old_value ) ) ? self::tidy_blank_values( $old_value ) : str_replace( ',', ', ', $old_value ),
+							'EventType'      => 'added',
+						)
+					);
+				}
+			}
+			if ( ! empty( $changes['removed'] ) && ! empty( $old_value ) ) {
+				foreach ( $changes['removed'] as $user ) {
+					Alert_Manager::trigger_event(
+						6054,
+						array(
+							'role'           => $user,
+							'previous_users' => empty( $old_value ) ? self::tidy_blank_values( $old_value ) : str_replace( ',', ', ', $old_value ),
+							'EventType'      => 'removed',
+						)
+					);
+				}
+			}
+
+			self::$excluded_roles = $roles;
+			self::set_option_value( 'excluded-roles', array_unique( array_filter( $roles ) ) );
+		}
+
+		/**
+		 * Get roles excluded from monitoring.
+		 *
+		 * @return array
+		 *
+		 * @since 4.5.0
+		 */
+		public static function get_excluded_monitoring_roles() {
+			if ( empty( self::$excluded_roles ) ) {
+				self::$excluded_roles = self::get_option_value( 'excluded-roles', array() );
+			}
+
+			if ( is_string( self::$excluded_roles ) ) {
+				self::$excluded_roles = array_unique( array_filter( explode( ',', self::$excluded_roles ) ) );
+				self::set_option_value( 'excluded-roles', self::$excluded_roles );
+			}
+
+			return self::$excluded_roles;
 		}
 
 		/**
@@ -1125,8 +1211,8 @@ if ( ! class_exists( '\WSAL\Helpers\Settings_Helper' ) ) {
 			$result = '';
 
 			// Work out the working directory base path.
-			if ( defined( 'WSAL_WORKING_DIR_PATH' ) ) {
-				$result = trailingslashit( WSAL_WORKING_DIR_PATH );
+			if ( defined( '\WSAL_WORKING_DIR_PATH' ) ) {
+				$result = trailingslashit( \WSAL_WORKING_DIR_PATH );
 			} else {
 				$upload_dir = wp_upload_dir( null, false );
 				if ( is_array( $upload_dir ) && array_key_exists( 'basedir', $upload_dir ) ) {
@@ -1186,15 +1272,18 @@ if ( ! class_exists( '\WSAL\Helpers\Settings_Helper' ) ) {
 		 * @since 4.5.0
 		 */
 		public static function get_frontend_events() {
-			// Option defaults.
-			$default = array(
-				'register'    => false,
-				'login'       => false,
-				'woocommerce' => false,
-			);
+			if ( null === self::$frontend_events ) {
+				// Option defaults.
+				$default               = array(
+					'register'    => false,
+					'login'       => false,
+					'woocommerce' => false,
+				);
+				self::$frontend_events = self::get_option_value( self::FRONT_END_EVENTS_OPTION_NAME, $default );
+			}
 
 			// Get the option.
-			return self::get_option_value( self::FRONT_END_EVENTS_OPTION_NAME, $default );
+			return self::$frontend_events;
 		}
 
 		/**
@@ -1207,6 +1296,7 @@ if ( ! class_exists( '\WSAL\Helpers\Settings_Helper' ) ) {
 		 * @since 4.5.0
 		 */
 		public static function set_frontend_events( $value = array() ) {
+			self::$frontend_events = $value;
 			return self::set_option_value( self::FRONT_END_EVENTS_OPTION_NAME, $value, true );
 		}
 

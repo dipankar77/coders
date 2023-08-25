@@ -1,6 +1,6 @@
 <div class="better-slider style-1">
     <div class="slid-half">
-        <div id="js-cta-better-slider-style-1" class="cta__slider-wrapper nofull swiper-container better-bg-img" data-background="<?php echo esc_url ( $settings['bg_image']['url']); ?>">
+        <div id="js-cta-better-slider-style-1" class="cta__slider-wrapper nofull swiper-container better-bg-img" data-background="<?php echo esc_url ( $settings['bg_image']['url']); ?>" <?php echo 'data-slider-settings=\'{"speed":'.$speed.'}\''; ?>>
             <div class="swiper-wrapper cta__slider">
                 <?php foreach ( $settings['slider_list'] as $index => $item ) : ?>
                 <!-- SLIDER ITEM -->

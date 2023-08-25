@@ -1,4 +1,4 @@
-/******/ (() => { // webpackBootstrap
+/******/ (function() { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
@@ -6,15 +6,15 @@
 /*!************************************************************************!*\
   !*** ./assets/src/apps/js/frontend/question-types/components/index.js ***!
   \************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "FillInBlanks": () => (/* reexport safe */ _questions_fill_in_blanks__WEBPACK_IMPORTED_MODULE_4__["default"]),
-/* harmony export */   "MultipleChoices": () => (/* reexport safe */ _questions_multiple_choices__WEBPACK_IMPORTED_MODULE_2__["default"]),
-/* harmony export */   "QuestionBase": () => (/* reexport safe */ _question_base__WEBPACK_IMPORTED_MODULE_0__["default"]),
-/* harmony export */   "SingleChoice": () => (/* reexport safe */ _questions_single_choice__WEBPACK_IMPORTED_MODULE_1__["default"]),
-/* harmony export */   "TrueOrFalse": () => (/* reexport safe */ _questions_true_or_false__WEBPACK_IMPORTED_MODULE_3__["default"])
+/* harmony export */   FillInBlanks: function() { return /* reexport safe */ _questions_fill_in_blanks__WEBPACK_IMPORTED_MODULE_4__["default"]; },
+/* harmony export */   MultipleChoices: function() { return /* reexport safe */ _questions_multiple_choices__WEBPACK_IMPORTED_MODULE_2__["default"]; },
+/* harmony export */   QuestionBase: function() { return /* reexport safe */ _question_base__WEBPACK_IMPORTED_MODULE_0__["default"]; },
+/* harmony export */   SingleChoice: function() { return /* reexport safe */ _questions_single_choice__WEBPACK_IMPORTED_MODULE_1__["default"]; },
+/* harmony export */   TrueOrFalse: function() { return /* reexport safe */ _questions_true_or_false__WEBPACK_IMPORTED_MODULE_3__["default"]; }
 /* harmony export */ });
 /* harmony import */ var _question_base__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./question-base */ "./assets/src/apps/js/frontend/question-types/components/question-base/index.js");
 /* harmony import */ var _questions_single_choice__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./questions/single-choice */ "./assets/src/apps/js/frontend/question-types/components/questions/single-choice/index.js");
@@ -33,12 +33,9 @@ __webpack_require__.r(__webpack_exports__);
 /*!**************************************************************************************!*\
   !*** ./assets/src/apps/js/frontend/question-types/components/question-base/index.js ***!
   \**************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
@@ -277,7 +274,7 @@ class QuestionBase extends _wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Compo
     })), !this.isDefaultType() && this.getWarningMessage(), this.getCorrectLabel());
   }
 }
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (QuestionBase);
+/* harmony default export */ __webpack_exports__["default"] = (QuestionBase);
 
 /***/ }),
 
@@ -285,12 +282,9 @@ class QuestionBase extends _wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Compo
 /*!*************************************************************************************************!*\
   !*** ./assets/src/apps/js/frontend/question-types/components/questions/fill-in-blanks/index.js ***!
   \*************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
@@ -429,7 +423,7 @@ class QuestionFillInBlanks extends _question_base__WEBPACK_IMPORTED_MODULE_2__["
     })), !this.isDefaultType() && this.getWarningMessage(), this.getCorrectLabel());
   }
 }
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (QuestionFillInBlanks);
+/* harmony default export */ __webpack_exports__["default"] = (QuestionFillInBlanks);
 
 /***/ }),
 
@@ -437,12 +431,9 @@ class QuestionFillInBlanks extends _question_base__WEBPACK_IMPORTED_MODULE_2__["
 /*!***************************************************************************************************!*\
   !*** ./assets/src/apps/js/frontend/question-types/components/questions/multiple-choices/index.js ***!
   \***************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
@@ -495,7 +486,7 @@ class QuestionMultipleChoices extends _question_base__WEBPACK_IMPORTED_MODULE_2_
     return optionClass;
   };
 }
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (QuestionMultipleChoices);
+/* harmony default export */ __webpack_exports__["default"] = (QuestionMultipleChoices);
 
 /***/ }),
 
@@ -503,12 +494,9 @@ class QuestionMultipleChoices extends _question_base__WEBPACK_IMPORTED_MODULE_2_
 /*!************************************************************************************************!*\
   !*** ./assets/src/apps/js/frontend/question-types/components/questions/single-choice/index.js ***!
   \************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 /* harmony import */ var _question_base__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../question-base */ "./assets/src/apps/js/frontend/question-types/components/question-base/index.js");
 /* eslint-disable no-mixed-spaces-and-tabs */
 
@@ -533,7 +521,7 @@ class QuestionSingleChoice extends _question_base__WEBPACK_IMPORTED_MODULE_0__["
     return optionClass;
   };
 }
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (QuestionSingleChoice);
+/* harmony default export */ __webpack_exports__["default"] = (QuestionSingleChoice);
 
 /***/ }),
 
@@ -541,12 +529,9 @@ class QuestionSingleChoice extends _question_base__WEBPACK_IMPORTED_MODULE_0__["
 /*!************************************************************************************************!*\
   !*** ./assets/src/apps/js/frontend/question-types/components/questions/true-or-false/index.js ***!
   \************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 /* harmony import */ var _question_base__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../question-base */ "./assets/src/apps/js/frontend/question-types/components/question-base/index.js");
 
 class QuestionTrueOrFalse extends _question_base__WEBPACK_IMPORTED_MODULE_0__["default"] {
@@ -570,7 +555,7 @@ class QuestionTrueOrFalse extends _question_base__WEBPACK_IMPORTED_MODULE_0__["d
     return optionClass;
   };
 }
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (QuestionTrueOrFalse);
+/* harmony default export */ __webpack_exports__["default"] = (QuestionTrueOrFalse);
 
 /***/ }),
 
@@ -578,16 +563,15 @@ class QuestionTrueOrFalse extends _question_base__WEBPACK_IMPORTED_MODULE_0__["d
 /*!*************************************************************!*\
   !*** ./assets/src/apps/js/frontend/question-types/index.js ***!
   \*************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "FillInBlanks": () => (/* reexport safe */ _components__WEBPACK_IMPORTED_MODULE_4__.FillInBlanks),
-/* harmony export */   "MultipleChoices": () => (/* reexport safe */ _components__WEBPACK_IMPORTED_MODULE_4__.MultipleChoices),
-/* harmony export */   "QuestionBase": () => (/* reexport safe */ _components__WEBPACK_IMPORTED_MODULE_4__.QuestionBase),
-/* harmony export */   "SingleChoice": () => (/* reexport safe */ _components__WEBPACK_IMPORTED_MODULE_4__.SingleChoice),
-/* harmony export */   "TrueOrFalse": () => (/* reexport safe */ _components__WEBPACK_IMPORTED_MODULE_4__.TrueOrFalse),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   FillInBlanks: function() { return /* reexport safe */ _components__WEBPACK_IMPORTED_MODULE_4__.FillInBlanks; },
+/* harmony export */   MultipleChoices: function() { return /* reexport safe */ _components__WEBPACK_IMPORTED_MODULE_4__.MultipleChoices; },
+/* harmony export */   QuestionBase: function() { return /* reexport safe */ _components__WEBPACK_IMPORTED_MODULE_4__.QuestionBase; },
+/* harmony export */   SingleChoice: function() { return /* reexport safe */ _components__WEBPACK_IMPORTED_MODULE_4__.SingleChoice; },
+/* harmony export */   TrueOrFalse: function() { return /* reexport safe */ _components__WEBPACK_IMPORTED_MODULE_4__.TrueOrFalse; }
 /* harmony export */ });
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
@@ -634,15 +618,16 @@ class QuestionTypes extends _wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Comp
         }
       });
     };
-    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(TheQuestion, childProps));
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(TheQuestion, {
+      ...childProps
+    }));
   }
 }
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,_wordpress_compose__WEBPACK_IMPORTED_MODULE_1__.compose)((0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.withSelect)((select, _ref) => {
-  let {
-    question: {
-      id
-    }
-  } = _ref;
+/* harmony default export */ __webpack_exports__["default"] = ((0,_wordpress_compose__WEBPACK_IMPORTED_MODULE_1__.compose)((0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.withSelect)((select, {
+  question: {
+    id
+  }
+}) => {
   const {
     getData,
     isCheckedAnswer
@@ -664,7 +649,7 @@ class QuestionTypes extends _wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Comp
 /*!*********************************!*\
   !*** external ["wp","compose"] ***!
   \*********************************/
-/***/ ((module) => {
+/***/ (function(module) {
 
 module.exports = window["wp"]["compose"];
 
@@ -674,7 +659,7 @@ module.exports = window["wp"]["compose"];
 /*!******************************!*\
   !*** external ["wp","data"] ***!
   \******************************/
-/***/ ((module) => {
+/***/ (function(module) {
 
 module.exports = window["wp"]["data"];
 
@@ -684,7 +669,7 @@ module.exports = window["wp"]["data"];
 /*!*********************************!*\
   !*** external ["wp","element"] ***!
   \*********************************/
-/***/ ((module) => {
+/***/ (function(module) {
 
 module.exports = window["wp"]["element"];
 
@@ -694,7 +679,7 @@ module.exports = window["wp"]["element"];
 /*!******************************!*\
   !*** external ["wp","i18n"] ***!
   \******************************/
-/***/ ((module) => {
+/***/ (function(module) {
 
 module.exports = window["wp"]["i18n"];
 
@@ -728,67 +713,65 @@ module.exports = window["wp"]["i18n"];
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	(() => {
+/******/ 	!function() {
 /******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = (module) => {
+/******/ 		__webpack_require__.n = function(module) {
 /******/ 			var getter = module && module.__esModule ?
-/******/ 				() => (module['default']) :
-/******/ 				() => (module);
+/******/ 				function() { return module['default']; } :
+/******/ 				function() { return module; };
 /******/ 			__webpack_require__.d(getter, { a: getter });
 /******/ 			return getter;
 /******/ 		};
-/******/ 	})();
+/******/ 	}();
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	(() => {
+/******/ 	!function() {
 /******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 		__webpack_require__.d = function(exports, definition) {
 /******/ 			for(var key in definition) {
 /******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
 /******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 				}
 /******/ 			}
 /******/ 		};
-/******/ 	})();
+/******/ 	}();
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	(() => {
-/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
-/******/ 	})();
+/******/ 	!function() {
+/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
+/******/ 	}();
 /******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
-/******/ 	(() => {
+/******/ 	!function() {
 /******/ 		// define __esModule on exports
-/******/ 		__webpack_require__.r = (exports) => {
+/******/ 		__webpack_require__.r = function(exports) {
 /******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
 /******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
 /******/ 			}
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
 /******/ 		};
-/******/ 	})();
+/******/ 	}();
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
-(() => {
+!function() {
 /*!*******************************************************!*\
   !*** ./assets/src/apps/js/frontend/question-types.js ***!
   \*******************************************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "FillInBlanks": () => (/* reexport safe */ _question_types_index__WEBPACK_IMPORTED_MODULE_0__.FillInBlanks),
-/* harmony export */   "MultipleChoices": () => (/* reexport safe */ _question_types_index__WEBPACK_IMPORTED_MODULE_0__.MultipleChoices),
-/* harmony export */   "QuestionBase": () => (/* reexport safe */ _question_types_index__WEBPACK_IMPORTED_MODULE_0__.QuestionBase),
-/* harmony export */   "SingleChoice": () => (/* reexport safe */ _question_types_index__WEBPACK_IMPORTED_MODULE_0__.SingleChoice),
-/* harmony export */   "TrueOrFalse": () => (/* reexport safe */ _question_types_index__WEBPACK_IMPORTED_MODULE_0__.TrueOrFalse),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   FillInBlanks: function() { return /* reexport safe */ _question_types_index__WEBPACK_IMPORTED_MODULE_0__.FillInBlanks; },
+/* harmony export */   MultipleChoices: function() { return /* reexport safe */ _question_types_index__WEBPACK_IMPORTED_MODULE_0__.MultipleChoices; },
+/* harmony export */   QuestionBase: function() { return /* reexport safe */ _question_types_index__WEBPACK_IMPORTED_MODULE_0__.QuestionBase; },
+/* harmony export */   SingleChoice: function() { return /* reexport safe */ _question_types_index__WEBPACK_IMPORTED_MODULE_0__.SingleChoice; },
+/* harmony export */   TrueOrFalse: function() { return /* reexport safe */ _question_types_index__WEBPACK_IMPORTED_MODULE_0__.TrueOrFalse; }
 /* harmony export */ });
 /* harmony import */ var _question_types_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./question-types/index */ "./assets/src/apps/js/frontend/question-types/index.js");
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_question_types_index__WEBPACK_IMPORTED_MODULE_0__["default"]);
-})();
-
+/* harmony default export */ __webpack_exports__["default"] = (_question_types_index__WEBPACK_IMPORTED_MODULE_0__["default"]);
+}();
 (window.LP = window.LP || {}).questionTypes = __webpack_exports__;
 /******/ })()
 ;

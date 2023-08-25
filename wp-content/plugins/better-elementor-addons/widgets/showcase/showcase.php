@@ -302,7 +302,7 @@ class Better_Showcase extends Widget_Base {
         $this->add_control(
 			'better_icon_size',
 			[
-				'label' => esc_html__( 'Icon Size', 'plugin-name' ),
+				'label' => esc_html__( 'Icon Size', 'better-el-addons' ),
 				'type' => \Elementor\Controls_Manager::SLIDER,
 				'size_units' => [ 'px', '%' ],
 				'range' => [

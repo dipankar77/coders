@@ -3,8 +3,12 @@ var el = wp.element.createElement,
 	ServerSideRender = wp.serverSideRender,
 	TextControl = wp.components.TextControl,
 	SelectControl = wp.components.SelectControl,
+	BaseControl = wp.components.BaseControl,
+	CheckboxControl = wp.components.CheckboxControl,
 	InspectorControls = wp.blockEditor.InspectorControls,
-	Localize = wp.i18n.__;
+	Localize = wp.i18n.__,
+	ewdUfaqBlocks = ewd_ufaq_blocks,
+	faqCategories = ewdUfaqBlocks.faqCategoryOptions;
 
 registerBlockType( 'ultimate-faqs/ewd-ufaq-display-faq-block', {
 	title: Localize( 'Display FAQs', 'ultimate-faqs' ),
@@ -18,12 +22,48 @@ registerBlockType( 'ultimate-faqs/ewd-ufaq-display-faq-block', {
 		group_by_category: { type: 'string' },
 		faq_accordion: { type: 'string' },
 		category_accordion: { type: 'string' },
+		include_category_array: { type: 'object', default: {} },
 		include_category: { type: 'string' },
 		exclude_category: { type: 'string' },
 		post__in_string: { type: 'string' },
 	},
 
 	edit: function( props ) {
+
+		var include_category_array = props.attributes.include_category_array;
+
+		// convert from the old include_category attribute to the new include_category_array attribute
+		if ( props.attributes.hasOwnProperty( 'include_category' ) && props.attributes.include_category.length ) { 
+			
+			var old_categories = props.attributes.include_category.split( ',' );
+			
+			jQuery( old_categories ).each( function( index, el ) {
+
+				include_category_array[ jQuery.trim( el ) ] = 'true';
+			} );
+			
+			props.setAttributes( { include_category_array: include_category_array } );
+
+			props.setAttributes( { include_category: '' } );
+		}
+
+		var checkboxes = faqCategories.map( function( term ) {
+			var termLabel = term.label;
+			var termSlug = term.slug;
+			
+			return el( CheckboxControl, {
+				label: termLabel,
+				checked: include_category_array[termSlug],
+				onChange: updateFAQCategories.bind( termSlug ),
+			} );
+		} );
+
+		function updateFAQCategories( checked ) {
+			var copy = Object.assign( {}, include_category_array );
+			copy[this] = checked;
+			props.setAttributes( { include_category_array: copy } );
+		}
+
 		var returnString = [];
 		returnString.push(
 			el( InspectorControls, {},
@@ -52,12 +92,12 @@ registerBlockType( 'ultimate-faqs/ewd-ufaq-display-faq-block', {
 					options: [ {value: '', label: 'Default (from settings)'}, {value: 'yes', label: 'Yes'}, {value: 'no', label: 'No'} ],
 					onChange: ( value ) => { props.setAttributes( { category_accordion: value } ); },
 				} ),
-				el( TextControl, {
-					label: Localize( 'Include Category', 'ultimate-faqs' ),
-					help: Localize( 'Comma-separated list of category IDs you\'d like to include.', 'ultimate-faqs' ),
-					value: props.attributes.include_category,
-					onChange: ( value ) => { props.setAttributes( { include_category: value } ); },
-				} ),
+				el(
+					BaseControl, {
+						label: Localize( 'Categories to Include', 'ultimate-faqs' ),
+					}, 
+					checkboxes
+				),
 				el( TextControl, {
 					label: Localize( 'Exclude Category', 'ultimate-faqs' ),
 					help: Localize( 'Comma-separated list of category IDs you\'d like to exclude.', 'ultimate-faqs' ),
@@ -89,20 +129,57 @@ registerBlockType( 'ultimate-faqs/ewd-ufaq-search-block', {
 	icon: 'editor-help',
 	category: 'ewd-ufaq-blocks',
 	attributes: {
+		include_category_array: { type: 'object', default: {} },
 		include_category: { type: 'string' },
 		exclude_category: { type: 'string' },
 		show_on_load: { type: 'string' },
 	},
 
 	edit: function( props ) {
+
+		var include_category_array = props.attributes.include_category_array;
+
+		// convert from the old include_category attribute to the new include_category_array attribute
+		if ( props.attributes.hasOwnProperty( 'include_category' ) && props.attributes.include_category.length ) { 
+			
+			var old_categories = props.attributes.include_category.split( ',' );
+			
+			jQuery( old_categories ).each( function( index, el ) {
+
+				include_category_array[ el ] = 'true';
+			} );
+			
+			props.setAttributes( { include_category_array: include_category_array } );
+
+			props.setAttributes( { include_category: '' } );
+		}
+
+		var checkboxes = faqCategories.map( function( term ) {
+			var termLabel = term.label;
+			var termSlug = term.slug;
+			
+			return el( CheckboxControl, {
+				label: termLabel,
+				checked: include_category_array[termSlug],
+				onChange: updateFAQCategories.bind( termSlug ),
+			} );
+		} );
+
+		function updateFAQCategories( checked ) {
+			var copy = Object.assign( {}, include_category_array );
+			copy[this] = checked;
+			props.setAttributes( { include_category_array: copy } );
+		}
+
 		var returnString = [];
 		returnString.push(
 			el( InspectorControls, {},
-				el( TextControl, {
-					label: Localize( 'Include Category', 'ultimate-faqs' ),
-					value: props.attributes.include_category,
-					onChange: ( value ) => { props.setAttributes( { include_category: value } ); },
-				} ),
+				el(
+					BaseControl, {
+						label: Localize( 'Categories to Include', 'ultimate-faqs' ),
+					}, 
+					checkboxes
+				),
 				el( TextControl, {
 					label: Localize( 'Exclude Category', 'ultimate-faqs' ),
 					value: props.attributes.exclude_category,
@@ -118,6 +195,7 @@ registerBlockType( 'ultimate-faqs/ewd-ufaq-search-block', {
 		);
 		returnString.push( el( ServerSideRender, { 
 			block: 'ultimate-faqs/ewd-ufaq-search-block',
+			attributes: props.attributes
 		} ) );
 		return returnString;
 	},

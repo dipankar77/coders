@@ -15,7 +15,7 @@ class LP_Database {
 	public $wpdb, $tb_users;
 	public $tb_lp_user_items, $tb_lp_user_itemmeta;
 	public $tb_posts, $tb_postmeta, $tb_options;
-	public $tb_terms, $tb_term_relationships;
+	public $tb_terms, $tb_term_relationships, $tb_term_taxonomy;
 	public $tb_lp_order_items, $tb_lp_order_itemmeta;
 	public $tb_lp_sections, $tb_lp_section_items;
 	public $tb_lp_quiz_questions;
@@ -24,6 +24,7 @@ class LP_Database {
 	public $tb_lp_question_answermeta;
 	public $tb_lp_upgrade_db;
 	public $tb_lp_sessions;
+	public $tb_lp_files;
 	private $collate         = '';
 	public $max_index_length = '191';
 
@@ -41,6 +42,7 @@ class LP_Database {
 		$this->tb_options                = $wpdb->options;
 		$this->tb_terms                  = $wpdb->terms;
 		$this->tb_term_relationships     = $wpdb->term_relationships;
+		$this->tb_term_taxonomy          = $wpdb->term_taxonomy;
 		$this->tb_lp_user_items          = $prefix . 'learnpress_user_items';
 		$this->tb_lp_user_itemmeta       = $prefix . 'learnpress_user_itemmeta';
 		$this->tb_lp_order_items         = $prefix . 'learnpress_order_items';
@@ -53,6 +55,7 @@ class LP_Database {
 		$this->tb_lp_question_answermeta = $prefix . 'learnpress_question_answermeta';
 		$this->tb_lp_upgrade_db          = $prefix . 'learnpress_upgrade_db';
 		$this->tb_lp_sessions            = $prefix . 'learnpress_sessions';
+		$this->tb_lp_files               = $prefix . 'learnpress_files';
 		$this->wpdb->hide_errors();
 		$this->set_collate();
 	}
@@ -552,9 +555,9 @@ class LP_Database {
 	 * @param int $limit
 	 * @param int $total_rows
 	 *
-	 * @return false|float
+	 * @return int
 	 */
-	public static function get_total_pages( int $limit = 0, int $total_rows = 0 ) {
+	public static function get_total_pages( int $limit = 0, int $total_rows = 0 ): int {
 		if ( $limit == 0 ) {
 			return 0;
 		}
@@ -564,13 +567,13 @@ class LP_Database {
 			$total_pages++;
 		}
 
-		return $total_pages;
+		return (int) $total_pages;
 	}
 
 	/**
 	 * Get result query
 	 *
-	 * @return array|null|int|string
+	 * @return array|object|null|int|string
 	 * @throws Exception
 	 * @author tungnx
 	 * @version 1.0.0
@@ -624,7 +627,7 @@ class LP_Database {
 				$filter->order = 'DESC';
 			}
 
-			$ORDER_BY .= 'ORDER BY ' . sanitize_sql_orderby( $filter->order_by ) . ' ' . $filter->order . ' ';
+			$ORDER_BY .= 'ORDER BY ' . $filter->order_by . ' ' . $filter->order . ' ';
 			$ORDER_BY  = apply_filters( 'lp/query/order_by', $ORDER_BY, $filter );
 		}
 

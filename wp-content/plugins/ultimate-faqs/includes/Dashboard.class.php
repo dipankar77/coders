@@ -218,7 +218,7 @@ class ewdufaqDashboard {
 
 								echo apply_filters( 'ewd_trial_button', $trial_info, 'UFAQ' );
 							} ?>
-				</div>
+						</div>
 					</div>
 				<?php } ?>
 		

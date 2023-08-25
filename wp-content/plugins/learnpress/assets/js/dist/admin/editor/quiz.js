@@ -1,17 +1,14 @@
-/******/ (() => { // webpackBootstrap
+/******/ (function() { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
 /***/ "./assets/src/apps/js/admin/editor/actions/modal-quiz-items.js":
 /*!*********************************************************************!*\
   !*** ./assets/src/apps/js/admin/editor/actions/modal-quiz-items.js ***!
   \*********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 const ModalQuizItems = {
   toggle: function (context) {
     context.commit('TOGGLE');
@@ -76,7 +73,7 @@ const ModalQuizItems = {
     }
   }
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ModalQuizItems);
+/* harmony default export */ __webpack_exports__["default"] = (ModalQuizItems);
 
 /***/ }),
 
@@ -84,13 +81,10 @@ const ModalQuizItems = {
 /*!******************************************************************!*\
   !*** ./assets/src/apps/js/admin/editor/actions/question-list.js ***!
   \******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 const $ = window.jQuery;
 const QuestionList = {
   toggleAll: function (context) {
@@ -364,7 +358,7 @@ const QuestionList = {
     });
   }
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (QuestionList);
+/* harmony default export */ __webpack_exports__["default"] = (QuestionList);
 
 /***/ }),
 
@@ -372,13 +366,10 @@ const QuestionList = {
 /*!*********************************************************!*\
   !*** ./assets/src/apps/js/admin/editor/actions/quiz.js ***!
   \*********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 const Quiz = {
   heartbeat: function (context) {
     LP.Request({
@@ -405,7 +396,7 @@ const Quiz = {
     }
   }
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Quiz);
+/* harmony default export */ __webpack_exports__["default"] = (Quiz);
 
 /***/ }),
 
@@ -413,7 +404,7 @@ const Quiz = {
 /*!***********************************************************!*\
   !*** ./assets/src/apps/js/admin/editor/fill-in-blanks.js ***!
   \***********************************************************/
-/***/ (() => {
+/***/ (function() {
 
 (function ($) {
   window.FIB = {
@@ -486,13 +477,10 @@ const Quiz = {
 /*!*********************************************************************!*\
   !*** ./assets/src/apps/js/admin/editor/getters/modal-quiz-items.js ***!
   \*********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 const ModalQuizItems = {
   status: function (state) {
     return state.status;
@@ -522,7 +510,7 @@ const ModalQuizItems = {
     return state.quizId;
   }
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ModalQuizItems);
+/* harmony default export */ __webpack_exports__["default"] = (ModalQuizItems);
 
 /***/ }),
 
@@ -530,13 +518,10 @@ const ModalQuizItems = {
 /*!******************************************************************!*\
   !*** ./assets/src/apps/js/admin/editor/getters/question-list.js ***!
   \******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 const QuestionList = {
   listQuestions: function (state) {
     return state.questions || [];
@@ -578,7 +563,7 @@ const QuestionList = {
     return state.statusUpdateQuestionAnswer;
   }
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (QuestionList);
+/* harmony default export */ __webpack_exports__["default"] = (QuestionList);
 
 /***/ }),
 
@@ -586,13 +571,10 @@ const QuestionList = {
 /*!*********************************************************!*\
   !*** ./assets/src/apps/js/admin/editor/getters/quiz.js ***!
   \*********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 const Quiz = {
   heartbeat: function (state) {
     return state.heartbeat;
@@ -619,7 +601,7 @@ const Quiz = {
     return state.nonce;
   }
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Quiz);
+/* harmony default export */ __webpack_exports__["default"] = (Quiz);
 
 /***/ }),
 
@@ -627,12 +609,12 @@ const Quiz = {
 /*!*************************************************!*\
   !*** ./assets/src/apps/js/admin/editor/http.js ***!
   \*************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ HTTP)
+/* harmony export */   "default": function() { return /* binding */ HTTP; }
 /* harmony export */ });
 function HTTP(options) {
   const $ = window.jQuery || jQuery;
@@ -691,13 +673,10 @@ function HTTP(options) {
 /*!***********************************************************************!*\
   !*** ./assets/src/apps/js/admin/editor/mutations/modal-quiz-items.js ***!
   \***********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 const ModalQuizItems = {
   TOGGLE: function (state) {
     state.open = !state.open;
@@ -735,7 +714,7 @@ const ModalQuizItems = {
     state.status = 'fail';
   }
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ModalQuizItems);
+/* harmony default export */ __webpack_exports__["default"] = (ModalQuizItems);
 
 /***/ }),
 
@@ -743,13 +722,10 @@ const ModalQuizItems = {
 /*!********************************************************************!*\
   !*** ./assets/src/apps/js/admin/editor/mutations/question-list.js ***!
   \********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 var $ = window.jQuery;
 const QuestionList = {
   SORT_QUESTIONS: function (state, orders) {
@@ -912,7 +888,7 @@ const QuestionList = {
     });
   }
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (QuestionList);
+/* harmony default export */ __webpack_exports__["default"] = (QuestionList);
 
 /***/ }),
 
@@ -920,13 +896,10 @@ const QuestionList = {
 /*!***********************************************************!*\
   !*** ./assets/src/apps/js/admin/editor/mutations/quiz.js ***!
   \***********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 const Quiz = {
   UPDATE_HEART_BEAT: function (state, status) {
     state.heartbeat = !!status;
@@ -944,7 +917,7 @@ const Quiz = {
     state.countCurrentRequest--;
   }
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Quiz);
+/* harmony default export */ __webpack_exports__["default"] = (Quiz);
 
 /***/ }),
 
@@ -952,13 +925,10 @@ const Quiz = {
 /*!*******************************************************!*\
   !*** ./assets/src/apps/js/admin/editor/store/i18n.js ***!
   \*******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 const $ = window.jQuery || jQuery;
 const i18n = function i18n(i18n) {
   const state = $.extend({}, i18n);
@@ -973,7 +943,7 @@ const i18n = function i18n(i18n) {
     getters: getters
   };
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (i18n);
+/* harmony default export */ __webpack_exports__["default"] = (i18n);
 
 /***/ }),
 
@@ -981,13 +951,10 @@ const i18n = function i18n(i18n) {
 /*!*******************************************************************!*\
   !*** ./assets/src/apps/js/admin/editor/store/modal-quiz-items.js ***!
   \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 /* harmony import */ var _getters_modal_quiz_items__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../getters/modal-quiz-items */ "./assets/src/apps/js/admin/editor/getters/modal-quiz-items.js");
 /* harmony import */ var _mutations_modal_quiz_items__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../mutations/modal-quiz-items */ "./assets/src/apps/js/admin/editor/mutations/modal-quiz-items.js");
 /* harmony import */ var _actions_modal_quiz_items__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../actions/modal-quiz-items */ "./assets/src/apps/js/admin/editor/actions/modal-quiz-items.js");
@@ -1009,7 +976,7 @@ const Quiz = function (data) {
     actions: _actions_modal_quiz_items__WEBPACK_IMPORTED_MODULE_2__["default"]
   };
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Quiz);
+/* harmony default export */ __webpack_exports__["default"] = (Quiz);
 
 /***/ }),
 
@@ -1017,13 +984,10 @@ const Quiz = function (data) {
 /*!****************************************************************!*\
   !*** ./assets/src/apps/js/admin/editor/store/question-list.js ***!
   \****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 /* harmony import */ var _getters_question_list__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../getters/question-list */ "./assets/src/apps/js/admin/editor/getters/question-list.js");
 /* harmony import */ var _mutations_question_list__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../mutations/question-list */ "./assets/src/apps/js/admin/editor/mutations/question-list.js");
 /* harmony import */ var _actions_question_list__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../actions/question-list */ "./assets/src/apps/js/admin/editor/actions/question-list.js");
@@ -1054,7 +1018,7 @@ const QuestionList = function QuestionList(data) {
     actions: _actions_question_list__WEBPACK_IMPORTED_MODULE_2__["default"]
   };
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (QuestionList);
+/* harmony default export */ __webpack_exports__["default"] = (QuestionList);
 
 /***/ }),
 
@@ -1062,13 +1026,10 @@ const QuestionList = function QuestionList(data) {
 /*!*******************************************************!*\
   !*** ./assets/src/apps/js/admin/editor/store/quiz.js ***!
   \*******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 /* harmony import */ var _getters_quiz__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../getters/quiz */ "./assets/src/apps/js/admin/editor/getters/quiz.js");
 /* harmony import */ var _mutations_quiz__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../mutations/quiz */ "./assets/src/apps/js/admin/editor/mutations/quiz.js");
 /* harmony import */ var _actions_quiz__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../actions/quiz */ "./assets/src/apps/js/admin/editor/actions/quiz.js");
@@ -1100,7 +1061,7 @@ const Quiz = function Quiz(data) {
     }
   };
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Quiz);
+/* harmony default export */ __webpack_exports__["default"] = (Quiz);
 
 /***/ })
 
@@ -1132,49 +1093,49 @@ const Quiz = function Quiz(data) {
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	(() => {
+/******/ 	!function() {
 /******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = (module) => {
+/******/ 		__webpack_require__.n = function(module) {
 /******/ 			var getter = module && module.__esModule ?
-/******/ 				() => (module['default']) :
-/******/ 				() => (module);
+/******/ 				function() { return module['default']; } :
+/******/ 				function() { return module; };
 /******/ 			__webpack_require__.d(getter, { a: getter });
 /******/ 			return getter;
 /******/ 		};
-/******/ 	})();
+/******/ 	}();
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	(() => {
+/******/ 	!function() {
 /******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 		__webpack_require__.d = function(exports, definition) {
 /******/ 			for(var key in definition) {
 /******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
 /******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 				}
 /******/ 			}
 /******/ 		};
-/******/ 	})();
+/******/ 	}();
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	(() => {
-/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
-/******/ 	})();
+/******/ 	!function() {
+/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
+/******/ 	}();
 /******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
-/******/ 	(() => {
+/******/ 	!function() {
 /******/ 		// define __esModule on exports
-/******/ 		__webpack_require__.r = (exports) => {
+/******/ 		__webpack_require__.r = function(exports) {
 /******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
 /******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
 /******/ 			}
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
 /******/ 		};
-/******/ 	})();
+/******/ 	}();
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
-(() => {
+!function() {
 "use strict";
 /*!*************************************************!*\
   !*** ./assets/src/apps/js/admin/editor/quiz.js ***!
@@ -1209,8 +1170,7 @@ window.jQuery(document).ready(function () {
     });
   }, 100);
 });
-})();
-
+}();
 /******/ })()
 ;
 //# sourceMappingURL=quiz.js.map

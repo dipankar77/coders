@@ -566,6 +566,18 @@ class Better_Slider extends Widget_Base {
 				],
             ]
         );
+        $this->add_control(
+			'speed',
+			[
+				'label' => __('Slider Speed', 'better-el-addons'),
+				'type' => Controls_Manager::NUMBER,
+				'default' => 3000,
+				'condition' => [
+					'better_slider_style' => array('1')
+				]
+
+			]
+		);
 		$this->end_controls_section();
 
 
@@ -1037,6 +1049,7 @@ class Better_Slider extends Widget_Base {
 	 */
 	protected function render() {
 		$settings = $this->get_settings(); 
+		$speed = $settings['speed'] ? $settings['speed'] : 3000;
 		$show_paging = $settings['show_paging'] ? 'show' : '';
 		$style = $settings['better_slider_style'];	
 		require( 'styles/style'.$style.'.php' );

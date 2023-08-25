@@ -5,7 +5,7 @@ Tags: elearning, education, course, lms, learning management system
 Requires at least: 5.8
 Tested up to: 6.2
 Requires PHP: 7.0
-Stable tag: 4.2.2.4
+Stable tag: 4.2.3.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -15,7 +15,8 @@ A WordPress LMS Plugin to create WordPress Learning Management System. Turn your
 
 **<a href="https://thimpress.com/learnpress/" target="_blank">WordPress LMS Plugin</a>** - LearnPress is a comprehensive *WordPress LMS Plugin* for WordPress. This is one of the best WordPress LMS Plugins which can be used to easily create & sell courses online. You can create a course curriculum with lessons & quizzes included which is managed with an easy-to-use interface for users. Having this WordPress LMS Plugin, now you have a chance to quickly and easily create education, online school, online-course websites with no coding knowledge required.
 
-<a href="https://edupress.thimpress.com" target="_blank">Live Demo</a> | <a href="https://docspress.thimpress.com/learnpress-4-0/?utm_source=WPORG&utm_medium=LP&utm_campaign=Content" target="_blank">Documentation</a> | <a href="https://thimpress.com/forums/forum/plugins/learnpress-plugin/?utm_source=WPORG&utm_medium=LP&utm_campaign=Content" target="_blank">Support</a>
+<a href="https://edupress.thimpress.com" target="_blank">Live Demo</a> | <a href="https://docs.thimpress.com/learnpress/?utm_source=WPORG&utm_medium=LP&utm_campaign=Content" target="_blank">Documentation</a> | <a href="https://thimpress.com/forums/forum/plugins/learnpress-plugin/?utm_source=WPORG&utm_medium=LP&utm_campaign=Content" target="_blank">Support</a>
+<a href="https://thimpress.com/product/education-wordpress-starter-theme-for-learnpress/?utm_source=WPORG&utm_medium=LP&utm_campaign=Content">Free LearnPress Theme</a>
 <a href="https://1.envato.market/G5Ook" target="_blank">LearnPress Themes</a>
 <a href="https://thimpress.com/eduma-mobile-app/?utm_source=WPORG&utm_medium=LP&utm_campaign=Content" target="_blank">LearnPress Mobile App</a>
 <a href="https://thimpress.com/product/learnpress-pro/?utm_source=WPORG&utm_medium=LP&utm_campaign=Content" target="_blank">LearnPress PRO Bundle</a>
@@ -77,7 +78,7 @@ Education should be free and we want you to bring it to as many people as you ca
 **LearnPress is actively developed**
 We are developing and improving LearnPress day by day and bringing you more new features cos we want LearnPress to become the **best WordPress LMS plugin**.
 
-<a href="https://docspress.thimpress.com/learnpress-4-0" target="_blank">LearnPress WordPress LMS Plugin Documentation</a>
+<a href="https://docs.thimpress.com/learnpress/" target="_blank">LearnPress WordPress LMS Plugin Documentation</a>
 
 ###Free Add-ons for LearnPress WordPress LMS Plugin###
 
@@ -173,7 +174,7 @@ Any suggestions for this WordPress LMS Plugin? Send us via email: support@thimpr
 LearnPress is a plugin for LMS website to spread out courses and sell courses online.
 
 = Where can I find LearnPress documentation and user guides? =
-If you want to use LearnPress to build a Learning Management System website, please refer to our user guides in <a href="https://docspress.thimpress.com/learnpress-4-0/" target="_blank">LearnPress official site.</a>
+If you want to use LearnPress to build a Learning Management System website, please refer to our user guides in <a href="https://docs.thimpress.com/learnpress/" target="_blank">LearnPress official site.</a>
 And if you want to extend or use LearnPress, see our <a href="https://github.com/LearnPress/LearnPress/wiki" target="_blank">Wiki.</a>
 
 = Where can I get support or talk to other users? =
@@ -188,7 +189,7 @@ You can send us your thoughts through via email: support@thimpress.com
 You can also report bugs on LearnPress Support Forum or LearnPress <a href="https://github.com/LearnPress/LearnPress/" target="_blank">Github Repository</a>.
 
 = Where can I find the REST API documentation? =
-You can find the REST API documentation <a href="https://docspress.thimpress.com/developer-learnpress/#sections-6">here</a>.
+You can find the REST API documentation <a href="https://docs.thimpress.com/learnpress/developer-guide/">here</a>.
 
 = LearnPress is great, can I contribute to it? =
 Yes, you can and we appreciate it. Join in our <a href="https://github.com/LearnPress/LearnPress/" target="_blank">Github Repository</a>.
@@ -208,6 +209,62 @@ https://www.transifex.com/projects/p/learnpress/
 8. Add-ons of LearnPress.
 
 == Changelog ==
+
+= 4.2.3.4 (2023-08-24) =
+~ Fixed: error when use same namespace class JWT library, with some plugin like Google Listings and Ads.
+
+= 4.2.3.3 (2023-08-08) =
+~ Added: feature choose type Pagination when load courses on page Archive: navigation Number, Load more, Infinite scroll.
+~ Added: feature "Downloadable Materials", manager can upload files document for each course, lesson, so student can download it.
+~ Fixed: error with WPML, show wrong list courses with lang.
+~ Fixed: sidebar Course Filter show wrong with Firefox.
+~ Fixed: error fonts tiny with theme OceanWP.
+~ Fixed: error 404 when view item's course with Polylang.
+~ Fixed: SEO, show title of Category & Tag of Courses.
+~ Tweak: checkout function.
+
+= 4.2.3.2 (2023-07-19) =
+~ Added: widget filter courses, option enable fields want to filter, sort fields, option load widget on REST.
+~ Added: Search course suggest (AJAX).
+~ Added: shortcode filter courses [learn_press_filter_course].
+~ Fixed: error install/update Addon.
+
+= 4.2.3.1 (2023-07-05) =
+~ Fixed: Security.
+~ Item Course: completed, display Date Time by format WP.
+~ Tweak: message of LearnPress.
+~ Fixed: function “Add course to Order manual”
+
+= 4.2.3 (2023-07-03) =
+~ Added: page list instructors.
+~ Added: page single instructor.
+~ Added: option set number instructor per page.
+~ Added: shortcode show list instructors [learn_press_instructors].
+~ Added: shortcode show single instructor [learn_press_single_instructor].
+~ Auto add shortcode if page is list instructors or single instructor, if enable Elementor will not auto add.
+~ Added: Widgets For Elementor: list instructors, instructor title, instructor description.
+~ Added: Template default for list instructors on path "config/elementor/template-default", can import via Elementor.
+~ Tweak: Widgets For Elementor: list courses, become a teacher, login form, register form.
+~ Profile: added tab My Courses, display course attend of User.
+~ Profile: tab My Courses, display statistic: total course enrolled, course in-progress, course finish, course passed, course failed.
+~ Profile: tweak tab Courses, display course created by User (Admin, Instructor).
+~ Profile: tab Courses, display statistic: total course created, course publish, course pending, total student, student in-progress.
+~ Tweak: set default section_per_page, course_item_per_page = -1 to load full.
+~ Added: format_human_time_diff method.
+~ Tweak: get cart from session.
+~ Check: $course->get_instructor() is null.
+~ Added: hook do_action( 'lp/order-completed/update/user-item', $item, $order ), for case buy item not course.
+~ Added: hook do_action( 'lp/order-pending/update/user-item', $item, $order ), for case buy item not course.
+~ Added: nest_elements, print_sections methods on class Template, for easy override template without override file.
+~ Tweak: statistic student/instructor on profile page.
+~ Added: method "count_courses_of_author" instead "count_courses_publish_of_author"
+~ Tweak: method "count_status_by_items"
+~ Profile: added text "upload" translate on localize script.
+~ Apply: add internal scripts to head on page List Instructors.
+~ Fixed: error buy item with Guest, order is no item.
+~ Fixed: Security Broken Access Control.
+~ Added: hook login/register of WP on page LP Checkout for plugin captcha display.
+~ Fixed: error 404 function comment on the lesson.
 
 = 4.2.2.4 (2023-04-04) =
 ~ Compatible theme Gutenberg.
@@ -966,5 +1023,5 @@ In this version, we have to change the database structure, so that if you have i
 In this version, we have changed a little bit about LearnPress Plugin directory structure and moved all add-ons to become independent plugins. If you face any problems related to add-ons, please completely remove old version and re-install LearnPress. It does not affect your current data. Thank you.
 
 == Other note ==
-<a href="https://docspress.thimpress.com/learnpress-4-0/" target="_blank">Documentation</a> is available in ThimPress site.
+<a href="https://docs.thimpress.com/learnpress/" target="_blank">Documentation</a> is available in ThimPress site.
 <a href="https://github.com/LearnPress/LearnPress/" target="_blank">LearnPress github repo</a>.

@@ -150,7 +150,7 @@ class ewdufaqView extends ewdufaqBase {
 			if ( $ewd_ufaq_controller->settings->get_setting( 'styling-toggle-border-size' ) != '' ) { $css .= '.ewd-ufaq-post-margin-symbol { border-width: ' . $ewd_ufaq_controller->settings->get_setting( 'styling-toggle-border-size' ) . ' !important; }'; }
 			if ( $ewd_ufaq_controller->settings->get_setting( 'styling-toggle-border-color' ) != '' ) { $css .= '.ewd-ufaq-post-margin-symbol { border-color: ' . $ewd_ufaq_controller->settings->get_setting( 'styling-toggle-border-color' ) . ' !important; }'; }
 			if ( $ewd_ufaq_controller->settings->get_setting( 'styling-toggle-border-radius' ) != '' ) { $css .= '.ewd-ufaq-post-margin-symbol { border-radius: ' . $ewd_ufaq_controller->settings->get_setting( 'styling-toggle-border-radius' ) . ' !important; }'; }
-			if ( $ewd_ufaq_controller->settings->get_setting( 'styling-toggle-symbol-size' ) != '' ) { $css .= '.ewd-ufaq-post-margin-symbol { font-size: ' . $ewd_ufaq_controller->settings->get_setting( 'styling-toggle-symbol-size' ) . ' !important; }'; }
+			if ( $ewd_ufaq_controller->settings->get_setting( 'styling-toggle-symbol-size' ) != '' ) { $css .= '.ewd-ufaq-faq-title .ewd-ufaq-post-margin-symbol span { font-size: ' . $ewd_ufaq_controller->settings->get_setting( 'styling-toggle-symbol-size' ) . ' !important; }'; }
 			
 			if ( $ewd_ufaq_controller->settings->get_setting( 'styling-block-background-color' ) != '' ) { 
 

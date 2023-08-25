@@ -4,11 +4,10 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitd9d3dcc1572b67d66b72324849a8befc
+class ComposerStaticInit044151a9a14b6e089c398c934d01d44c
 {
     public static $files = array (
         '2007ccaa29a9efd0493ee82176c977d1' => __DIR__ . '/..' . '/wpwhitesecurity/import-export-plugin-settings/SettingsImportExport.php',
-        'ed8f7d07f343dc9e7c5d31cc6cd4019b' => __DIR__ . '/..' . '/wpwhitesecurity/select2-wpwhitesecurity/load.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -36,6 +35,7 @@ class ComposerStaticInitd9d3dcc1572b67d66b72324849a8befc
         'RFormatter' => __DIR__ . '/../..' . '/classes/Ref.php',
         'RHtmlFormatter' => __DIR__ . '/../..' . '/classes/Ref.php',
         'RTextFormatter' => __DIR__ . '/../..' . '/classes/Ref.php',
+        'Tools\\Select2_WPWS' => __DIR__ . '/../..' . '/classes/Select2/class-select2-wpws.php',
         'WSAL\\Actions\\Pluging_Installer' => __DIR__ . '/../..' . '/classes/Actions/class-plugin-installer.php',
         'WSAL\\Adapter\\WSAL_Adapters_MySQL_ActiveRecord' => __DIR__ . '/../..' . '/classes/Adapters/MySQL/ActiveRecordAdapter.php',
         'WSAL\\Adapter\\WSAL_Adapters_MySQL_Meta' => __DIR__ . '/../..' . '/classes/Adapters/MySQL/MetaAdapter.php',
@@ -178,9 +178,9 @@ class ComposerStaticInitd9d3dcc1572b67d66b72324849a8befc
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitd9d3dcc1572b67d66b72324849a8befc::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitd9d3dcc1572b67d66b72324849a8befc::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitd9d3dcc1572b67d66b72324849a8befc::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit044151a9a14b6e089c398c934d01d44c::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit044151a9a14b6e089c398c934d01d44c::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit044151a9a14b6e089c398c934d01d44c::$classMap;
 
         }, null, ClassLoader::class);
     }

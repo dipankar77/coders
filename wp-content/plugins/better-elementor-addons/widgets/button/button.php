@@ -218,7 +218,7 @@ class Better_Button extends Widget_Base {
 		$this->add_responsive_control(
 			'button_padding',
 			[
-				'label' => __( 'Padding', 'plugin-name' ),
+				'label' => __( 'Padding', 'better-el-addons' ),
 				'type' => \Elementor\Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%' ],
 				'selectors' => [
@@ -353,5 +353,4 @@ class Better_Button extends Widget_Base {
 		
 	}
 }
-
 

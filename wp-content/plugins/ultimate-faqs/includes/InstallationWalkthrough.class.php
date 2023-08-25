@@ -141,12 +141,19 @@ class ewdufaqInstallationWalkthrough {
 
 		$args = array(
 			'post_title' => isset($_POST['faq_page_title'] ) ? sanitize_text_field( $_POST['faq_page_title'] ) : '',
-			'post_content' => '<!-- wp:paragraph --><p> [ultimate-faqs] </p><!-- /wp:paragraph -->',
+			'post_content' => '<!-- wp:paragraph --><p></p><!-- /wp:paragraph -->',
 			'post_status' => 'publish',
 			'post_type' => 'page'
 		);
 
-		wp_insert_post( $args );
+		$post_id = wp_insert_post( $args );
+
+		if ( $post_id ) {
+
+			$ewd_ufaq_controller->settings->set_setting( 'faq-page', $post_id );
+
+			$ewd_ufaq_controller->settings->save_settings();
+		}
 
 		exit();
 	}

@@ -1,16 +1,16 @@
-/******/ (() => { // webpackBootstrap
+/******/ (function() { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
 /***/ "./assets/src/apps/js/frontend/profile/avatar.js":
 /*!*******************************************************!*\
   !*** ./assets/src/apps/js/frontend/profile/avatar.js ***!
   \*******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ Avatar)
+/* harmony export */   "default": function() { return /* binding */ Avatar; }
 /* harmony export */ });
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
@@ -208,7 +208,7 @@ function Avatar() {
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     className: `learnpress_avatar__button learnpress_avatar__button--save ${loading?.save ? 'learnpress_avatar__button--loading' : ''}`,
     onClick: updateAvatar
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Save', 'learnpress')))) : (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, lpProfileSettings.text_save))) : (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "learnpress_avatar__cropper"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
     src: file,
@@ -216,10 +216,10 @@ function Avatar() {
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     className: `learnpress_avatar__button learnpress_avatar__button--replace`,
     onClick: () => fileInput.current && fileInput.current.click()
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Replace', 'learnpress')), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+  }, lpProfileSettings.text_replace), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     className: `learnpress_avatar__button learnpress_avatar__button--remove ${loading?.remove ? 'learnpress_avatar__button--loading' : ''}`,
     onClick: removeAvatar
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Remove', 'learnpress'))))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("form", {
+  }, lpProfileSettings.text_remove)))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("form", {
     style: {
       display: !file ? '' : 'none'
     }
@@ -243,7 +243,7 @@ function Avatar() {
     d: "M482 152h60q8 0 8 8v704q0 8-8 8h-60q-8 0-8-8V160q0-8 8-8z"
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("path", {
     d: "M176 474h672q8 0 8 8v60q0 8-8 8H176q-8 0-8-8v-60q0-8 8-8z"
-  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Upload', 'learnpress')))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, lpProfileSettings.text_upload))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
     ref: fileInput,
     type: "file",
     id: "avatar-file",
@@ -294,9 +294,9 @@ function getRadianAngle(degreeValue) {
 /**
  * Returns the new bounding area of a rotated rectangle.
  *
- * @param  width
- * @param  height
- * @param  rotation
+ * @param width
+ * @param height
+ * @param rotation
  */
 function rotateSize(width, height, rotation) {
   const rotRad = getRadianAngle(rotation);
@@ -309,17 +309,15 @@ function rotateSize(width, height, rotation) {
 /**
  * This function was adapted from the one in the ReadMe of https://github.com/DominicTobias/react-image-crop
  *
- * @param  imageSrc
- * @param  pixelCrop
- * @param  rotation
- * @param  flip
+ * @param imageSrc
+ * @param pixelCrop
+ * @param rotation
+ * @param flip
  */
-async function getCroppedImg(imageSrc, pixelCrop) {
-  let rotation = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
-  let flip = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {
-    horizontal: false,
-    vertical: false
-  };
+async function getCroppedImg(imageSrc, pixelCrop, rotation = 0, flip = {
+  horizontal: false,
+  vertical: false
+}) {
   const image = await createImage(imageSrc);
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
@@ -364,17 +362,112 @@ async function getCroppedImg(imageSrc, pixelCrop) {
 
 /***/ }),
 
-/***/ "./assets/src/apps/js/frontend/profile/course-tab.js":
-/*!***********************************************************!*\
-  !*** ./assets/src/apps/js/frontend/profile/course-tab.js ***!
-  \***********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "./assets/src/apps/js/frontend/profile/course-list.js":
+/*!************************************************************!*\
+  !*** ./assets/src/apps/js/frontend/profile/course-list.js ***!
+  \************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "default": function() { return /* binding */ CourseList; }
 /* harmony export */ });
+/* harmony import */ var _wordpress_url__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/url */ "@wordpress/url");
+/* harmony import */ var _wordpress_url__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_url__WEBPACK_IMPORTED_MODULE_0__);
+
+const contentAreaNode = document.querySelector('.lp-content-area');
+let containerNode;
+let query = {};
+function CourseList() {
+  containerNode = document.querySelector('.learnpress-course-container');
+  if (!containerNode) {
+    return;
+  }
+  const data = JSON.parse(containerNode.querySelector('.lp_profile_data').value);
+  query = {
+    ...data,
+    c_author: data?.userID,
+    template: 'user_not_publish'
+  };
+  getCourses(query);
+  pagination();
+}
+const getCourses = queryParam => {
+  containerNode.style.opacity = 0.4;
+  wp.apiFetch({
+    path: (0,_wordpress_url__WEBPACK_IMPORTED_MODULE_0__.addQueryArgs)('lp/v1/courses/archive-course', queryParam),
+    method: 'GET'
+  }).then(res => {
+    if (res.data.content !== undefined) {
+      containerNode.innerHTML = res.data.content;
+    }
+
+    //pagination
+    if (contentAreaNode) {
+      const paginationNode = document.querySelector('.learn-press-pagination');
+      if (paginationNode) {
+        paginationNode.remove();
+      }
+      if (res.data.pagination !== undefined) {
+        contentAreaNode.insertAdjacentHTML('beforeend', res.data.pagination);
+      }
+    }
+  }).catch(err => {
+    console.log(err);
+  }).finally(() => {
+    if (queryParam.paged) {
+      const optionScroll = {
+        behavior: 'smooth'
+      };
+      containerNode.scrollIntoView(optionScroll);
+    }
+    containerNode.style.opacity = 1;
+  });
+};
+const pagination = () => {
+  document.addEventListener('click', function (event) {
+    const target = event.target;
+    const pagination = target.closest('.learn-press-pagination');
+    if (!pagination) {
+      return;
+    }
+    let pageLinkNode;
+    if (target.tagName.toLowerCase() === 'a') {
+      pageLinkNode = target;
+    } else if (target.closest('a.page-numbers')) {
+      pageLinkNode = target.closest('a.page-numbers');
+    } else {
+      return;
+    }
+    event.preventDefault();
+    const currentPage = parseInt(pagination.querySelector('.current').innerHTML);
+    let paged;
+    if (pageLinkNode.classList.contains('next')) {
+      paged = currentPage + 1;
+    } else if (pageLinkNode.classList.contains('prev')) {
+      paged = currentPage - 1;
+    } else {
+      paged = pageLinkNode.innerHTML;
+    }
+    query = {
+      ...query,
+      paged
+    };
+    getCourses(query);
+  });
+};
+
+/***/ }),
+
+/***/ "./assets/src/apps/js/frontend/profile/course-tab.js":
+/*!***********************************************************!*\
+  !*** ./assets/src/apps/js/frontend/profile/course-tab.js ***!
+  \***********************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_url__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/url */ "@wordpress/url");
 /* harmony import */ var _wordpress_url__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_url__WEBPACK_IMPORTED_MODULE_0__);
 
@@ -382,9 +475,7 @@ __webpack_require__.r(__webpack_exports__);
 // Rest API load content course enrolled, created - Nhamdv.
 const courseTab = () => {
   const elements = document.querySelectorAll('.learn-press-course-tab__filter__content');
-  const getResponse = function (ele, dataset) {
-    let append = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-    let viewMoreEle = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+  const getResponse = (ele, dataset, append = false, viewMoreEle = false) => {
     wp.apiFetch({
       path: (0,_wordpress_url__WEBPACK_IMPORTED_MODULE_0__.addQueryArgs)('lp/v1/profile/course-tab', dataset),
       method: 'GET'
@@ -471,29 +562,6 @@ const courseTab = () => {
     });
   };
   changeFilter();
-  const changeTab = () => {
-    const tabUls = document.querySelectorAll('.learn-press-profile-course__tab__inner');
-    tabUls.forEach(tabUl => {
-      const tabs = tabUl.querySelectorAll('li> a');
-      tabs.forEach(tab => {
-        tab.addEventListener('click', e => {
-          e.preventDefault();
-          const tabName = tab.dataset.tab;
-          [...tabs].map(ele => {
-            ele.classList.remove('active');
-          });
-          tab.classList.add('active');
-          [...document.querySelectorAll('.learn-press-course-tab-filters')].map(ele => {
-            ele.style.display = 'none';
-            if (ele.dataset.tab === tabName) {
-              ele.style.display = '';
-            }
-          });
-        });
-      });
-    });
-  };
-  changeTab();
   const viewMore = (ele, dataset) => {
     const viewMoreEle = ele.querySelector('button[data-paged]');
     if (viewMoreEle) {
@@ -512,7 +580,7 @@ const courseTab = () => {
     }
   };
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (courseTab);
+/* harmony default export */ __webpack_exports__["default"] = (courseTab);
 
 /***/ }),
 
@@ -520,12 +588,12 @@ const courseTab = () => {
 /*!**************************************************************!*\
   !*** ./assets/src/apps/js/frontend/profile/order-recover.js ***!
   \**************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ recoverOrder)
+/* harmony export */   "default": function() { return /* binding */ recoverOrder; }
 /* harmony export */ });
 const $ = window.jQuery;
 function recoverOrder() {
@@ -569,13 +637,10 @@ function recoverOrder() {
 /*!**********************************************************!*\
   !*** ./assets/src/apps/js/frontend/profile/statistic.js ***!
   \**********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 /* harmony import */ var _wordpress_url__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/url */ "@wordpress/url");
 /* harmony import */ var _wordpress_url__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_url__WEBPACK_IMPORTED_MODULE_0__);
 
@@ -586,9 +651,17 @@ const courseStatistics = () => {
   if (!elements) {
     return;
   }
+  const tabActive = document.querySelector('.lp-profile-nav-tabs li.active');
+  if (!tabActive) {
+    return;
+  }
+  let apiUrl = 'lp/v1/profile/student/statistic';
+  if (tabActive.classList.contains('courses')) {
+    apiUrl = 'lp/v1/profile/instructor/statistic';
+  }
   const getResponse = (ele, dataset) => {
     wp.apiFetch({
-      path: (0,_wordpress_url__WEBPACK_IMPORTED_MODULE_0__.addQueryArgs)('lp/v1/profile/statistic', dataset),
+      path: (0,_wordpress_url__WEBPACK_IMPORTED_MODULE_0__.addQueryArgs)(apiUrl, dataset),
       method: 'GET'
     }).then(response => {
       if (response.status === 'success' && response.data) {
@@ -609,7 +682,7 @@ const courseStatistics = () => {
   const data = JSON.parse(elArgStatistic.value);
   getResponse(elements, data);
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (courseStatistics);
+/* harmony default export */ __webpack_exports__["default"] = (courseStatistics);
 
 /***/ }),
 
@@ -617,7 +690,7 @@ const courseStatistics = () => {
 /*!***********************************************!*\
   !*** ./node_modules/normalize-wheel/index.js ***!
   \***********************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 module.exports = __webpack_require__(/*! ./src/normalizeWheel.js */ "./node_modules/normalize-wheel/src/normalizeWheel.js");
 
@@ -628,7 +701,7 @@ module.exports = __webpack_require__(/*! ./src/normalizeWheel.js */ "./node_modu
 /*!******************************************************************!*\
   !*** ./node_modules/normalize-wheel/src/ExecutionEnvironment.js ***!
   \******************************************************************/
-/***/ ((module) => {
+/***/ (function(module) {
 
 "use strict";
 /**
@@ -682,7 +755,7 @@ module.exports = ExecutionEnvironment;
 /*!******************************************************************!*\
   !*** ./node_modules/normalize-wheel/src/UserAgent_DEPRECATED.js ***!
   \******************************************************************/
-/***/ ((module) => {
+/***/ (function(module) {
 
 /**
  * Copyright 2004-present Facebook. All Rights Reserved.
@@ -974,7 +1047,7 @@ module.exports = UserAgent_DEPRECATED;
 /*!**************************************************************!*\
   !*** ./node_modules/normalize-wheel/src/isEventSupported.js ***!
   \**************************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 /**
@@ -1048,7 +1121,7 @@ module.exports = isEventSupported;
 /*!************************************************************!*\
   !*** ./node_modules/normalize-wheel/src/normalizeWheel.js ***!
   \************************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 /**
@@ -1240,14 +1313,14 @@ module.exports = normalizeWheel;
 /*!******************************************************!*\
   !*** ./node_modules/react-easy-crop/index.module.js ***!
   \******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   "getInitialCropFromCroppedAreaPercentages": () => (/* binding */ getInitialCropFromCroppedAreaPercentages),
-/* harmony export */   "getInitialCropFromCroppedAreaPixels": () => (/* binding */ getInitialCropFromCroppedAreaPixels)
+/* harmony export */   "default": function() { return /* binding */ Cropper; },
+/* harmony export */   getInitialCropFromCroppedAreaPercentages: function() { return /* binding */ getInitialCropFromCroppedAreaPercentages; },
+/* harmony export */   getInitialCropFromCroppedAreaPixels: function() { return /* binding */ getInitialCropFromCroppedAreaPixels; }
 /* harmony export */ });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! tslib */ "./node_modules/react-easy-crop/node_modules/tslib/tslib.es6.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
@@ -1262,26 +1335,21 @@ __webpack_require__.r(__webpack_exports__);
  * Compute the dimension of the crop area based on media size,
  * aspect ratio and optionally rotation
  */
-
 function getCropSize(mediaWidth, mediaHeight, containerWidth, containerHeight, aspect, rotation) {
   if (rotation === void 0) {
     rotation = 0;
   }
-
   var _a = rotateSize(mediaWidth, mediaHeight, rotation),
-      width = _a.width,
-      height = _a.height;
-
+    width = _a.width,
+    height = _a.height;
   var fittingWidth = Math.min(width, containerWidth);
   var fittingHeight = Math.min(height, containerHeight);
-
   if (fittingWidth > fittingHeight * aspect) {
     return {
       width: fittingHeight * aspect,
       height: fittingHeight
     };
   }
-
   return {
     width: fittingWidth,
     height: fittingWidth / aspect
@@ -1291,7 +1359,6 @@ function getCropSize(mediaWidth, mediaHeight, containerWidth, containerHeight, a
  * Compute media zoom.
  * We fit the media into the container with "max-width: 100%; max-height: 100%;"
  */
-
 function getMediaZoom(mediaSize) {
   // Take the axis with more pixels to improve accuracy
   return mediaSize.width > mediaSize.height ? mediaSize.width / mediaSize.naturalWidth : mediaSize.height / mediaSize.naturalHeight;
@@ -1299,27 +1366,22 @@ function getMediaZoom(mediaSize) {
 /**
  * Ensure a new media position stays in the crop area.
  */
-
 function restrictPosition(position, mediaSize, cropSize, zoom, rotation) {
   if (rotation === void 0) {
     rotation = 0;
   }
-
   var _a = rotateSize(mediaSize.width, mediaSize.height, rotation),
-      width = _a.width,
-      height = _a.height;
-
+    width = _a.width,
+    height = _a.height;
   return {
     x: restrictPositionCoord(position.x, width, cropSize.width, zoom),
     y: restrictPositionCoord(position.y, height, cropSize.height, zoom)
   };
 }
-
 function restrictPositionCoord(position, mediaSize, cropSize, zoom) {
   var maxPosition = mediaSize * zoom / 2 - cropSize / 2;
   return clamp(position, -maxPosition, maxPosition);
 }
-
 function getDistanceBetweenPoints(pointA, pointB) {
   return Math.sqrt(Math.pow(pointA.y - pointB.y, 2) + Math.pow(pointA.x - pointB.x, 2));
 }
@@ -1330,37 +1392,34 @@ function getRotationBetweenPoints(pointA, pointB) {
  * Compute the output cropped area of the media in percentages and pixels.
  * x/y are the top-left coordinates on the src media
  */
-
 function computeCroppedArea(crop, mediaSize, cropSize, aspect, zoom, rotation, restrictPosition) {
   if (rotation === void 0) {
     rotation = 0;
   }
-
   if (restrictPosition === void 0) {
     restrictPosition = true;
-  } // if the media is rotated by the user, we cannot limit the position anymore
+  }
+  // if the media is rotated by the user, we cannot limit the position anymore
   // as it might need to be negative.
-
-
   var limitAreaFn = restrictPosition ? limitArea : noOp;
   var mediaBBoxSize = rotateSize(mediaSize.width, mediaSize.height, rotation);
-  var mediaNaturalBBoxSize = rotateSize(mediaSize.naturalWidth, mediaSize.naturalHeight, rotation); // calculate the crop area in percentages
+  var mediaNaturalBBoxSize = rotateSize(mediaSize.naturalWidth, mediaSize.naturalHeight, rotation);
+  // calculate the crop area in percentages
   // in the rotated space
-
   var croppedAreaPercentages = {
     x: limitAreaFn(100, ((mediaBBoxSize.width - cropSize.width / zoom) / 2 - crop.x / zoom) / mediaBBoxSize.width * 100),
     y: limitAreaFn(100, ((mediaBBoxSize.height - cropSize.height / zoom) / 2 - crop.y / zoom) / mediaBBoxSize.height * 100),
     width: limitAreaFn(100, cropSize.width / mediaBBoxSize.width * 100 / zoom),
     height: limitAreaFn(100, cropSize.height / mediaBBoxSize.height * 100 / zoom)
-  }; // we compute the pixels size naively
-
+  };
+  // we compute the pixels size naively
   var widthInPixels = Math.round(limitAreaFn(mediaNaturalBBoxSize.width, croppedAreaPercentages.width * mediaNaturalBBoxSize.width / 100));
   var heightInPixels = Math.round(limitAreaFn(mediaNaturalBBoxSize.height, croppedAreaPercentages.height * mediaNaturalBBoxSize.height / 100));
-  var isImgWiderThanHigh = mediaNaturalBBoxSize.width >= mediaNaturalBBoxSize.height * aspect; // then we ensure the width and height exactly match the aspect (to avoid rounding approximations)
+  var isImgWiderThanHigh = mediaNaturalBBoxSize.width >= mediaNaturalBBoxSize.height * aspect;
+  // then we ensure the width and height exactly match the aspect (to avoid rounding approximations)
   // if the media is wider than high, when zoom is 0, the crop height will be equals to image height
   // thus we want to compute the width from the height and aspect for accuracy.
   // Otherwise, we compute the height from width and aspect.
-
   var sizePixels = isImgWiderThanHigh ? {
     width: Math.round(heightInPixels * aspect),
     height: heightInPixels
@@ -1368,12 +1427,10 @@ function computeCroppedArea(crop, mediaSize, cropSize, aspect, zoom, rotation, r
     width: widthInPixels,
     height: Math.round(widthInPixels / aspect)
   };
-
   var croppedAreaPixels = (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({}, sizePixels), {
     x: Math.round(limitAreaFn(mediaNaturalBBoxSize.width - sizePixels.width, croppedAreaPercentages.x * mediaNaturalBBoxSize.width / 100)),
     y: Math.round(limitAreaFn(mediaNaturalBBoxSize.height - sizePixels.height, croppedAreaPercentages.y * mediaNaturalBBoxSize.height / 100))
   });
-
   return {
     croppedAreaPercentages: croppedAreaPercentages,
     croppedAreaPixels: croppedAreaPixels
@@ -1382,22 +1439,18 @@ function computeCroppedArea(crop, mediaSize, cropSize, aspect, zoom, rotation, r
 /**
  * Ensure the returned value is between 0 and max
  */
-
 function limitArea(max, value) {
   return Math.min(max, Math.max(0, value));
 }
-
 function noOp(_max, value) {
   return value;
 }
 /**
  * Compute crop and zoom from the croppedAreaPercentages.
  */
-
-
 function getInitialCropFromCroppedAreaPercentages(croppedAreaPercentages, mediaSize, rotation, cropSize, minZoom, maxZoom) {
-  var mediaBBoxSize = rotateSize(mediaSize.width, mediaSize.height, rotation); // This is the inverse process of computeCroppedArea
-
+  var mediaBBoxSize = rotateSize(mediaSize.width, mediaSize.height, rotation);
+  // This is the inverse process of computeCroppedArea
   var zoom = clamp(cropSize.width / mediaBBoxSize.width * (100 / croppedAreaPercentages.width), minZoom, maxZoom);
   var crop = {
     x: zoom * mediaBBoxSize.width / 2 - cropSize.width / 2 - mediaBBoxSize.width * zoom * (croppedAreaPercentages.x / 100),
@@ -1411,7 +1464,6 @@ function getInitialCropFromCroppedAreaPercentages(croppedAreaPercentages, mediaS
 /**
  * Compute zoom from the croppedAreaPixels
  */
-
 function getZoomFromCroppedAreaPixels(croppedAreaPixels, mediaSize, cropSize) {
   var mediaZoom = getMediaZoom(mediaSize);
   return cropSize.height > cropSize.width ? cropSize.height / (croppedAreaPixels.height * mediaZoom) : cropSize.width / (croppedAreaPixels.width * mediaZoom);
@@ -1419,13 +1471,10 @@ function getZoomFromCroppedAreaPixels(croppedAreaPixels, mediaSize, cropSize) {
 /**
  * Compute crop and zoom from the croppedAreaPixels
  */
-
-
 function getInitialCropFromCroppedAreaPixels(croppedAreaPixels, mediaSize, rotation, cropSize, minZoom, maxZoom) {
   if (rotation === void 0) {
     rotation = 0;
   }
-
   var mediaNaturalBBoxSize = rotateSize(mediaSize.naturalWidth, mediaSize.naturalHeight, rotation);
   var zoom = clamp(getZoomFromCroppedAreaPixels(croppedAreaPixels, mediaSize, cropSize), minZoom, maxZoom);
   var cropZoom = cropSize.height > cropSize.width ? cropSize.height / croppedAreaPixels.height : cropSize.width / croppedAreaPixels.width;
@@ -1441,7 +1490,6 @@ function getInitialCropFromCroppedAreaPixels(croppedAreaPixels, mediaSize, rotat
 /**
  * Return the point that is the center of point a and b
  */
-
 function getCenter(a, b) {
   return {
     x: (b.x + a.x) / 2,
@@ -1454,7 +1502,6 @@ function getRadianAngle(degreeValue) {
 /**
  * Returns the new bounding area of a rotated rectangle.
  */
-
 function rotateSize(width, height, rotation) {
   var rotRad = getRadianAngle(rotation);
   return {
@@ -1465,26 +1512,21 @@ function rotateSize(width, height, rotation) {
 /**
  * Clamp value between min and max
  */
-
 function clamp(value, min, max) {
   return Math.min(Math.max(value, min), max);
 }
 /**
  * Combine multiple class names into a single string.
  */
-
 function classNames() {
   var args = [];
-
   for (var _i = 0; _i < arguments.length; _i++) {
     args[_i] = arguments[_i];
   }
-
   return args.filter(function (value) {
     if (typeof value === 'string' && value.length > 0) {
       return true;
     }
-
     return false;
   }).join(' ').trim();
 }
@@ -1493,17 +1535,12 @@ var css_248z = ".reactEasyCrop_Container {\n  position: absolute;\n  top: 0;\n  
 
 var MIN_ZOOM = 1;
 var MAX_ZOOM = 3;
-
-var Cropper =
-/** @class */
-function (_super) {
+var Cropper = /** @class */function (_super) {
   (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__extends)(Cropper, _super);
-
   function Cropper() {
     var _this = _super !== null && _super.apply(this, arguments) || this;
-
-    _this.imageRef = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createRef();
-    _this.videoRef = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createRef();
+    _this.imageRef = react__WEBPACK_IMPORTED_MODULE_0___default().createRef();
+    _this.videoRef = react__WEBPACK_IMPORTED_MODULE_0___default().createRef();
     _this.containerRef = null;
     _this.styleRef = null;
     _this.containerRect = null;
@@ -1529,93 +1566,88 @@ function (_super) {
     _this.rafDragTimeout = null;
     _this.rafPinchTimeout = null;
     _this.wheelTimer = null;
-    _this.currentDoc = document;
-    _this.currentWindow = window;
+    _this.currentDoc = typeof document !== 'undefined' ? document : null;
+    _this.currentWindow = typeof window !== 'undefined' ? window : null;
+    _this.resizeObserver = null;
     _this.state = {
       cropSize: null,
       hasWheelJustStarted: false
-    }; // this is to prevent Safari on iOS >= 10 to zoom the page
-
+    };
+    _this.initResizeObserver = function () {
+      if (typeof window.ResizeObserver === 'undefined' || !_this.containerRef) {
+        return;
+      }
+      var isFirstResize = true;
+      _this.resizeObserver = new window.ResizeObserver(function (entries) {
+        if (isFirstResize) {
+          isFirstResize = false; // observe() is called on mount, we don't want to trigger a recompute on mount
+          return;
+        }
+        _this.computeSizes();
+      });
+      _this.resizeObserver.observe(_this.containerRef);
+    };
+    // this is to prevent Safari on iOS >= 10 to zoom the page
     _this.preventZoomSafari = function (e) {
       return e.preventDefault();
     };
-
     _this.cleanEvents = function () {
+      if (!_this.currentDoc) return;
       _this.currentDoc.removeEventListener('mousemove', _this.onMouseMove);
-
       _this.currentDoc.removeEventListener('mouseup', _this.onDragStopped);
-
       _this.currentDoc.removeEventListener('touchmove', _this.onTouchMove);
-
       _this.currentDoc.removeEventListener('touchend', _this.onDragStopped);
-
       _this.currentDoc.removeEventListener('gesturemove', _this.onGestureMove);
-
       _this.currentDoc.removeEventListener('gestureend', _this.onGestureEnd);
     };
-
     _this.clearScrollEvent = function () {
       if (_this.containerRef) _this.containerRef.removeEventListener('wheel', _this.onWheel);
-
       if (_this.wheelTimer) {
         clearTimeout(_this.wheelTimer);
       }
     };
-
     _this.onMediaLoad = function () {
       var cropSize = _this.computeSizes();
-
       if (cropSize) {
         _this.emitCropData();
-
         _this.setInitialCrop(cropSize);
       }
-
       if (_this.props.onMediaLoaded) {
         _this.props.onMediaLoaded(_this.mediaSize);
       }
     };
-
     _this.setInitialCrop = function (cropSize) {
       if (_this.props.initialCroppedAreaPercentages) {
         var _a = getInitialCropFromCroppedAreaPercentages(_this.props.initialCroppedAreaPercentages, _this.mediaSize, _this.props.rotation, cropSize, _this.props.minZoom, _this.props.maxZoom),
-            crop = _a.crop,
-            zoom = _a.zoom;
-
+          crop = _a.crop,
+          zoom = _a.zoom;
         _this.props.onCropChange(crop);
-
         _this.props.onZoomChange && _this.props.onZoomChange(zoom);
       } else if (_this.props.initialCroppedAreaPixels) {
         var _b = getInitialCropFromCroppedAreaPixels(_this.props.initialCroppedAreaPixels, _this.mediaSize, _this.props.rotation, cropSize, _this.props.minZoom, _this.props.maxZoom),
-            crop = _b.crop,
-            zoom = _b.zoom;
-
+          crop = _b.crop,
+          zoom = _b.zoom;
         _this.props.onCropChange(crop);
-
         _this.props.onZoomChange && _this.props.onZoomChange(zoom);
       }
     };
-
     _this.computeSizes = function () {
       var _a, _b, _c, _d, _e, _f;
-
       var mediaRef = _this.imageRef.current || _this.videoRef.current;
-
       if (mediaRef && _this.containerRef) {
         _this.containerRect = _this.containerRef.getBoundingClientRect();
         var containerAspect = _this.containerRect.width / _this.containerRect.height;
         var naturalWidth = ((_a = _this.imageRef.current) === null || _a === void 0 ? void 0 : _a.naturalWidth) || ((_b = _this.videoRef.current) === null || _b === void 0 ? void 0 : _b.videoWidth) || 0;
         var naturalHeight = ((_c = _this.imageRef.current) === null || _c === void 0 ? void 0 : _c.naturalHeight) || ((_d = _this.videoRef.current) === null || _d === void 0 ? void 0 : _d.videoHeight) || 0;
         var isMediaScaledDown = mediaRef.offsetWidth < naturalWidth || mediaRef.offsetHeight < naturalHeight;
-        var mediaAspect = naturalWidth / naturalHeight; // We do not rely on the offsetWidth/offsetHeight if the media is scaled down
+        var mediaAspect = naturalWidth / naturalHeight;
+        // We do not rely on the offsetWidth/offsetHeight if the media is scaled down
         // as the values they report are rounded. That will result in precision losses
         // when calculating zoom. We use the fact that the media is positionned relative
         // to the container. That allows us to use the container's dimensions
         // and natural aspect ratio of the media to calculate accurate media size.
         // However, for this to work, the container should not be rotated
-
         var renderedMediaSize = void 0;
-
         if (isMediaScaledDown) {
           switch (_this.props.objectFit) {
             default:
@@ -1628,21 +1660,18 @@ function (_super) {
                 height: _this.containerRect.width / mediaAspect
               };
               break;
-
             case 'horizontal-cover':
               renderedMediaSize = {
                 width: _this.containerRect.width,
                 height: _this.containerRect.width / mediaAspect
               };
               break;
-
             case 'vertical-cover':
               renderedMediaSize = {
                 width: _this.containerRect.height * mediaAspect,
                 height: _this.containerRect.height
               };
               break;
-
             case 'auto-cover':
               renderedMediaSize = naturalWidth > naturalHeight ? {
                 width: _this.containerRect.width,
@@ -1659,123 +1688,94 @@ function (_super) {
             height: mediaRef.offsetHeight
           };
         }
-
         _this.mediaSize = (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({}, renderedMediaSize), {
           naturalWidth: naturalWidth,
           naturalHeight: naturalHeight
-        }); // set media size in the parent
-
+        });
+        // set media size in the parent
         if (_this.props.setMediaSize) {
           _this.props.setMediaSize(_this.mediaSize);
         }
-
         var cropSize = _this.props.cropSize ? _this.props.cropSize : getCropSize(_this.mediaSize.width, _this.mediaSize.height, _this.containerRect.width, _this.containerRect.height, _this.props.aspect, _this.props.rotation);
-
         if (((_e = _this.state.cropSize) === null || _e === void 0 ? void 0 : _e.height) !== cropSize.height || ((_f = _this.state.cropSize) === null || _f === void 0 ? void 0 : _f.width) !== cropSize.width) {
           _this.props.onCropSizeChange && _this.props.onCropSizeChange(cropSize);
         }
-
         _this.setState({
           cropSize: cropSize
-        }, _this.recomputeCropPosition); // pass crop size to parent
-
-
+        }, _this.recomputeCropPosition);
+        // pass crop size to parent
         if (_this.props.setCropSize) {
           _this.props.setCropSize(cropSize);
         }
-
         return cropSize;
       }
     };
-
     _this.onMouseDown = function (e) {
+      if (!_this.currentDoc) return;
       e.preventDefault();
-
       _this.currentDoc.addEventListener('mousemove', _this.onMouseMove);
-
       _this.currentDoc.addEventListener('mouseup', _this.onDragStopped);
-
       _this.onDragStart(Cropper.getMousePoint(e));
     };
-
     _this.onMouseMove = function (e) {
       return _this.onDrag(Cropper.getMousePoint(e));
     };
-
     _this.onTouchStart = function (e) {
+      if (!_this.currentDoc) return;
       _this.isTouching = true;
-
       if (_this.props.onTouchRequest && !_this.props.onTouchRequest(e)) {
         return;
       }
-
       _this.currentDoc.addEventListener('touchmove', _this.onTouchMove, {
         passive: false
       }); // iOS 11 now defaults to passive: true
-
-
       _this.currentDoc.addEventListener('touchend', _this.onDragStopped);
-
       if (e.touches.length === 2) {
         _this.onPinchStart(e);
       } else if (e.touches.length === 1) {
         _this.onDragStart(Cropper.getTouchPoint(e.touches[0]));
       }
     };
-
     _this.onTouchMove = function (e) {
       // Prevent whole page from scrolling on iOS.
       e.preventDefault();
-
       if (e.touches.length === 2) {
         _this.onPinchMove(e);
       } else if (e.touches.length === 1) {
         _this.onDrag(Cropper.getTouchPoint(e.touches[0]));
       }
     };
-
     _this.onGestureStart = function (e) {
+      if (!_this.currentDoc) return;
       e.preventDefault();
-
       _this.currentDoc.addEventListener('gesturechange', _this.onGestureMove);
-
       _this.currentDoc.addEventListener('gestureend', _this.onGestureEnd);
-
       _this.gestureZoomStart = _this.props.zoom;
       _this.gestureRotationStart = _this.props.rotation;
     };
-
     _this.onGestureMove = function (e) {
       e.preventDefault();
-
       if (_this.isTouching) {
         // this is to avoid conflict between gesture and touch events
         return;
       }
-
       var point = Cropper.getMousePoint(e);
       var newZoom = _this.gestureZoomStart - 1 + e.scale;
-
       _this.setNewZoom(newZoom, point, {
         shouldUpdatePosition: true
       });
-
       if (_this.props.onRotationChange) {
         var newRotation = _this.gestureRotationStart + e.rotation;
-
         _this.props.onRotationChange(newRotation);
       }
     };
-
     _this.onGestureEnd = function (e) {
       _this.cleanEvents();
     };
-
     _this.onDragStart = function (_a) {
       var _b, _c;
-
       var x = _a.x,
-          y = _a.y;
+        y = _a.y;
       _this.dragStartPosition = {
         x: x,
         y: y
@@ -1783,10 +1783,10 @@ function (_super) {
       _this.dragStartCrop = (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({}, _this.props.crop);
       (_c = (_b = _this.props).onInteractionStart) === null || _c === void 0 ? void 0 : _c.call(_b);
     };
-
     _this.onDrag = function (_a) {
       var x = _a.x,
-          y = _a.y;
+        y = _a.y;
+      if (!_this.currentWindow) return;
       if (_this.rafDragTimeout) _this.currentWindow.cancelAnimationFrame(_this.rafDragTimeout);
       _this.rafDragTimeout = _this.currentWindow.requestAnimationFrame(function () {
         if (!_this.state.cropSize) return;
@@ -1798,225 +1798,183 @@ function (_super) {
           y: _this.dragStartCrop.y + offsetY
         };
         var newPosition = _this.props.restrictPosition ? restrictPosition(requestedPosition, _this.mediaSize, _this.state.cropSize, _this.props.zoom, _this.props.rotation) : requestedPosition;
-
         _this.props.onCropChange(newPosition);
       });
     };
-
     _this.onDragStopped = function () {
       var _a, _b;
-
       _this.isTouching = false;
-
       _this.cleanEvents();
-
       _this.emitCropData();
-
       (_b = (_a = _this.props).onInteractionEnd) === null || _b === void 0 ? void 0 : _b.call(_a);
     };
-
     _this.onWheel = function (e) {
+      if (!_this.currentWindow) return;
       if (_this.props.onWheelRequest && !_this.props.onWheelRequest(e)) {
         return;
       }
-
       e.preventDefault();
       var point = Cropper.getMousePoint(e);
       var pixelY = normalize_wheel__WEBPACK_IMPORTED_MODULE_1___default()(e).pixelY;
       var newZoom = _this.props.zoom - pixelY * _this.props.zoomSpeed / 200;
-
       _this.setNewZoom(newZoom, point, {
         shouldUpdatePosition: true
       });
-
       if (!_this.state.hasWheelJustStarted) {
         _this.setState({
           hasWheelJustStarted: true
         }, function () {
           var _a, _b;
-
           return (_b = (_a = _this.props).onInteractionStart) === null || _b === void 0 ? void 0 : _b.call(_a);
         });
       }
-
       if (_this.wheelTimer) {
         clearTimeout(_this.wheelTimer);
       }
-
       _this.wheelTimer = _this.currentWindow.setTimeout(function () {
         return _this.setState({
           hasWheelJustStarted: false
         }, function () {
           var _a, _b;
-
           return (_b = (_a = _this.props).onInteractionEnd) === null || _b === void 0 ? void 0 : _b.call(_a);
         });
       }, 250);
     };
-
     _this.getPointOnContainer = function (_a) {
       var x = _a.x,
-          y = _a.y;
-
+        y = _a.y;
       if (!_this.containerRect) {
         throw new Error('The Cropper is not mounted');
       }
-
       return {
         x: _this.containerRect.width / 2 - (x - _this.containerRect.left),
         y: _this.containerRect.height / 2 - (y - _this.containerRect.top)
       };
     };
-
     _this.getPointOnMedia = function (_a) {
       var x = _a.x,
-          y = _a.y;
+        y = _a.y;
       var _b = _this.props,
-          crop = _b.crop,
-          zoom = _b.zoom;
+        crop = _b.crop,
+        zoom = _b.zoom;
       return {
         x: (x + crop.x) / zoom,
         y: (y + crop.y) / zoom
       };
     };
-
     _this.setNewZoom = function (zoom, point, _a) {
-      var _b = (_a === void 0 ? {} : _a).shouldUpdatePosition,
-          shouldUpdatePosition = _b === void 0 ? true : _b;
+      var _b = _a === void 0 ? {} : _a,
+        _c = _b.shouldUpdatePosition,
+        shouldUpdatePosition = _c === void 0 ? true : _c;
       if (!_this.state.cropSize || !_this.props.onZoomChange) return;
       var newZoom = clamp(zoom, _this.props.minZoom, _this.props.maxZoom);
-
       if (shouldUpdatePosition) {
         var zoomPoint = _this.getPointOnContainer(point);
-
         var zoomTarget = _this.getPointOnMedia(zoomPoint);
-
         var requestedPosition = {
           x: zoomTarget.x * newZoom - zoomPoint.x,
           y: zoomTarget.y * newZoom - zoomPoint.y
         };
         var newPosition = _this.props.restrictPosition ? restrictPosition(requestedPosition, _this.mediaSize, _this.state.cropSize, newZoom, _this.props.rotation) : requestedPosition;
-
         _this.props.onCropChange(newPosition);
       }
-
       _this.props.onZoomChange(newZoom);
     };
-
     _this.getCropData = function () {
       if (!_this.state.cropSize) {
         return null;
-      } // this is to ensure the crop is correctly restricted after a zoom back (https://github.com/ValentinH/react-easy-crop/issues/6)
-
-
+      }
+      // this is to ensure the crop is correctly restricted after a zoom back (https://github.com/ValentinH/react-easy-crop/issues/6)
       var restrictedPosition = _this.props.restrictPosition ? restrictPosition(_this.props.crop, _this.mediaSize, _this.state.cropSize, _this.props.zoom, _this.props.rotation) : _this.props.crop;
       return computeCroppedArea(restrictedPosition, _this.mediaSize, _this.state.cropSize, _this.getAspect(), _this.props.zoom, _this.props.rotation, _this.props.restrictPosition);
     };
-
     _this.emitCropData = function () {
       var cropData = _this.getCropData();
-
       if (!cropData) return;
       var croppedAreaPercentages = cropData.croppedAreaPercentages,
-          croppedAreaPixels = cropData.croppedAreaPixels;
-
+        croppedAreaPixels = cropData.croppedAreaPixels;
       if (_this.props.onCropComplete) {
         _this.props.onCropComplete(croppedAreaPercentages, croppedAreaPixels);
       }
-
       if (_this.props.onCropAreaChange) {
         _this.props.onCropAreaChange(croppedAreaPercentages, croppedAreaPixels);
       }
     };
-
     _this.emitCropAreaChange = function () {
       var cropData = _this.getCropData();
-
       if (!cropData) return;
       var croppedAreaPercentages = cropData.croppedAreaPercentages,
-          croppedAreaPixels = cropData.croppedAreaPixels;
-
+        croppedAreaPixels = cropData.croppedAreaPixels;
       if (_this.props.onCropAreaChange) {
         _this.props.onCropAreaChange(croppedAreaPercentages, croppedAreaPixels);
       }
     };
-
     _this.recomputeCropPosition = function () {
       if (!_this.state.cropSize) return;
       var newPosition = _this.props.restrictPosition ? restrictPosition(_this.props.crop, _this.mediaSize, _this.state.cropSize, _this.props.zoom, _this.props.rotation) : _this.props.crop;
-
       _this.props.onCropChange(newPosition);
-
       _this.emitCropData();
     };
-
     return _this;
   }
-
   Cropper.prototype.componentDidMount = function () {
+    if (!this.currentDoc || !this.currentWindow) return;
     if (this.containerRef) {
       if (this.containerRef.ownerDocument) {
         this.currentDoc = this.containerRef.ownerDocument;
       }
-
       if (this.currentDoc.defaultView) {
         this.currentWindow = this.currentDoc.defaultView;
       }
-
-      this.currentWindow.addEventListener('resize', this.computeSizes);
+      this.initResizeObserver();
+      // only add window resize listener if ResizeObserver is not supported. Otherwise, it would be redundant
+      if (typeof window.ResizeObserver === 'undefined') {
+        this.currentWindow.addEventListener('resize', this.computeSizes);
+      }
       this.props.zoomWithScroll && this.containerRef.addEventListener('wheel', this.onWheel, {
         passive: false
       });
       this.containerRef.addEventListener('gesturestart', this.onGestureStart);
     }
-
     if (!this.props.disableAutomaticStylesInjection) {
       this.styleRef = this.currentDoc.createElement('style');
       this.styleRef.setAttribute('type', 'text/css');
-
       if (this.props.nonce) {
         this.styleRef.setAttribute('nonce', this.props.nonce);
       }
-
       this.styleRef.innerHTML = css_248z;
       this.currentDoc.head.appendChild(this.styleRef);
-    } // when rendered via SSR, the image can already be loaded and its onLoad callback will never be called
-
-
+    }
+    // when rendered via SSR, the image can already be loaded and its onLoad callback will never be called
     if (this.imageRef.current && this.imageRef.current.complete) {
       this.onMediaLoad();
-    } // set image and video refs in the parent if the callbacks exist
-
-
+    }
+    // set image and video refs in the parent if the callbacks exist
     if (this.props.setImageRef) {
       this.props.setImageRef(this.imageRef);
     }
-
     if (this.props.setVideoRef) {
       this.props.setVideoRef(this.videoRef);
     }
   };
-
   Cropper.prototype.componentWillUnmount = function () {
-    var _a;
-
-    this.currentWindow.removeEventListener('resize', this.computeSizes);
-
+    var _a, _b;
+    if (!this.currentDoc || !this.currentWindow) return;
+    if (typeof window.ResizeObserver === 'undefined') {
+      this.currentWindow.removeEventListener('resize', this.computeSizes);
+    }
+    (_a = this.resizeObserver) === null || _a === void 0 ? void 0 : _a.disconnect();
     if (this.containerRef) {
       this.containerRef.removeEventListener('gesturestart', this.preventZoomSafari);
     }
-
     if (this.styleRef) {
-      (_a = this.styleRef.parentNode) === null || _a === void 0 ? void 0 : _a.removeChild(this.styleRef);
+      (_b = this.styleRef.parentNode) === null || _b === void 0 ? void 0 : _b.removeChild(this.styleRef);
     }
-
     this.cleanEvents();
     this.props.zoomWithScroll && this.clearScrollEvent();
   };
-
   Cropper.prototype.componentDidUpdate = function (prevProps) {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j;
-
     if (prevProps.rotation !== this.props.rotation) {
       this.computeSizes();
       this.recomputeCropPosition();
@@ -2029,30 +1987,24 @@ function (_super) {
     } else if (((_e = prevProps.crop) === null || _e === void 0 ? void 0 : _e.x) !== ((_f = this.props.crop) === null || _f === void 0 ? void 0 : _f.x) || ((_g = prevProps.crop) === null || _g === void 0 ? void 0 : _g.y) !== ((_h = this.props.crop) === null || _h === void 0 ? void 0 : _h.y)) {
       this.emitCropAreaChange();
     }
-
     if (prevProps.zoomWithScroll !== this.props.zoomWithScroll && this.containerRef) {
       this.props.zoomWithScroll ? this.containerRef.addEventListener('wheel', this.onWheel, {
         passive: false
       }) : this.clearScrollEvent();
     }
-
     if (prevProps.video !== this.props.video) {
       (_j = this.videoRef.current) === null || _j === void 0 ? void 0 : _j.load();
     }
   };
-
   Cropper.prototype.getAspect = function () {
     var _a = this.props,
-        cropSize = _a.cropSize,
-        aspect = _a.aspect;
-
+      cropSize = _a.cropSize,
+      aspect = _a.aspect;
     if (cropSize) {
       return cropSize.width / cropSize.height;
     }
-
     return aspect;
   };
-
   Cropper.prototype.onPinchStart = function (e) {
     var pointA = Cropper.getTouchPoint(e.touches[0]);
     var pointB = Cropper.getTouchPoint(e.touches[1]);
@@ -2060,10 +2012,9 @@ function (_super) {
     this.lastPinchRotation = getRotationBetweenPoints(pointA, pointB);
     this.onDragStart(getCenter(pointA, pointB));
   };
-
   Cropper.prototype.onPinchMove = function (e) {
     var _this = this;
-
+    if (!this.currentDoc || !this.currentWindow) return;
     var pointA = Cropper.getTouchPoint(e.touches[0]);
     var pointB = Cropper.getTouchPoint(e.touches[1]);
     var center = getCenter(pointA, pointB);
@@ -2072,11 +2023,9 @@ function (_super) {
     this.rafPinchTimeout = this.currentWindow.requestAnimationFrame(function () {
       var distance = getDistanceBetweenPoints(pointA, pointB);
       var newZoom = _this.props.zoom * (distance / _this.lastPinchDistance);
-
       _this.setNewZoom(newZoom, center, {
         shouldUpdatePosition: false
       });
-
       _this.lastPinchDistance = distance;
       var rotation = getRotationBetweenPoints(pointA, pointB);
       var newRotation = _this.props.rotation + (rotation - _this.lastPinchRotation);
@@ -2084,32 +2033,30 @@ function (_super) {
       _this.lastPinchRotation = rotation;
     });
   };
-
   Cropper.prototype.render = function () {
     var _this = this;
-
     var _a = this.props,
-        image = _a.image,
-        video = _a.video,
-        mediaProps = _a.mediaProps,
-        transform = _a.transform,
-        _b = _a.crop,
-        x = _b.x,
-        y = _b.y,
-        rotation = _a.rotation,
-        zoom = _a.zoom,
-        cropShape = _a.cropShape,
-        showGrid = _a.showGrid,
-        _c = _a.style,
-        containerStyle = _c.containerStyle,
-        cropAreaStyle = _c.cropAreaStyle,
-        mediaStyle = _c.mediaStyle,
-        _d = _a.classes,
-        containerClassName = _d.containerClassName,
-        cropAreaClassName = _d.cropAreaClassName,
-        mediaClassName = _d.mediaClassName,
-        objectFit = _a.objectFit;
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      image = _a.image,
+      video = _a.video,
+      mediaProps = _a.mediaProps,
+      transform = _a.transform,
+      _b = _a.crop,
+      x = _b.x,
+      y = _b.y,
+      rotation = _a.rotation,
+      zoom = _a.zoom,
+      cropShape = _a.cropShape,
+      showGrid = _a.showGrid,
+      _c = _a.style,
+      containerStyle = _c.containerStyle,
+      cropAreaStyle = _c.cropAreaStyle,
+      mediaStyle = _c.mediaStyle,
+      _d = _a.classes,
+      containerClassName = _d.containerClassName,
+      cropAreaClassName = _d.cropAreaClassName,
+      mediaClassName = _d.mediaClassName,
+      objectFit = _a.objectFit;
+    return react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       onMouseDown: this.onMouseDown,
       onTouchStart: this.onTouchStart,
       ref: function ref(el) {
@@ -2118,17 +2065,17 @@ function (_super) {
       "data-testid": "container",
       style: containerStyle,
       className: classNames('reactEasyCrop_Container', containerClassName)
-    }, image ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({
+    }, image ? react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({
       alt: "",
       className: classNames('reactEasyCrop_Image', objectFit === 'contain' && 'reactEasyCrop_Contain', objectFit === 'horizontal-cover' && 'reactEasyCrop_Cover_Horizontal', objectFit === 'vertical-cover' && 'reactEasyCrop_Cover_Vertical', objectFit === 'auto-cover' && (this.mediaSize.naturalWidth > this.mediaSize.naturalHeight ? 'reactEasyCrop_Cover_Horizontal' : 'reactEasyCrop_Cover_Vertical'), mediaClassName)
     }, mediaProps, {
       src: image,
       ref: this.imageRef,
       style: (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({}, mediaStyle), {
-        transform: transform || "translate(" + x + "px, " + y + "px) rotate(" + rotation + "deg) scale(" + zoom + ")"
+        transform: transform || "translate(".concat(x, "px, ").concat(y, "px) rotate(").concat(rotation, "deg) scale(").concat(zoom, ")")
       }),
       onLoad: this.onMediaLoad
-    })) : video && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("video", (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({
+    })) : video && react__WEBPACK_IMPORTED_MODULE_0___default().createElement("video", (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({
       autoPlay: true,
       loop: true,
       muted: true,
@@ -2137,16 +2084,16 @@ function (_super) {
       ref: this.videoRef,
       onLoadedMetadata: this.onMediaLoad,
       style: (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({}, mediaStyle), {
-        transform: transform || "translate(" + x + "px, " + y + "px) rotate(" + rotation + "deg) scale(" + zoom + ")"
+        transform: transform || "translate(".concat(x, "px, ").concat(y, "px) rotate(").concat(rotation, "deg) scale(").concat(zoom, ")")
       }),
       controls: false
     }), (Array.isArray(video) ? video : [{
       src: video
     }]).map(function (item) {
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("source", (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({
+      return react__WEBPACK_IMPORTED_MODULE_0___default().createElement("source", (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({
         key: item.src
       }, item));
-    })), this.state.cropSize && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    })), this.state.cropSize && react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       style: (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)((0,tslib__WEBPACK_IMPORTED_MODULE_2__.__assign)({}, cropAreaStyle), {
         width: this.state.cropSize.width,
         height: this.state.cropSize.height
@@ -2155,7 +2102,6 @@ function (_super) {
       className: classNames('reactEasyCrop_CropArea', cropShape === 'round' && 'reactEasyCrop_CropAreaRound', showGrid && 'reactEasyCrop_CropAreaGrid', cropAreaClassName)
     }));
   };
-
   Cropper.defaultProps = {
     zoom: 1,
     rotation: 0,
@@ -2172,25 +2118,21 @@ function (_super) {
     restrictPosition: true,
     zoomWithScroll: true
   };
-
   Cropper.getMousePoint = function (e) {
     return {
       x: Number(e.clientX),
       y: Number(e.clientY)
     };
   };
-
   Cropper.getTouchPoint = function (touch) {
     return {
       x: Number(touch.clientX),
       y: Number(touch.clientY)
     };
   };
-
   return Cropper;
 }((react__WEBPACK_IMPORTED_MODULE_0___default().Component));
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Cropper);
 
 //# sourceMappingURL=index.module.js.map
 
@@ -2201,34 +2143,34 @@ function (_super) {
 /*!**********************************************************************!*\
   !*** ./node_modules/react-easy-crop/node_modules/tslib/tslib.es6.js ***!
   \**********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "__assign": () => (/* binding */ __assign),
-/* harmony export */   "__asyncDelegator": () => (/* binding */ __asyncDelegator),
-/* harmony export */   "__asyncGenerator": () => (/* binding */ __asyncGenerator),
-/* harmony export */   "__asyncValues": () => (/* binding */ __asyncValues),
-/* harmony export */   "__await": () => (/* binding */ __await),
-/* harmony export */   "__awaiter": () => (/* binding */ __awaiter),
-/* harmony export */   "__classPrivateFieldGet": () => (/* binding */ __classPrivateFieldGet),
-/* harmony export */   "__classPrivateFieldSet": () => (/* binding */ __classPrivateFieldSet),
-/* harmony export */   "__createBinding": () => (/* binding */ __createBinding),
-/* harmony export */   "__decorate": () => (/* binding */ __decorate),
-/* harmony export */   "__exportStar": () => (/* binding */ __exportStar),
-/* harmony export */   "__extends": () => (/* binding */ __extends),
-/* harmony export */   "__generator": () => (/* binding */ __generator),
-/* harmony export */   "__importDefault": () => (/* binding */ __importDefault),
-/* harmony export */   "__importStar": () => (/* binding */ __importStar),
-/* harmony export */   "__makeTemplateObject": () => (/* binding */ __makeTemplateObject),
-/* harmony export */   "__metadata": () => (/* binding */ __metadata),
-/* harmony export */   "__param": () => (/* binding */ __param),
-/* harmony export */   "__read": () => (/* binding */ __read),
-/* harmony export */   "__rest": () => (/* binding */ __rest),
-/* harmony export */   "__spread": () => (/* binding */ __spread),
-/* harmony export */   "__spreadArrays": () => (/* binding */ __spreadArrays),
-/* harmony export */   "__values": () => (/* binding */ __values)
+/* harmony export */   __assign: function() { return /* binding */ __assign; },
+/* harmony export */   __asyncDelegator: function() { return /* binding */ __asyncDelegator; },
+/* harmony export */   __asyncGenerator: function() { return /* binding */ __asyncGenerator; },
+/* harmony export */   __asyncValues: function() { return /* binding */ __asyncValues; },
+/* harmony export */   __await: function() { return /* binding */ __await; },
+/* harmony export */   __awaiter: function() { return /* binding */ __awaiter; },
+/* harmony export */   __classPrivateFieldGet: function() { return /* binding */ __classPrivateFieldGet; },
+/* harmony export */   __classPrivateFieldSet: function() { return /* binding */ __classPrivateFieldSet; },
+/* harmony export */   __createBinding: function() { return /* binding */ __createBinding; },
+/* harmony export */   __decorate: function() { return /* binding */ __decorate; },
+/* harmony export */   __exportStar: function() { return /* binding */ __exportStar; },
+/* harmony export */   __extends: function() { return /* binding */ __extends; },
+/* harmony export */   __generator: function() { return /* binding */ __generator; },
+/* harmony export */   __importDefault: function() { return /* binding */ __importDefault; },
+/* harmony export */   __importStar: function() { return /* binding */ __importStar; },
+/* harmony export */   __makeTemplateObject: function() { return /* binding */ __makeTemplateObject; },
+/* harmony export */   __metadata: function() { return /* binding */ __metadata; },
+/* harmony export */   __param: function() { return /* binding */ __param; },
+/* harmony export */   __read: function() { return /* binding */ __read; },
+/* harmony export */   __rest: function() { return /* binding */ __rest; },
+/* harmony export */   __spread: function() { return /* binding */ __spread; },
+/* harmony export */   __spreadArrays: function() { return /* binding */ __spreadArrays; },
+/* harmony export */   __values: function() { return /* binding */ __values; }
 /* harmony export */ });
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -2465,7 +2407,7 @@ function __classPrivateFieldSet(receiver, privateMap, value) {
 /*!************************!*\
   !*** external "React" ***!
   \************************/
-/***/ ((module) => {
+/***/ (function(module) {
 
 "use strict";
 module.exports = window["React"];
@@ -2476,7 +2418,7 @@ module.exports = window["React"];
 /*!**********************************!*\
   !*** external ["wp","apiFetch"] ***!
   \**********************************/
-/***/ ((module) => {
+/***/ (function(module) {
 
 "use strict";
 module.exports = window["wp"]["apiFetch"];
@@ -2487,7 +2429,7 @@ module.exports = window["wp"]["apiFetch"];
 /*!*********************************!*\
   !*** external ["wp","element"] ***!
   \*********************************/
-/***/ ((module) => {
+/***/ (function(module) {
 
 "use strict";
 module.exports = window["wp"]["element"];
@@ -2498,7 +2440,7 @@ module.exports = window["wp"]["element"];
 /*!******************************!*\
   !*** external ["wp","i18n"] ***!
   \******************************/
-/***/ ((module) => {
+/***/ (function(module) {
 
 "use strict";
 module.exports = window["wp"]["i18n"];
@@ -2509,7 +2451,7 @@ module.exports = window["wp"]["i18n"];
 /*!*****************************!*\
   !*** external ["wp","url"] ***!
   \*****************************/
-/***/ ((module) => {
+/***/ (function(module) {
 
 "use strict";
 module.exports = window["wp"]["url"];
@@ -2544,49 +2486,49 @@ module.exports = window["wp"]["url"];
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	(() => {
+/******/ 	!function() {
 /******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = (module) => {
+/******/ 		__webpack_require__.n = function(module) {
 /******/ 			var getter = module && module.__esModule ?
-/******/ 				() => (module['default']) :
-/******/ 				() => (module);
+/******/ 				function() { return module['default']; } :
+/******/ 				function() { return module; };
 /******/ 			__webpack_require__.d(getter, { a: getter });
 /******/ 			return getter;
 /******/ 		};
-/******/ 	})();
+/******/ 	}();
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	(() => {
+/******/ 	!function() {
 /******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 		__webpack_require__.d = function(exports, definition) {
 /******/ 			for(var key in definition) {
 /******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
 /******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 				}
 /******/ 			}
 /******/ 		};
-/******/ 	})();
+/******/ 	}();
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	(() => {
-/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
-/******/ 	})();
+/******/ 	!function() {
+/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
+/******/ 	}();
 /******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
-/******/ 	(() => {
+/******/ 	!function() {
 /******/ 		// define __esModule on exports
-/******/ 		__webpack_require__.r = (exports) => {
+/******/ 		__webpack_require__.r = function(exports) {
 /******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
 /******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
 /******/ 			}
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
 /******/ 		};
-/******/ 	})();
+/******/ 	}();
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
-(() => {
+!function() {
 "use strict";
 /*!************************************************!*\
   !*** ./assets/src/apps/js/frontend/profile.js ***!
@@ -2598,6 +2540,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _profile_statistic__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./profile/statistic */ "./assets/src/apps/js/frontend/profile/statistic.js");
 /* harmony import */ var _profile_order_recover__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./profile/order-recover */ "./assets/src/apps/js/frontend/profile/order-recover.js");
 /* harmony import */ var _profile_avatar__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./profile/avatar */ "./assets/src/apps/js/frontend/profile/avatar.js");
+/* harmony import */ var _profile_course_list__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./profile/course-list */ "./assets/src/apps/js/frontend/profile/course-list.js");
+
 
 
 
@@ -2607,12 +2551,12 @@ document.addEventListener('DOMContentLoaded', function (event) {
   (0,_profile_course_tab__WEBPACK_IMPORTED_MODULE_1__["default"])();
   (0,_profile_statistic__WEBPACK_IMPORTED_MODULE_2__["default"])();
   (0,_profile_order_recover__WEBPACK_IMPORTED_MODULE_3__["default"])();
+  (0,_profile_course_list__WEBPACK_IMPORTED_MODULE_5__["default"])();
 });
 if (document.getElementById('learnpress-avatar-upload')) {
   wp.element.render((0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_profile_avatar__WEBPACK_IMPORTED_MODULE_4__["default"], null), document.getElementById('learnpress-avatar-upload'));
 }
-})();
-
+}();
 /******/ })()
 ;
 //# sourceMappingURL=profile.js.map

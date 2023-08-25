@@ -1,4 +1,4 @@
-/******/ (() => { // webpackBootstrap
+/******/ (function() { // webpackBootstrap
 var __webpack_exports__ = {};
 /*!*************************************************!*\
   !*** ./assets/src/apps/js/frontend/checkout.js ***!
@@ -132,8 +132,7 @@ var __webpack_exports__ = {};
      * @param  message
      * @param  wrap
      */
-    const showMessage = function (message) {
-      let wrap = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+    const showMessage = function (message, wrap = false) {
       removeMessage();
       if ($.isPlainObject(message)) {
         Object.keys(message).reverse().forEach(id => {

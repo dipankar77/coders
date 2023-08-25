@@ -187,6 +187,10 @@ if ( ! class_exists( '\WSAL\WP_Sensors\WP_Content_Sensor' ) ) {
 				return;
 			}
 
+			if ( null === self::$old_post ) {
+				return;
+			}
+
 			// Ignorable states.
 			if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 				// Check post creation event.
@@ -1618,6 +1622,20 @@ if ( ! class_exists( '\WSAL\WP_Sensors\WP_Content_Sensor' ) ) {
 			$post_events = array_keys( Alert_Manager::get_alerts_by_sub_category( 'Content' ) );
 
 			$post_events = array_merge( $post_events, array_keys( Alert_Manager::get_alerts_by_sub_category( 'Coupons' ) ) );
+
+			$post_events = array_merge( $post_events, array_keys( Alert_Manager::get_alerts_by_sub_category( 'Tags' ) ) );
+
+			$post_events = array_merge( $post_events, array_keys( Alert_Manager::get_alerts_by_sub_category( 'Categories' ) ) );
+
+			$post_events = array_merge( $post_events, array_keys( Alert_Manager::get_alerts_by_sub_category( 'Custom Fields' ) ) );
+
+			$post_events = array_merge( $post_events, array_keys( Alert_Manager::get_alerts_by_sub_category( 'Custom Fields (ACF)' ) ) );
+
+			$post_events = array_merge( $post_events, array_keys( Alert_Manager::get_alerts_by_sub_category( 'Comments' ) ) );
+
+			$post_events = array_merge( $post_events, array_keys( Alert_Manager::get_alerts_by_sub_category( 'Custom Post Types' ) ) );
+
+			$post_events = array_merge( $post_events, array_keys( Alert_Manager::get_alerts_by_sub_category( 'Pages' ) ) );
 
 			foreach ( $post_events as $event ) {
 				if ( Alert_Manager::will_or_has_triggered( $event ) || Alert_Manager::was_triggered_recently( $event ) ) {

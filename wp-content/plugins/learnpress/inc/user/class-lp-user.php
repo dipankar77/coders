@@ -490,12 +490,9 @@ class LP_User extends LP_Abstract_User {
 	 */
 	public function start_quiz( int $quiz_id, int $course_id = 0, bool $wp_error = false ) {
 		try {
-			$item_id = learn_press_get_request( 'lp-preview' );
-
-			if ( $item_id ) {
-				learn_press_add_message( __( 'You cannot start a quiz in preview mode.', 'learnpress' ), 'error' );
-				wp_safe_redirect( learn_press_get_preview_url( $item_id ) );
-				exit();
+			$item_is_preview = learn_press_get_request( 'lp-preview' );
+			if ( $item_is_preview ) {
+				throw new Exception( __( 'You cannot start a quiz in preview mode.', 'learnpress' ) );
 			}
 
 			// Validate course and quiz
@@ -508,7 +505,6 @@ class LP_User extends LP_Abstract_User {
 			}
 
 			$course = learn_press_get_course( $course_id );
-
 			// If user has already finished the course
 			if ( $this->has_finished_course( $course_id ) ) {
 				throw new Exception(
@@ -533,9 +529,9 @@ class LP_User extends LP_Abstract_User {
 					LP_QUIZ_HAS_STARTED_OR_COMPLETED
 				);
 			}
-			$user = learn_press_get_current_user();
 
-			if ( $user->is_guest() ) {
+			$user_current = learn_press_get_current_user();
+			if ( $user_current->is_guest() ) {
 				// if course required enroll => print message "You have to login for starting quiz"
 				if ( ! $course->is_no_required_enroll() ) {
 					throw new Exception( __( 'You have to log in to start the quiz.', 'learnpress' ), LP_REQUIRE_LOGIN );
@@ -548,7 +544,7 @@ class LP_User extends LP_Abstract_User {
 			 * @see learn_press_hk_before_start_quiz
 			 */
 			$can_start_quiz = apply_filters(
-				'learn-press/before-start-quiz',
+				'learn-press/can-start-quiz',
 				true,
 				$quiz_id,
 				$course_id,
@@ -570,7 +566,7 @@ class LP_User extends LP_Abstract_User {
 
 			// $return = $user_quiz->get_mysql_data();
 			$return = $user_quiz;
-		} catch ( Exception $ex ) {
+		} catch ( Throwable $ex ) {
 			$return = $wp_error ? new WP_Error( $ex->getCode(), $ex->getMessage() ) : false;
 		}
 
@@ -786,5 +782,145 @@ class LP_User extends LP_Abstract_User {
 		}
 
 		return $flag;
+	}
+
+	/**
+	 * Get statistic info of student user
+	 *
+	 * @return array
+	 * @since 4.1.6
+	 * @version 1.0.0
+	 */
+	public function get_student_statistic(): array {
+		$user      = $this;
+		$statistic = array(
+			'enrolled_courses'   => 0,
+			'in_progress_course' => 0,
+			'finished_courses'   => 0,
+			'passed_courses'     => 0,
+			'failed_courses'     => 0,
+		);
+
+		try {
+			if ( ! $user ) {
+				throw new Exception( 'The user is invalid' );
+			}
+
+			$user_id          = $user->get_id();
+			$lp_user_items_db = LP_User_Items_DB::getInstance();
+
+			// Count status
+			$filter                 = new LP_User_Items_Filter();
+			$filter->user_id        = $user_id;
+			$count_status           = $lp_user_items_db->count_status_by_items( $filter );
+			$total_courses_enrolled = intval( $count_status->{LP_COURSE_PURCHASED} ?? 0 )
+									+ intval( $count_status->{LP_COURSE_ENROLLED} ?? 0 )
+									+ intval( $count_status->{LP_COURSE_FINISHED} ?? 0 );
+
+			$statistic['enrolled_courses']   = $total_courses_enrolled;
+			$statistic['in_progress_course'] = $count_status->{LP_COURSE_GRADUATION_IN_PROGRESS} ?? 0;
+			$statistic['finished_courses']   = $count_status->{LP_COURSE_FINISHED} ?? 0;
+			$statistic['passed_courses']     = $count_status->{LP_COURSE_GRADUATION_PASSED} ?? 0;
+			$statistic['failed_courses']     = $count_status->{LP_COURSE_GRADUATION_FAILED} ?? 0;
+		} catch ( Throwable $e ) {
+			error_log( __FUNCTION__ . ': ' . $e->getMessage() );
+		}
+
+		return apply_filters( 'lp/profile/student/statistic', $statistic, $this );
+	}
+
+	/**
+	 * Get statistic info of instructor user
+	 *
+	 * @return array
+	 * @since 4.1.6
+	 * @version 1.0.0
+	 */
+	public function get_instructor_statistic(): array {
+		$statistic = array(
+			'total_course'        => 0,
+			'published_course'    => 0,
+			'pending_course'      => 0,
+			'total_student'       => 0,
+			'student_completed'   => 0,
+			'student_in_progress' => 0,
+		);
+
+		try {
+			$user_id          = $this->get_id();
+			$lp_user_items_db = LP_User_Items_DB::getInstance();
+			$lp_course_db     = LP_Course_DB::getInstance();
+
+			if ( ! $this->can_create_course() ) {
+				throw new Exception( 'The user is not Instructor' );
+			}
+
+			// Count total user completed course of author
+			$filter_course                      = new LP_Course_Filter();
+			$filter_course->only_fields         = array( 'ID' );
+			$filter_course->post_author         = $user_id;
+			$filter_course->post_status         = 'publish';
+			$filter_course->return_string_query = true;
+			$query_courses_str                  = LP_Course_DB::getInstance()->get_courses( $filter_course );
+
+			$filter_count_users            = new LP_User_Items_Filter();
+			$filter_count_users->item_type = LP_COURSE_CPT;
+			$filter_count_users->where[]   = "AND item_id IN ({$query_courses_str})";
+			$count_student_has_status      = $lp_user_items_db->count_status_by_items( $filter_count_users );
+			// Count total user in progress course of author
+
+			// Get total users attend course of author
+			$filter_count_users                   = $lp_user_items_db->count_user_attend_courses_of_author( $user_id );
+			$count_users_attend_courses_of_author = $lp_user_items_db->get_user_courses( $filter_count_users );
+
+			// Get total courses publish of author
+			$filter_count_courses            = $lp_course_db->count_courses_of_author( $user_id, [ 'publish' ] );
+			$total_courses_publish_of_author = $lp_course_db->get_courses( $filter_count_courses );
+
+			// Get total courses of author
+			$filter_count_courses    = $lp_course_db->count_courses_of_author( $user_id );
+			$total_courses_of_author = $lp_course_db->get_courses( $filter_count_courses );
+
+			// Get total courses pending of author
+			$filter_count_courses            = $lp_course_db->count_courses_of_author( $user_id, [ 'pending' ] );
+			$total_courses_pending_of_author = $lp_course_db->get_courses( $filter_count_courses );
+
+			$statistic['total_course']        = $total_courses_of_author;
+			$statistic['published_course']    = $total_courses_publish_of_author;
+			$statistic['pending_course']      = $total_courses_pending_of_author;
+			$statistic['total_student']       = $count_users_attend_courses_of_author;
+			$statistic['student_completed']   = $count_student_has_status->{LP_COURSE_FINISHED} ?? 0;
+			$statistic['student_in_progress'] = $count_student_has_status->{LP_COURSE_GRADUATION_IN_PROGRESS} ?? 0;
+		} catch ( Throwable $e ) {
+			error_log( __FUNCTION__ . ': ' . $e->getMessage() );
+		}
+
+		return apply_filters( 'lp/profile/instructor/statistic', $statistic, $this );
+	}
+
+	/**
+	 * Get url instructor.
+	 *
+	 * @since 4.2.3
+	 * @version 1.0.0
+	 * @return string
+	 */
+	public function get_url_instructor(): string {
+		$single_instructor_link = '';
+
+		try {
+			$author_id = $this->get_id();
+			$author    = get_userdata( $author_id );
+			if ( ! $author ) {
+				return '';
+			}
+
+			$single_instructor_page_id = learn_press_get_page_id( 'single_instructor' );
+			$single_instructor_link    = trailingslashit( trailingslashit( get_page_link( $single_instructor_page_id ) ) . $author->user_nicename );
+		} catch ( Throwable $e ) {
+			error_log( __METHOD__ . ': ' . $e->getMessage() );
+		}
+
+		return $single_instructor_link;
 	}
 }

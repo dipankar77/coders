@@ -105,6 +105,26 @@ function ewd_ufaq_field_added_handler() {
 	jQuery( '.sap-infinite-table  tbody tr:last-of-type input[data-name="id"]' ).val( highest + 1 );
 }
 
+// Reset button for search term statistics
+jQuery( document ).ready( function() {
+	jQuery( '.ewd-ufaq-settings-reset-search-terms' ).on( 'click', function() {
+
+		if ( confirm( 'Are you sure that you want to delete all saved search terms?' ) ) {
+    	
+	    	jQuery( '.ewd-ufaq-search-terms-box' ).hide( 500 );
+	
+	    	var params = {};
+	
+	    	params.nonce  				= ewd_ufaq_php_data.nonce;
+	    	params.action 				= 'ewd_ufaq_reset_saved_search_terms';
+	
+	    	var data = jQuery.param( params );
+	    	jQuery.post( ajaxurl, data, function() {} );
+	
+	    	jQuery( '.ewd-ufaq-about-us-feature-suggestion' ).prepend( '<p>Thank you, your feature suggestion has been submitted.' );
+	    }
+	} );
+});
 
 //SETTINGS PREVIEW SCREENS
 
@@ -114,4 +134,3 @@ jQuery( document ).ready( function() {
 	jQuery( '.ewd-ufaq-settings-preview' ).prevAll( '.sap-tutorial-toggle' ).hide();
 	jQuery( '.ewd-ufaq-settings-preview .sap-tutorial-toggle' ).hide();
 });
-

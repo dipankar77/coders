@@ -235,6 +235,9 @@
             define('IRB_H_ASSETS_LOADED', true);
             wp_enqueue_script('inisev-review-script', $this->__asset('js/script.js'), [], filemtime($this->__dir_asset('js/script.js')), true);
             wp_enqueue_style('inisev-review-style', $this->__asset('css/style.css'), [], filemtime($this->__dir_asset('css/style.css')));
+            wp_localize_script('inisev-review-script', 'inisev_review_dismiss', [
+              'nonce' => wp_create_nonce('inisev_review_dismiss'),
+            ], true);
           }
 
         }
@@ -263,6 +266,10 @@
          * @return json returns it to browser
          */
         public function handle_review_action() {
+
+          if (check_ajax_referer('inisev_review_dismiss', 'nonce', false) === false) {
+            return wp_send_json_error();
+          }
 
           $slug = sanitize_text_field($_POST['slug']);
           $mode = sanitize_text_field($_POST['mode']);

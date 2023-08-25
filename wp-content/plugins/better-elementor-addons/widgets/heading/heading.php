@@ -428,10 +428,25 @@ class Better_Heading extends Widget_Base {
 				],
 				'default' => '#333',
 				'selectors' => [
-					'{{WRAPPER}} .better-heading h3, {{WRAPPER}} .better-heading h5, {{WRAPPER}} .better-heading h4, {{WRAPPER}} .better-heading.style-1 h4, {{WRAPPER}} .better-heading.style-2 h3, {{WRAPPER}} .better-heading.style-3 .htit h4, {{WRAPPER}} .better-heading.style-4 .better-extra-title, {{WRAPPER}} .better-heading.style-9 h6, {{WRAPPER}} .better-heading.style-10 items, {{WRAPPER}} .better-heading h2' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .better-heading h3, {{WRAPPER}} .better-heading h5, {{WRAPPER}} .better-heading h4, {{WRAPPER}} .better-heading.style-1 h4, {{WRAPPER}} .better-heading.style-2 h3, {{WRAPPER}} .better-heading.style-3 .htit h4, {{WRAPPER}} .better-heading.style-4 .better-extra-title, {{WRAPPER}} .better-heading.style-10 items, {{WRAPPER}} .better-heading h2' => 'color: {{VALUE}}',
 				],
 				'condition' => [
-					'better_heading_style' => array('1','2','3','4','5','6','7','8','9','10','14','15','16','17','18')
+					'better_heading_style' => array('1','2','3','4','5','6','7','8','10','14','15','16','17','18')
+				],
+			]
+		);
+
+		// Heading Title Color
+		$this->add_control(
+			'better_heading_9_title_color',
+			[
+				'label' => esc_html__( 'Color', 'better-el-addons' ),
+				'type' => \Elementor\Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .better-heading.style-9 h3' => 'color: {{VALUE}}; background: none; -webkit-background-clip: unset; -webkit-text-fill-color: unset;',
+				],
+				'condition' => [
+					'better_heading_style' => array('9')
 				],
 			]
 		);
@@ -477,7 +492,7 @@ class Better_Heading extends Widget_Base {
 				'type' => \Elementor\Controls_Manager::HEADING,
 				'separator' => 'before',
 				'condition' => [
-					'better_heading_style' => array('6','16','18')
+					'better_heading_style' => array('6','9','16','18')
 				],
 			]
 		);
@@ -489,10 +504,10 @@ class Better_Heading extends Widget_Base {
 				'label' => esc_html__( 'Color', 'better-el-addons' ),
 				'type' => \Elementor\Controls_Manager::COLOR,
 				'selectors' => [
-				'{{WRAPPER}} .better-heading.style-16 span, {{WRAPPER}} .better-heading h6, {{WRAPPER}} .better-heading.style-2 h2' => 'color: {{VALUE}}',
+				'{{WRAPPER}} .better-heading.style-16 span, , {{WRAPPER}} .better-heading.style-9 h6, {{WRAPPER}} .better-heading h6, {{WRAPPER}} .better-heading.style-2 h2' => 'color: {{VALUE}}',
 				],
 				'condition' => [
-					'better_heading_style' => array('6','16','18')
+					'better_heading_style' => array('6','9','16','18')
 				],
 			]
 		);
@@ -504,9 +519,9 @@ class Better_Heading extends Widget_Base {
 				'name' => 'better_heading_sub_title_1_typography',
 				'label' => esc_html__( 'Typography', 'better-el-addons' ),
 				'scheme' => \Elementor\Core\Schemes\Typography::TYPOGRAPHY_1,
-				'selector' => '{{WRAPPER}} .better-heading.style-16 span, {{WRAPPER}} .better-heading h6, {{WRAPPER}} .better-heading.style-2 h2',
+				'selector' => '{{WRAPPER}} .better-heading.style-16 span, {{WRAPPER}} .better-heading.style-9 h6, {{WRAPPER}} .better-heading h6, {{WRAPPER}} .better-heading.style-2 h2',
 				'condition' => [
-					'better_heading_style' => array('6','16','18')
+					'better_heading_style' => array('6','9','16','18')
 				],
 			]
 		);

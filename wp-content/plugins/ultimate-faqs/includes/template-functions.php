@@ -13,6 +13,7 @@ function ewd_ufaq_faqs_shortcode( $atts ) {
 		'post__in' 					=> '',
 		'post__in_string' 			=> '',
 		'include_tag'				=> '',
+		'include_category_array' 	=> array(),
 		'include_category' 			=> '',
 		'exclude_category' 			=> '',
 		'include_category_ids' 		=> '',
@@ -38,6 +39,9 @@ function ewd_ufaq_faqs_shortcode( $atts ) {
 
 	// Extract the shortcode attributes
 	$args = shortcode_atts( $faqs_atts, $atts );
+
+	// Convert array keys to string, filter out false or 'false' first
+	if ( is_array( $args['include_category_array'] ) ) { $args['include_category'] .= implode( ',', array_keys( array_filter( filter_var_array( $args['include_category_array'], FILTER_VALIDATE_BOOLEAN, false ) ) ) ); }
 
 	$query = new ewdufaqQuery( $args );
 
@@ -72,6 +76,7 @@ function ewd_ufaq_search_faqs_shortcode( $atts ) {
 
 	// Define shortcode attributes
 	$faq_search_atts = array(
+		'include_category_array' 	=> array(),
 		'include_category' 			=> '',
 		'exclude_category' 			=> '',
 		'show_on_load' 				=> '',
@@ -92,6 +97,9 @@ function ewd_ufaq_search_faqs_shortcode( $atts ) {
 
 	// Extract the shortcode attributes
 	$args = shortcode_atts( $faq_search_atts, $atts );
+
+	// Convert array keys to string, filter out false or 'false' first
+	if ( is_array( $args['include_category_array'] ) ) { $args['include_category'] .= implode( ',', array_keys( array_filter( filter_var_array( $args['include_category_array'], FILTER_VALIDATE_BOOLEAN, false ) ) ) ); }
 
 	$query = new ewdufaqQuery( $args );
 

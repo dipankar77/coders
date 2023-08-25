@@ -1,4 +1,4 @@
-/******/ (() => { // webpackBootstrap
+/******/ (function() { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
@@ -6,7 +6,7 @@
 /*!*****************************!*\
   !*** external ["wp","url"] ***!
   \*****************************/
-/***/ ((module) => {
+/***/ (function(module) {
 
 module.exports = window["wp"]["url"];
 
@@ -40,49 +40,49 @@ module.exports = window["wp"]["url"];
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	(() => {
+/******/ 	!function() {
 /******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = (module) => {
+/******/ 		__webpack_require__.n = function(module) {
 /******/ 			var getter = module && module.__esModule ?
-/******/ 				() => (module['default']) :
-/******/ 				() => (module);
+/******/ 				function() { return module['default']; } :
+/******/ 				function() { return module; };
 /******/ 			__webpack_require__.d(getter, { a: getter });
 /******/ 			return getter;
 /******/ 		};
-/******/ 	})();
+/******/ 	}();
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	(() => {
+/******/ 	!function() {
 /******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 		__webpack_require__.d = function(exports, definition) {
 /******/ 			for(var key in definition) {
 /******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
 /******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 				}
 /******/ 			}
 /******/ 		};
-/******/ 	})();
+/******/ 	}();
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	(() => {
-/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
-/******/ 	})();
+/******/ 	!function() {
+/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
+/******/ 	}();
 /******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
-/******/ 	(() => {
+/******/ 	!function() {
 /******/ 		// define __esModule on exports
-/******/ 		__webpack_require__.r = (exports) => {
+/******/ 		__webpack_require__.r = function(exports) {
 /******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
 /******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
 /******/ 			}
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
 /******/ 		};
-/******/ 	})();
+/******/ 	}();
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
-(() => {
+!function() {
 /*!************************************************!*\
   !*** ./assets/src/apps/js/frontend/widgets.js ***!
   \************************************************/
@@ -101,7 +101,10 @@ function widgetRestAPI() {
       path: 'lp/v1/widgets/api',
       method: 'POST',
       data: {
-        ...widget
+        ...widget,
+        ...{
+          params_url: lpGlobalSettings.lpArchiveSkeleton
+        }
       }
     });
     const {
@@ -117,24 +120,16 @@ function widgetRestAPI() {
     delete ele.dataset.widget;
     ele.querySelector('.lp-skeleton-animation').remove();
   };
-  if ('IntersectionObserver' in window) {
-    const eleObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const ele = entry.target;
-          getResponse(ele);
-          eleObserver.unobserve(ele);
-        }
-      });
-    });
-    [...widgets].map(ele => ele.classList.contains('learnpress-widget-wrapper__restapi') && eleObserver.observe(ele));
-  }
+  widgets.forEach(ele => {
+    if (ele.classList.contains('learnpress-widget-wrapper__restapi')) {
+      getResponse(ele);
+    }
+  });
 }
 document.addEventListener('DOMContentLoaded', function (event) {
   widgetRestAPI();
 });
-})();
-
+}();
 /******/ })()
 ;
 //# sourceMappingURL=widgets.js.map

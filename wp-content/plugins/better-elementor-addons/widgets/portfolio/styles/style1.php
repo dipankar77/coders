@@ -6,7 +6,7 @@ foreach ( $settings['portfolio_one'] as $index => $item ) :
     $count++
     ?>
 
-    <div class="col-lg-3 col-md-6 item <?php if ($count==1){echo'current';}  ?> " data-tab="<?php echo'tab-'.$count; ?>">
+    <div class="col-md col-sm-6 item <?php if ($count==1){echo'current';} ?> " data-tab="<?php echo'tab-'.$count; ?>">
         <div class="info">
             <h6 class="custom-font"><?php echo  $item['subtitle']; ?></h6>
             <h5><?php echo  $item['title']; ?></h5>

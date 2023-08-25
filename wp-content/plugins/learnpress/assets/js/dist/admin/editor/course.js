@@ -1,4 +1,4 @@
-/******/ (() => { // webpackBootstrap
+/******/ (function() { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
@@ -6,12 +6,9 @@
 /*!*******************************************************************!*\
   !*** ./assets/src/apps/js/admin/editor/actions/course-section.js ***!
   \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 const $ = window.jQuery || jQuery;
 const CourseCurriculum = {
   toggleAllSections(context) {
@@ -185,10 +182,9 @@ const CourseCurriculum = {
       console.error(error);
     });
   },
-  updateSectionItems(_ref, payload) {
-    let {
-      state
-    } = _ref;
+  updateSectionItems({
+    state
+  }, payload) {
     LP.Request({
       type: 'update-section-items',
       section_id: payload.section_id,
@@ -204,7 +200,7 @@ const CourseCurriculum = {
     });
   }
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CourseCurriculum);
+/* harmony default export */ __webpack_exports__["default"] = (CourseCurriculum);
 
 /***/ }),
 
@@ -212,12 +208,9 @@ const CourseCurriculum = {
 /*!***********************************************************!*\
   !*** ./assets/src/apps/js/admin/editor/actions/course.js ***!
   \***********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 const Course = {
   heartbeat: function (context) {
     LP.Request({
@@ -259,7 +252,7 @@ const Course = {
     }
   }
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Course);
+/* harmony default export */ __webpack_exports__["default"] = (Course);
 
 /***/ }),
 
@@ -267,12 +260,9 @@ const Course = {
 /*!***********************************************************************!*\
   !*** ./assets/src/apps/js/admin/editor/actions/modal-course-items.js ***!
   \***********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 const ModalCourseItems = {
   toggle: function (context) {
     context.commit('TOGGLE');
@@ -335,7 +325,7 @@ const ModalCourseItems = {
     }
   }
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ModalCourseItems);
+/* harmony default export */ __webpack_exports__["default"] = (ModalCourseItems);
 
 /***/ }),
 
@@ -343,12 +333,9 @@ const ModalCourseItems = {
 /*!*******************************************************************!*\
   !*** ./assets/src/apps/js/admin/editor/getters/course-section.js ***!
   \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 const CourseCurriculum = {
   sections: function (state) {
     return state.sections || [];
@@ -375,7 +362,7 @@ const CourseCurriculum = {
     return state.statusUpdateSectionItem;
   }
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CourseCurriculum);
+/* harmony default export */ __webpack_exports__["default"] = (CourseCurriculum);
 
 /***/ }),
 
@@ -383,12 +370,9 @@ const CourseCurriculum = {
 /*!***********************************************************!*\
   !*** ./assets/src/apps/js/admin/editor/getters/course.js ***!
   \***********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 const Course = {
   heartbeat: function (state) {
     return state.heartbeat;
@@ -418,7 +402,7 @@ const Course = {
     return state.nonce;
   }
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Course);
+/* harmony default export */ __webpack_exports__["default"] = (Course);
 
 /***/ }),
 
@@ -426,12 +410,9 @@ const Course = {
 /*!***********************************************************************!*\
   !*** ./assets/src/apps/js/admin/editor/getters/modal-course-items.js ***!
   \***********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 const Getters = {
   status: function (state) {
     return state.status;
@@ -461,7 +442,7 @@ const Getters = {
     return state.sectionId;
   }
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Getters);
+/* harmony default export */ __webpack_exports__["default"] = (Getters);
 
 /***/ }),
 
@@ -469,11 +450,11 @@ const Getters = {
 /*!*************************************************!*\
   !*** ./assets/src/apps/js/admin/editor/http.js ***!
   \*************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ HTTP)
+/* harmony export */   "default": function() { return /* binding */ HTTP; }
 /* harmony export */ });
 function HTTP(options) {
   const $ = window.jQuery || jQuery;
@@ -532,12 +513,9 @@ function HTTP(options) {
 /*!*********************************************************************!*\
   !*** ./assets/src/apps/js/admin/editor/mutations/course-section.js ***!
   \*********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 const CourseCurriculum = {
   SORT_SECTION(state, orders) {
     state.sections = state.sections.map(function (section) {
@@ -692,7 +670,7 @@ const CourseCurriculum = {
   }
 };
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CourseCurriculum);
+/* harmony default export */ __webpack_exports__["default"] = (CourseCurriculum);
 
 /***/ }),
 
@@ -700,12 +678,9 @@ const CourseCurriculum = {
 /*!*************************************************************!*\
   !*** ./assets/src/apps/js/admin/editor/mutations/course.js ***!
   \*************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 const Course = {
   UPDATE_HEART_BEAT: function (state, status) {
     state.heartbeat = !!status;
@@ -723,7 +698,7 @@ const Course = {
     state.countCurrentRequest--;
   }
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Course);
+/* harmony default export */ __webpack_exports__["default"] = (Course);
 
 /***/ }),
 
@@ -731,12 +706,9 @@ const Course = {
 /*!*************************************************************************!*\
   !*** ./assets/src/apps/js/admin/editor/mutations/modal-course-items.js ***!
   \*************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 const Mutations = {
   TOGGLE: function (state) {
     state.open = !state.open;
@@ -774,7 +746,7 @@ const Mutations = {
     state.status = 'failed';
   }
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Mutations);
+/* harmony default export */ __webpack_exports__["default"] = (Mutations);
 
 /***/ }),
 
@@ -782,11 +754,11 @@ const Mutations = {
 /*!*****************************************************************!*\
   !*** ./assets/src/apps/js/admin/editor/store/course-section.js ***!
   \*****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* export default binding */ __WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "default": function() { return /* export default binding */ __WEBPACK_DEFAULT_EXPORT__; }
 /* harmony export */ });
 /* harmony import */ var _actions_course_section__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../actions/course-section */ "./assets/src/apps/js/admin/editor/actions/course-section.js");
 /* harmony import */ var _mutations_course_section__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../mutations/course-section */ "./assets/src/apps/js/admin/editor/mutations/course-section.js");
@@ -822,12 +794,9 @@ const $ = window.jQuery;
 /*!*********************************************************!*\
   !*** ./assets/src/apps/js/admin/editor/store/course.js ***!
   \*********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 /* harmony import */ var _store_modal_course_items__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../store/modal-course-items */ "./assets/src/apps/js/admin/editor/store/modal-course-items.js");
 /* harmony import */ var _store_course_section__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../store/course-section */ "./assets/src/apps/js/admin/editor/store/course-section.js");
 /* harmony import */ var _store_i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../store/i18n */ "./assets/src/apps/js/admin/editor/store/i18n.js");
@@ -858,7 +827,7 @@ const Course = function Course(data) {
     }
   };
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Course);
+/* harmony default export */ __webpack_exports__["default"] = (Course);
 
 /***/ }),
 
@@ -866,12 +835,9 @@ const Course = function Course(data) {
 /*!*******************************************************!*\
   !*** ./assets/src/apps/js/admin/editor/store/i18n.js ***!
   \*******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 const $ = window.jQuery || jQuery;
 const i18n = function i18n(i18n) {
   const state = $.extend({}, i18n);
@@ -886,7 +852,7 @@ const i18n = function i18n(i18n) {
     getters: getters
   };
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (i18n);
+/* harmony default export */ __webpack_exports__["default"] = (i18n);
 
 /***/ }),
 
@@ -894,11 +860,11 @@ const i18n = function i18n(i18n) {
 /*!*********************************************************************!*\
   !*** ./assets/src/apps/js/admin/editor/store/modal-course-items.js ***!
   \*********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* export default binding */ __WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "default": function() { return /* export default binding */ __WEBPACK_DEFAULT_EXPORT__; }
 /* harmony export */ });
 /* harmony import */ var _getters_modal_course_items__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../getters/modal-course-items */ "./assets/src/apps/js/admin/editor/getters/modal-course-items.js");
 /* harmony import */ var _mutations_modal_course_items__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../mutations/modal-course-items */ "./assets/src/apps/js/admin/editor/mutations/modal-course-items.js");
@@ -951,37 +917,37 @@ const $ = window.jQuery || jQuery;
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	(() => {
+/******/ 	!function() {
 /******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 		__webpack_require__.d = function(exports, definition) {
 /******/ 			for(var key in definition) {
 /******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
 /******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 				}
 /******/ 			}
 /******/ 		};
-/******/ 	})();
+/******/ 	}();
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	(() => {
-/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
-/******/ 	})();
+/******/ 	!function() {
+/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
+/******/ 	}();
 /******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
-/******/ 	(() => {
+/******/ 	!function() {
 /******/ 		// define __esModule on exports
-/******/ 		__webpack_require__.r = (exports) => {
+/******/ 		__webpack_require__.r = function(exports) {
 /******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
 /******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
 /******/ 			}
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
 /******/ 		};
-/******/ 	})();
+/******/ 	}();
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
-(() => {
+!function() {
 /*!***************************************************!*\
   !*** ./assets/src/apps/js/admin/editor/course.js ***!
   \***************************************************/
@@ -1012,8 +978,7 @@ $(document).ready(function () {
     });
   }, 100);
 });
-})();
-
+}();
 /******/ })()
 ;
 //# sourceMappingURL=course.js.map

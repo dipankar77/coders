@@ -7,6 +7,8 @@
  * @version 4.0.0
  */
 
+use LearnPress\TemplateHooks\Instructor\SingleInstructorTemplate;
+
 defined( 'ABSPATH' ) || exit();
 
 if ( ! function_exists( 'LP_Abstract_Course' ) ) {
@@ -195,6 +197,7 @@ if ( ! function_exists( 'LP_Abstract_Course' ) ) {
 					'block_course_finished'          => $block_course_finished ? $block_course_finished : 'yes',
 					'allow_repurchase'               => get_post_meta( $id, '_lp_allow_course_repurchase', true ),
 					'allow_repurchase_course_option' => get_post_meta( $id, '_lp_course_repurchase_option', true ),
+					'excerpt'                        => $post_object->post_excerpt,
 				)
 			);
 		}
@@ -509,31 +512,41 @@ if ( ! function_exists( 'LP_Abstract_Course' ) ) {
 		}
 
 		/**
+		 * Get instructor html of course.
+		 *
 		 * @param int|bool $with_avatar
 		 * @param string   $link_class
 		 *
 		 * @return string
 		 */
-		public function get_instructor_html( $with_avatar = false, $link_class = '' ) {
-			$instructor = $this->get_instructor_name();
+		public function get_instructor_html( $with_avatar = false, $link_class = '' ): string {
+			$html = '';
 
-			$html = sprintf(
-				'<a href="%s"%s>%s<span>%s</span></a>',
-				learn_press_user_profile_link( get_post_field( 'post_author', $this->get_id() ) ),
-				$link_class ? sprintf( 'class="%s"', $link_class ) : '',
-				$with_avatar ? get_avatar(
-					$this->get_instructor( 'id' ),
-					$with_avatar === true ? 48 : $with_avatar
-				) : '',
-				$instructor
-			);
+			try {
+				$instructor = $this->get_author();
+				if ( ! $instructor ) {
+					return '';
+				}
 
-			return apply_filters(
-				'learn_press_course_instructor_html',
-				$html,
-				get_post_field( 'post_author', $this->get_id() ),
-				$this->get_id()
-			);
+				$singleInstructorTemplate = SingleInstructorTemplate::instance();
+
+				$html = apply_filters(
+					'learn-press/course/instructor-html',
+					sprintf(
+						'<a href="%s"%s>%s<span>%s</span></a>',
+						$instructor->get_url_instructor(),
+						$link_class ? sprintf( 'class="%s"', $link_class ) : '',
+						$with_avatar ? $instructor->get_profile_picture() : '',
+						$singleInstructorTemplate->html_display_name( $instructor )
+					),
+					$instructor,
+					$singleInstructorTemplate
+				);
+			} catch ( Throwable $e ) {
+				error_log( $e->getMessage() );
+			}
+
+			return $html;
 		}
 
 		/**
@@ -650,10 +663,10 @@ if ( ! function_exists( 'LP_Abstract_Course' ) ) {
 		 *
 		 * @author tungnx
 		 * @since 4.1.5
-		 * @version 1.0.0
-		 * @return mixed|void
+		 * @version 1.0.1
+		 * @return string
 		 */
-		public function get_course_price_html() {
+		public function get_course_price_html(): string {
 			$price_html = '';
 
 			if ( $this->is_free() ) {
@@ -672,7 +685,7 @@ if ( ! function_exists( 'LP_Abstract_Course' ) ) {
 				$price_html  = apply_filters( 'learn_press_course_price_html', $price_html, $this->has_sale_price(), $this->get_id() );
 			}
 
-			return $price_html;
+			return sprintf( '<span class="course-item-price">%s</span>', $price_html );
 		}
 
 		/**
@@ -910,7 +923,8 @@ if ( ! function_exists( 'LP_Abstract_Course' ) ) {
 		}*/
 
 		/**
-		 * Get total user enrolled or finished
+		 * Get total user enrolled, purchased or finished
+		 *
 		 * @since 4.1.4
 		 * @version 1.0.1
 		 * @return int
@@ -1120,7 +1134,7 @@ if ( ! function_exists( 'LP_Abstract_Course' ) ) {
 		public function get_next_item( $args = null ) {
 			$item_nav = $this->get_item_nav();
 
-			return apply_filters( 'learn-press/course/next-item', $item_nav[2], $this->get_id(), $args );
+			return apply_filters( 'learn-press/course/next-item', $item_nav ? $item_nav[2] : 0, $this->get_id(), $args );
 		}
 
 		/**
@@ -1413,6 +1427,16 @@ if ( ! function_exists( 'LP_Abstract_Course' ) ) {
 				$this->get_id(),
 				$this
 			);
+		}
+
+		/**
+		 * [get_downloadable_material get all material files of this course and lesson of this course]
+		 * @return [array] [array of material files or empty array]
+		 */
+		public function get_downloadable_material(): array {
+			$material  = LP_Material_Files_DB::getInstance();
+			$materials = $material->get_material_by_item_id( $this->get_id(), 1 );
+			return apply_filters( 'learn-press/course-materials', $materials, $this->get_id() );
 		}
 	}
 }

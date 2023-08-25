@@ -41,6 +41,9 @@ class ewdufaqBlocks {
 				'category_accordion' => array(
 					'type' => 'string',
 				),
+				'include_category_array' => array(
+					'type' => 'object',
+				),
 				'include_category' => array(
 					'type' => 'string',
 				),
@@ -85,6 +88,9 @@ class ewdufaqBlocks {
 				'show_on_load' => array(
 					'type' => 'string',
 				),
+				'include_category_array' => array(
+					'type' => 'object',
+				),
 				'include_category' => array(
 					'type' => 'string',
 				),
@@ -119,6 +125,31 @@ class ewdufaqBlocks {
 		wp_enqueue_style( 'ewd-ufaq-css' );
 		wp_enqueue_style( 'ewd-ufaq-blocks-css' );
 		wp_enqueue_script( 'ewd-ufaq-blocks-js' );
+
+		$faq_categories = get_terms( array(
+			'taxonomy' => EWD_UFAQ_FAQ_CATEGORY_TAXONOMY,
+			'hide_empty' => false,
+		) );
+
+		foreach ( $faq_categories as $faq_category ) {
+
+			$faq_category_options[] = array(
+				'label' => $faq_category->name,
+				'slug'	=> $faq_category->slug,
+			);
+		}
+
+		wp_add_inline_script(
+			'ewd-ufaq-blocks-js',
+			sprintf(
+				'var ewd_ufaq_blocks = %s;',
+				json_encode( array(
+					'faqCategoryOptions' => $faq_category_options,
+				) )
+			),
+			'before'
+		);
+
 	}
 	
 	/**

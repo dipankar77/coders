@@ -14,6 +14,11 @@ if ( !class_exists( 'ewdufaqAJAX' ) ) {
 			add_action( 'wp_ajax_ewd_ufaq_search', array( $this, 'return_search_results' ) );
 			add_action( 'wp_ajax_nopriv_ewd_ufaq_search', array( $this, 'return_search_results' ) );
 
+			add_action( 'wp_ajax_ewd_ufaq_record_search_term', array( $this, 'save_search_term' ) );
+			add_action( 'wp_ajax_nopriv_ewd_ufaq_record_search_term', array( $this, 'save_search_term' ) );
+
+			add_action( 'wp_ajax_ewd_ufaq_reset_saved_search_terms', array( $this, 'reset_saved_search_term' ) );
+
 			add_action( 'wp_ajax_ewd_ufaq_record_view', array( $this, 'record_view' ) );
 			add_action( 'wp_ajax_nopriv_ewd_ufaq_record_view', array( $this, 'record_view' ) );
 
@@ -115,14 +120,14 @@ if ( !class_exists( 'ewdufaqAJAX' ) ) {
 				ewdufaqHelper::bad_nonce_ajax();
 			}
 
-  		$post_id = intval( $_POST['post_id'] );
+  			$post_id = intval( $_POST['post_id'] );
 
-  		$meta_id = $wpdb->get_var( $wpdb->prepare( "SELECT meta_id FROM $wpdb->postmeta WHERE post_id=%d AND meta_key='ufaq_view_count'", $post_id ) );
+  			$meta_id = $wpdb->get_var( $wpdb->prepare( "SELECT meta_id FROM $wpdb->postmeta WHERE post_id=%d AND meta_key='ufaq_view_count'", $post_id ) );
   
-  		if ( $meta_id != '' and $meta_id != 0 ) { $wpdb->query( $wpdb->prepare( "UPDATE $wpdb->postmeta SET meta_value=meta_value+1 WHERE post_id=%d AND meta_key='ufaq_view_count'", $post_id ) ); }
-  		else { $wpdb->query( $wpdb->prepare("INSERT INTO $wpdb->postmeta (post_id,meta_key,meta_value) VALUES (%d,'ufaq_view_count','1')", $post_id ) ); }
+  			if ( $meta_id != '' and $meta_id != 0 ) { $wpdb->query( $wpdb->prepare( "UPDATE $wpdb->postmeta SET meta_value=meta_value+1 WHERE post_id=%d AND meta_key='ufaq_view_count'", $post_id ) ); }
+  			else { $wpdb->query( $wpdb->prepare("INSERT INTO $wpdb->postmeta (post_id,meta_key,meta_value) VALUES (%d,'ufaq_view_count','1')", $post_id ) ); }
 
-  		die();
+  			die();
 		}
 
 		/**
@@ -182,6 +187,50 @@ if ( !class_exists( 'ewdufaqAJAX' ) ) {
     		}
 
    			die();
+		}
+
+		/**
+		 * Records search terms, if enabled
+		 * @since 2.2.6
+		 */
+		public function save_search_term() {
+			global $ewd_ufaq_controller;
+
+			if ( !check_ajax_referer( 'ewd-ufaq-js', 'nonce' ) ) {
+				ewdufaqHelper::bad_nonce_ajax();
+			}
+
+			if ( empty( $ewd_ufaq_controller->settings->get_setting( 'save-search-terms' ) ) ) { return; }
+
+  			$search_term = sanitize_text_field( $_POST['search_term'] );
+
+  			if ( empty( $search_term ) or strlen( $search_term ) < 2 ) { die(); }
+
+  			$search_terms = get_option( 'ewd-ufaq-search-data', array() );
+
+  			$search_terms[ $search_term ] = isset( $search_terms[ $search_term ] ) ? $search_terms[ $search_term ] + 1 : 1;
+
+  			update_option( 'ewd-ufaq-search-data', $search_terms );
+
+  			die();
+		}
+
+		/**
+		 * Resets the saved search terms
+		 * @since 2.2.6
+		 */
+		public function reset_saved_search_term() {
+			global $ewd_ufaq_controller;
+
+			if ( !check_ajax_referer( 'ewd-ufaq-admin-js', 'nonce' ) ) {
+				ewdufaqHelper::bad_nonce_ajax();
+			}
+
+			if ( empty( $ewd_ufaq_controller->settings->get_setting( 'save-search-terms' ) ) ) { return; }
+
+  			update_option( 'ewd-ufaq-search-data', array() );
+
+  			die();
 		}
 	}
 }

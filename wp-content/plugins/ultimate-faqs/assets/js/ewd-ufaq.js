@@ -2,12 +2,16 @@ var filtering_running = false;
 var wpforms_search_running = 'No';
 
 var ajax_ctrlr = {
+
 	last_run: new Date(),
 	srch_str: '',
 	schdl_to_run_state: false,
 	schdl_to_run_delay: 250,
+	search_save_schdl_to_run_delay: 3000,
 	schdl_to_run_cntr: 0,
 	schdl_to_run_hndl: null,
+	search_save_schdl_to_run_hndl: null,
+
 	schedule_to_run: function() {
 		ajax_ctrlr.schdl_to_run_cntr++;
 
@@ -26,7 +30,10 @@ var ajax_ctrlr = {
 			ajax_ctrlr.schdl_to_run_state = false;
 			ajax_ctrlr.schdl_to_run_cntr = 0;
 			ajax_ctrlr.last_run = new Date();
+
 			ewd_ufaq_ajax_reload();
+
+			ajax_ctrlr.save_search_schdl_to_run_reset();
 		}
 	},
 	schdl_to_run_reset: function () {
@@ -48,6 +55,23 @@ var ajax_ctrlr = {
 			ajax_ctrlr.schdl_to_run_state = true;
 			ajax_ctrlr.last_run = new Date();
 		}
+	},
+	save_search_term: function() {
+		var params = {};
+
+		params.nonce       = typeof ewd_ufaq_php_data != 'undefined' ? ewd_ufaq_php_data.nonce : '';
+		params.search_term = ajax_ctrlr.srch_str;
+		params.action      = 'ewd_ufaq_record_search_term';
+
+		var data = jQuery.param( params );
+    	jQuery.post(ajaxurl, data, function(response) {});
+	},
+	save_search_schdl_to_run_reset: function() {
+
+		if ( typeof ewd_ufaq_php_data == 'undefined' || ! ewd_ufaq_php_data.save_search_terms ) { return false; }
+
+		clearTimeout(ajax_ctrlr.search_save_schdl_to_run_hndl);
+		ajax_ctrlr.search_save_schdl_to_run_hndl = setTimeout(ajax_ctrlr.save_search_term, ajax_ctrlr.search_save_schdl_to_run_delay);
 	},
 	clear_field: function ( srch_elm ) {
 		let cf = jQuery(srch_elm).parent('.search-field').find('.clear-field').eq(0);

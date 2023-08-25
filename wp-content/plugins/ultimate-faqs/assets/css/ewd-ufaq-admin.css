@@ -1376,6 +1376,64 @@ About Us page
   }
 }
 
+/********************************
+SEARCH TERMS TABLE IN SETTINGS
+********************************/
+.ewd-ufaq-search-terms-box,
+.ewd-ufaq-search-terms-box * {
+  box-sizing: border-box;
+}
+.ewd-ufaq-search-terms-box {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 400px;
+  border: 1px solid #ccc;
+  border-radius: 14px;
+  margin: 21px 0 0;
+}
+.ewd-ufaq-search-term-each {
+  display: flex;
+  flex-basis: 100%;
+  border-bottom: 1px solid #ccc;
+}
+.ewd-ufaq-search-term-each:last-of-type {
+  border-bottom: none;
+}
+.ewd-ufaq-search-term-each-label,
+.ewd-ufaq-search-term-each-value {
+  padding: 10px 16px;
+}
+.ewd-ufaq-search-term-each-label {
+  border-right: 1px solid #ccc;
+  font-weight: bold;
+  flex-basis: 80%;
+}
+.ewd-ufaq-search-term-each-value {
+  flex-basis: 20%;
+  text-align: center;
+}
+.ewd-ufaq-settings-reset-search-terms {
+  position: relative;
+  float: left;
+  padding: 8px 16px;
+  margin-top: 21px;
+  background: #6026B4;
+  color: #fff;
+  font-size: 13px;
+  font-weight: normal;
+  text-decoration: none;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background .35s;
+}
+.ewd-ufaq-settings-reset-search-terms:hover {
+  background: #894ae1;
+}
+
+
 .ewd-ufaq-hidden {
   display: none;
 }

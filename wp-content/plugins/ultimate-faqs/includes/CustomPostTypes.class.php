@@ -59,6 +59,7 @@ class ewdufaqCustomPostTypes {
 				'all_items'         	=> __( 'All FAQs',              	'ultimate-faqs' ),
 			),
 			'public' => true,
+			'publicly_queryable' => $ewd_ufaq_controller->settings->get_setting( 'disable-permalink-pages' )? false : true,
 			'has_archive' => true,
 			'menu_icon' => 'dashicons-format-chat',
 			'rewrite' => array( 

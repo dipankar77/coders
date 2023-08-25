@@ -56,6 +56,7 @@ class Plugin
         'menu-list',
         'blog',
         'slider',
+        'slider-parallax',
         'fancy',
         'info-box',
         'about',
@@ -86,7 +87,8 @@ class Plugin
         'post-comments',
         'post-featured-image',
         'post-date',
-        'animated-heading'
+        'animated-heading',
+        'gallery'
     ) ;
     public  $pro_elements = array(
         'fancy-box',
@@ -163,6 +165,13 @@ class Plugin
         wp_register_script(
             'better-slider',
             plugins_url( 'assets/js/slider.js', __FILE__ ),
+            [ 'jquery' ],
+            false,
+            true
+        );
+        wp_register_script(
+            'slider-parallax',
+            plugins_url( 'assets/js/slider-parallax.js', __FILE__ ),
             [ 'jquery' ],
             false,
             true
@@ -328,6 +337,7 @@ class Plugin
             false,
             true
         );
+
         wp_register_script(
             'better-el-addons',
             plugins_url( 'assets/js/scripts.js', __FILE__ ),

@@ -1,9 +1,9 @@
 === Ultimate FAQ - WordPress FAQ and Accordion Plugin ===
-Contributors: Rustaurius, EtoileWebDesign
+Contributors: Rustaurius
 Tags: faq, faqs, accordion, woocommerce faq, gutenberg faq, faq block
-Requires at least: 5.0
-Tested up to: 6.2
-Stable tag: 2.2.6
+Requires at least: 6.0
+Tested up to: 6.3
+Stable tag: 2.2.9
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -261,6 +261,21 @@ For more info about the premium version, please see here: https://doc.etoilewebd
 
 == Changelog ==
 
+= 2.2.9 (2023-08-23) =
+- Tested and declaring compatibility with WooCommerce High-Performance Order Storage.
+
+= 2.2.8 (2023-08-08) =
+- Tested for WordPress 6.3 compatibility/support.
+
+= 2.2.7 (2023-07-31) =
+- Added the ability to record/track which search terms have been entered and the frequency of each.
+- Switched the "Include Category" parameter for the blocks to be checkboxes, via which you can select which categories to include, instead of a text input.
+- Added an option to disable permalink pages.
+- Switched the walk-through page creation to set the "FAQs Page" option equal to the created page rather than create the page with the [ultimate-faqs] shortcode in it.
+- Fixed an issue with font size for toggle symbol (from the styling settings) not being correctly applied.
+- Fixed FAQ preview not showing for search block when show on load parameter was set to yes.
+- Updated version of PHPSpreadsheet.
+
 = 2.2.6 (2023-03-31) =
 - Updated blocks for compatibility with WordPress 6.2.
 
@@ -298,209 +313,4 @@ For more info about the premium version, please see here: https://doc.etoilewebd
 - Tested with PHP 8.1.
 - Updated the export class for PHP 8 compatibility.
 
-= 2.1.18 (2022-10-13) =
-- Fixed an issue in which, if the include_category attribute was used in the search shortcode, multiple categories would display if some of the FAQs matching that category were in multiple categories.
-
-= 2.1.17 (2022-08-22) =
-- Updating a condition to make sure the new block patterns do not cause an error on WordPress installations using a version of WordPress older than 5.5. 
-
-= 2.1.16 (2022-08-12) =
-- Introducing new block patterns, which can be used to integrate FAQs directly into your block-based theme templates.
-- Added a parameter to the Display FAQs block, as well as an attribute to the ultimate-faqs shortcode, that lets you enable/disable grouping FAQs by category for that specific instance.
-- Added a Tags column to the main admin FAQs overview/table.
-- Updated the success/failure/validation messaging for the submit question form and added labelling options for these.
-
-= 2.1.15 (2022-06-10) =
-- Fixed an issue in which FAQs were sometimes showing on archive pages for other custom post types if there was nothing selected for the FAQ Page setting.
-
-= 2.1.14 (2022-05-20) =
-- Tested with WordPress 6.0.
-
-= 2.1.13 (2022-05-17) =
-- Added previews for Gutenberg blocks (i.e. when, on the page edit screen, you add the block, it will show a preview).
-
-= 2.1.12 (2022-05-04) =
-- Added a setting to choose/set an FAQ page (as an alternative option to manually putting the block or shortcode on a page).
-- Implemented an option to highlight the search term in the results.
-- Multiple admins can now be emailed on question submission (comma-separated).
-- The "No Results Found" text is now wrapped in a selector, so you can style it separately, if desired.
-- FAQ Category Toggle now has a title attribute. It also has a tabindex="0" attribute so that the toggle div can be selected via the keyboard.
-- Added a small delay before fetching search results, so that, if someone is typing a query, less requests are being sent to the server.
-- Updated the X button that clears the search field, so that it sets the display back to no FAQs or all FAQs, depending on which option you have specified.
-- Fixed an issue causing date and datetime custom fields to show an incorrect input type on the FAQ edit screen.
-- FAQs set to Private now display on the front end when you are logged in to the site.
-- Removed some extra blank spaces that were showing in textarea edit fields.
-
-= 2.1.11 (2022-03-01) =
-- Fixed an issue causing invalid schema (structured data).
-
-= 2.1.10 (2022-02-23) =
-- Updated WPForms integration, so you can now specify a minimum character count before matching FAQs show.
-- Removed Gutenberg block code from the output of the post body in the structured data. 
-- Fix for structured data not output on FAQ search page.
-- Fix for issue in which, when using the ordering table, editing the FAQ that was at the top would send it to the bottom.
-
-= 2.1.9 (2022-02-01) =
-- Fixed compatibility issue when using block-based themes.
-
-= 2.1.8 (2022-01-26) =
-- Updated escaping function to correct issue with the widget output.
-
-= 2.1.7 (2022-01-19) =
-- Added a new filter (ewd_ufaq_kses_allowed_html) to specify allowed tags for the FAQ answer/body.
-
-= 2.1.6 (2022-01-05) =
-- Fixed an issue causing the YouTube block to not output on the front end in an FAQ post.
-
-= 2.1.5 (2022-01-04) =
-- Updated class naming issues.
-- Fixed a few styling issues with the walk-through.
-
-= 2.1.4 (2021-12-29) =
-- Updated sanitizing and escaping.
-
-= 2.1.3 (2021-12-24) =
-- Updated sanitizing and escaping.
-- Added stable tag.
-
-= 2.1.2 (2021-12-23) =
-- Updating nonce and capability checks for AJAX calls.
-- Updating sanitization and escaping.
-
-= 2.1.1 (2021-12-22) =
-- Fixed an issue in which the defaults were not being correctly set for a few options.
-
-= 2.1.0 (2021-12-21) =
-- Changed how premium settings areas are previewed.
-- CSS styling update for the FAQ Details area on the FAQ edit screen. 
-
-= 2.0.26 (2021-12-13) =
-- Added a notice pertaining to the requirement of the premium helper plugin to access premium settings and content.
-
-= 2.0.25 (2021-11-03) =
-- Updates the SAP library to version 2.6.1
-- Updates setting's so that a number display only conditionally on other settings' values
-- Fix for the 'X' in the search box not re-triggering the AJAX search
-
-= 2.0.24 (2021-10-07) =
-- Adds in error handling for when the display_faq isn't defined 
-- Adds in additional checks to prevent a console errors when the plugin JS files are loaded without the default localization data being defined.
-
-= 2.0.23 (2021-09-17) =
-- Updated how secondary assets are conditionally enqueued.
-- Adds in a check to prevent a console error when the plugin JS files are loaded without the default localization data being defined.
-
-= 2.0.22 (2021-09-08) =
-- Updated the settings page library.
-- Made FAQ search input field type search, so it includes functionality such as the clear event.
-- Updated the conditional enqueuing of assets.
-- Update to the integration with the Ultimate WP Mail plugin for the submitted FAQ thank-you email.
-- Added ID to the category headings (when grouping FAQs by category), so you can anchor link directly to one.
-- Added a check on FAQ import for the post type, so you can't accidentally overwrite an existing post if you mistakenly specify a post ID that already exists for a post in another post type.
-
-= 2.0.21 (2021-08-12) =
-- Updated deprecated block_categories.
-
-= 2.0.20 (2021-07-21) =
-- Updating a condition to account for a possible notice create by a rare use of the_content filter.
-
-= 2.0.19 (2021-06-24) =
-- Fixed an issue in which FAQs that were imported would not display on the front end until manually updated. 
-
-= 2.0.18 (2021-06-21) =
-- Fixed an issue with incorrect permalinks in search results.
-- Fixed an issue in which emails from Ultimate WP Mail were not available for selection.
-- Fixed an issue in which <style> tags were being included even if no custom CSS was provided.
-- Eliminated a PHP notice. 
-- Added a German translation file that was provided by a user of the plugin.
-
-= 2.0.17 (2021-05-14) =
-- Fixed an issue causing the AJAX dynamic search results to not automatically show when typing when auto complete was disabled.
-- Fixed a conflict between multiple shortcodes listed on the search page. Please, you still should not have any extra shortcodes on your search page other than the one search shortcode!
-- Fixed issue with incorrect tag and category links on single post page.
-
-= 2.0.16 (2021-05-10) =
-- Fixed an issue in which the wrong URL was being generated for tag links when pretty permalink was enabled.
-- Added an option to disable front-page canonical redirects if you are using your homepage as your FAQ page.
-
-= 2.0.15 (2021-05-05) =
-- Fixed an issue in which the "FAQs per page" wasn't populating subsequent pages when "Group FAQs by Category" was enabled.
-
-= 2.0.14 (2021-04-29) =
-- Fixed an issue causing it to sometimes take two clicks to open an FAQ when accordion was enabled and you were using a reveal effect.
-- Set the default sort order for the popular-faqs shortcode to descending.
-
-= 2.0.13 (2021-04-23) =
-- Fixed an issue in which permalinks were not correctly redirecting if you had the destination set to the main FAQ page and pretty permalinks enabled.
-
-= 2.0.12 (2021-04-22) =
-- Added workaround for missing formatting when using Elementor due to the way they filter the content.
-- Removed "Expand All" button from single FAQs.
-- Fixed a display issue, where "Expand All" was displaying instead of "Collapse All" when display_all_faqs was being used.
-- Eliminated a notice. 
-
-= 2.0.11 (2021-04-20) =
-- Fixed incorrect URL for category links in FAQ search result
-- Fixed link type custom fields not abiding the Hide Blank setting
-- Fixed issue with link type custom fields not being formatted as a link on the front end
-
-= 2.0.10 (2021-04-19) =
-- Corrected console JS error on admin Dashboard page.
-- Updated admin enqueuing conditions.
-
-= 2.0.9 (2021-04-15) =
-- Fix for fatal error happening on plugin update.
-- <strong>If you are updating from a pre-2.0.0 version of the plugin, you may have to manually re-activate the plugin after running the update.</strong>
-
-= 2.0.8 (2021-04-14) =
-- Workaround for infinite loop issue caused by SiteOrigin Page Builder's application of content filtering.
-
-= 2.0.7 (2021-04-14) =
-- Fixed the duplicate entry on the Plugins screen
-- Fixed an issue with the FAQ Elements Order setting/table that was causing a warning and for it to sometimes not display the correct order
-
-= 2.0.6 (2021-04-14) =
-- Fix for the plugin deactivating when updating from pre-2.0.0
-
-= 2.0.5 (2021-04-13) =
-- Fixed an issue where, when a single FAQ is linked to, the plugin was no longer scrolling to it.
-- Fixed incorrect path for loading plugin text domain.
-- Added the ability for the display_all_answers and group_by_category settings, for the View.FAQs class, to be filtered. This will allow you to override the default settings, to (among other things) do something like make an FAQ start closed even if it's the only one displaying. You can see the following for an example: https://pastebin.com/gZXFcmtw
-
-= 2.0.4 (2021-04-12) =
-- Update to the structured data to make it so that, if you have multiple instances of the shortcode on the same page, it will combine the data from all of them and output only one FAQPage schema.
-- Fixes an issue with filtered FAQ content being displayed on archive pages.
-
-= 2.0.3 (2021-04-09) =
-- Disables group-by-category if there's only a single FAQ, which rectifies issue of duplicates showing on single post page.
-
-= 2.0.2 (2021-04-08) =
-- When using the "include_category" attribute while having "Group FAQs by Category" enabled, FAQs that are included in multiple categories will only be displayed in the categories specified in the "include_category" attribute.
-- Generated a new .pot file.
-
-= 2.0.1 (2021-04-07) =
-- <strong>Please double check after updating to see if the plugin was automatically re-activated. If not, you just need to manually click the Activate button.</strong>
-- Fixed an issue causing the "Share" label to show when it shouldn't
-- Fixed an issue causing new FAQs to not display in the order table
-- Fixed an issue causing the order set in the order table to not apply on the front end
-- Changed default slug base back to the correct "ufaqs"
-- Removed the border that was now appearing by default around the toggle symbol
-
-= 2.0.0 (2021-04-06) =
-- <strong>This update includes quite a big change to the construction of the plugin, so please take caution and test before updating on a live site (or wait a few days before updating in case some minor corrective updates need to be released).</strong>
-- <strong>Please also double check after updating to see if the plugin was automatically re-activated. If not, you just need to manually click the Activate button.</strong>
-- Rebuilt the plugin, from the ground up, to be object oriented.
-- Updated the structure of the settings pages.
-- Fixed an issue with the WooCommerce integration causing other tabs to not display.
-- Fixed an issue with reveal effects not working.
-- Fixed issues with custom field importing.
-- If there's only a single FAQ being displayed, it will automatically display opened
-- CSS/styling updates, including for columns and WP Forms integration.
-- Updates to several styling options.
-- Updates to several option descriptions, to clarify them.
-- Updated the conditional loading of CSS and JS assets. 
-- Added labelling option.
-- Cleaning up/removing unnecessary code and files.
-- Eliminating notices.
-- JS localization.
-- Updated .pot file. (If you have created a translation based on the old version, you might need to just update your .po file for this new version.)
+[See changelog for all versions](https://www.etoilewebdesign.com/changelogs/ultimate-faqs.txt).

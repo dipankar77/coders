@@ -271,6 +271,17 @@ class ewdufaqSettings {
 		$sap->add_setting(
 			'ewd-ufaq-settings',
 			'ewd-ufaq-general',
+			'toggle',
+			array(
+			'id'                => 'disable-permalink-pages',
+			'title'             => __( 'Disable Permalink Pages', 'ultimate-faqs' ),
+			'description'       => __( 'This option can be used to disable the permalink/single post pages for the FAQ posts. If you change this option, you may need to flush your permalinks.', 'ultimate-faqs' ),
+			)
+		);
+  
+		$sap->add_setting(
+			'ewd-ufaq-settings',
+			'ewd-ufaq-general',
 			'select',
 			array(
 				'id'            => 'access-role',

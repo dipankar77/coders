@@ -3,9 +3,9 @@ Contributors: kitsway, designstore21
 Donate link: https://www.kitsway.com
 Tags: addons, elementor, elementor addon, elementor addons, elementor widget
 Requires at least: 4.6
-Tested up to: 5.9.0
+Tested up to: 6.1.0
 Requires PHP: 5.6
-Stable tag: 1.3.1
+Stable tag: 1.3.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -64,6 +64,8 @@ Yes, You can customize it. We provided all possible options in backend to update
 More Features Coming Soon!
 
 == Changelog ==
+= 1.3.5 - 30/05/2023  =
+Required update
 
 = 1.3.1 - 21/03/2022  =
 Required update

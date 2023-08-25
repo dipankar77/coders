@@ -190,7 +190,7 @@ final class BlockTypesController {
 			'ProductButton',
 			'ProductCategories',
 			'ProductCategory',
-			'ProductCategoryList',
+			'ProductGallery',
 			'ProductImage',
 			'ProductImageGallery',
 			'ProductNew',
@@ -199,13 +199,13 @@ final class BlockTypesController {
 			'ProductQuery',
 			'ProductRating',
 			'ProductResultsCount',
+			'ProductReviews',
 			'ProductSaleBadge',
 			'ProductSearch',
 			'ProductSKU',
 			'ProductStockIndicator',
 			'ProductSummary',
 			'ProductTag',
-			'ProductTagList',
 			'ProductTitle',
 			'ProductTopRated',
 			'ProductsByAttribute',
@@ -214,6 +214,7 @@ final class BlockTypesController {
 			'ReviewsByProduct',
 			'RelatedProducts',
 			'ProductDetails',
+			'SingleProduct',
 			'StockFilter',
 		];
 
@@ -225,21 +226,9 @@ final class BlockTypesController {
 		);
 
 		if ( Package::feature()->is_experimental_build() ) {
-			$block_types[] = 'SingleProduct';
-		}
-
-		/**
-		 * This disables specific blocks in Widget Areas by not registering them.
-		 */
-		if ( in_array( $pagenow, [ 'widgets.php', 'themes.php', 'customize.php' ], true ) && ( empty( $_GET['page'] ) || 'gutenberg-edit-site' !== $_GET['page'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-			$block_types = array_diff(
-				$block_types,
-				[
-					'AllProducts',
-					'Cart',
-					'Checkout',
-				]
-			);
+			$block_types[] = 'ProductCollection';
+			$block_types[] = 'ProductRatingStars';
+			$block_types[] = 'ProductTemplate';
 		}
 
 		/**
