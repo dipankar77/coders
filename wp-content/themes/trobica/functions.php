@@ -118,24 +118,24 @@ function trobica_theme_setup() {
 	//color_schecmes script
 	add_action( 'wp_enqueue_scripts', 'trobica_color_scheme' );
 
-	//Woocommerce
-    add_theme_support( 'woocommerce', array(
-        'thumbnail_image_width' => 300,
-        'single_image_width'    => 800,
+	// //Woocommerce
+    // add_theme_support( 'woocommerce', array(
+    //     'thumbnail_image_width' => 300,
+    //     'single_image_width'    => 800,
 
-        'product_grid'          => array(
-            'default_rows'    => 3,
-            'min_rows'        => 2,
-            'max_rows'        => 8,
-            'default_columns' => 4,
-            'min_columns'     => 2,
-            'max_columns'     => 5,
-        ),
-    ) );
+    //     'product_grid'          => array(
+    //         'default_rows'    => 3,
+    //         'min_rows'        => 2,
+    //         'max_rows'        => 8,
+    //         'default_columns' => 4,
+    //         'min_columns'     => 2,
+    //         'max_columns'     => 5,
+    //     ),
+    // ) );
 
-	add_theme_support( 'wc-product-gallery-zoom' );
-	add_theme_support( 'wc-product-gallery-lightbox' );
-	add_theme_support( 'wc-product-gallery-slider' );
+	// add_theme_support( 'wc-product-gallery-zoom' );
+	// add_theme_support( 'wc-product-gallery-lightbox' );
+	// add_theme_support( 'wc-product-gallery-slider' );
 
 }
 
